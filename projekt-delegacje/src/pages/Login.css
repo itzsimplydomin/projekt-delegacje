@@ -1,6 +1,24 @@
+/* MOBILE / TOUCH ADJUSTMENTS (iOS / Android) */
+html {
+  -webkit-text-size-adjust: 100%;
+  /* zapobiega skalowaniu fontów na iOS */
+  -ms-text-size-adjust: 100%;
+}
+
+:root {
+  --touch-target: 44px;
+  /* minimalny rozmiar elementu dotykowego */
+  --container-max: 1200px;
+  /* maksymalna szerokość banneru na dużych ekranach */
+  --banner-padding-min: 1.8rem;
+  --banner-padding-max: 4rem;
+  --gap-min: 1.6rem;
+  --gap-max: 3rem;
+}
+
 .login-banner {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 3rem;
   align-items: center;
   padding: 3.5rem 4rem;
@@ -10,6 +28,62 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0 32px 80px rgba(10, 26, 58, 0.35);
+  padding-top: calc(3.5rem + env(safe-area-inset-top));
+  padding-left: calc(4rem + env(safe-area-inset-left));
+  padding-right: calc(4rem + env(safe-area-inset-right));
+  padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
+  /* fluid width + centrowanie na dużych monitorach */
+  width: min(100%, var(--container-max));
+  margin: 0 auto;
+
+  /* płynny padding (skalowanie z rozdzielczością) */
+  padding: clamp(var(--banner-padding-min), 2rem + 1.2vw, var(--banner-padding-max));
+  gap: clamp(var(--gap-min), 1.6rem + 0.6vw, var(--gap-max));
+}
+
+@supports (padding: constant(safe-area-inset-top)) {
+  .login-banner {
+    padding-top: calc(3.5rem + constant(safe-area-inset-top));
+    padding-left: calc(4rem + constant(safe-area-inset-left));
+    padding-right: calc(4rem + constant(safe-area-inset-right));
+    padding-bottom: calc(3.5rem + constant(safe-area-inset-bottom));
+  }
+}
+
+/* ogólne touch / appearance improvements */
+input,
+textarea,
+select,
+button,
+.login-submit {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: var(--touch-target);
+  /* wygodniejsze kliknięcia dotykowe */
+  font-size: 16px;
+  /* zapobiega powiększaniu na iOS przy focusie */
+}
+
+/* poprawka autofill dla WebKit */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.12) inset;
+  -webkit-text-fill-color: var(--white);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* wygładzenie fontów */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a,
+.banner-cta,
+.login-submit {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .login-banner::before,
@@ -51,40 +125,6 @@
   color: rgba(200, 216, 235, 0.85);
 }
 
-.banner-title {
-  font-size: clamp(2rem, 3vw + 1rem, 3rem);
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.banner-description {
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 1rem;
-  line-height: 1.6;
-  max-width: 32rem;
-}
-
-.banner-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.85rem 1.6rem;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--ocean-blue), var(--pale-blue));
-  color: var(--navy-darkest);
-  font-weight: 600;
-  font-size: 0.95rem;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 16px 30px rgba(106, 155, 216, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.banner-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 22px 44px rgba(106, 155, 216, 0.45);
-}
-
 .banner-illustration {
   position: relative;
   z-index: 1;
@@ -100,6 +140,8 @@
   flex-direction: column;
   gap: 1.25rem;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  max-width: 480px;
+  width: 100%;
 }
 
 .login-card h2 {
@@ -173,6 +215,66 @@
   color: rgba(200, 216, 235, 0.7);
 }
 
+.remember-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding: 0.5rem 0.25rem;           
+}
+
+.remember-label input[type="checkbox"] {
+  position: absolute;
+  inset: 0;                          
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  --size: 1.25rem;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(200, 216, 235, 0.22);
+  position: relative;
+  box-shadow: 0 2px 6px rgba(2, 6, 23, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition: background .15s ease, border-color .15s ease, transform .12s ease;
+}
+
+.custom-checkbox::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -60%) rotate(45deg) scale(0);
+  transform-origin: center;
+  transition: transform .12s cubic-bezier(.2,.9,.2,1);
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.3));
+}
+
+/* stany */
+.remember-label input[type="checkbox"]:checked + .custom-checkbox {
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  border-color: rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+
+.remember-label input[type="checkbox"]:checked + .custom-checkbox::after {
+  transform: translate(-50%, -60%) rotate(45deg) scale(1);
+}
+
+.remember-label input[type="checkbox"]:focus-visible + .custom-checkbox {
+  box-shadow: 0 0 0 6px rgba(96, 165, 250, 0.18);
+  outline: none;
+}
+
 .login-meta a {
   color: var(--white);
   text-decoration: none;
@@ -183,16 +285,183 @@
   text-decoration: underline;
 }
 
+@media (min-width: 992px) {
+  .login-banner {
+    grid-template-columns: 1fr 420px;
+    /* tekst po lewej, karta po prawej */
+    gap: 3.5rem;
+  }
+
+  .login-card {
+    padding: 2.6rem;
+    max-width: 460px;
+  }
+}
+
+@media (min-width: 1400px) {
+  :root {
+    --container-max: 1400px;
+    --gap-max: 4rem;
+    --banner-padding-max: 5rem;
+  }
+
+  .login-banner {
+    gap: 4rem;
+  }
+
+  .login-banner::before,
+  .login-banner::after {
+    transform: scale(1.05);
+  }
+}
+
 @media (max-width: 768px) {
   .login-banner {
     padding: 2.5rem;
+    gap: 2.5rem;
+  }
+
+  .banner-copy {
+    text-align: center;
+    align-items: center;
   }
 
   .login-card {
     padding: 2rem;
+    max-width: 28rem;
+    margin: 0 auto;
   }
 
-  .banner-description {
+  .login-meta {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .login-banner {
+    grid-template-columns: 1fr;
+    padding: 2.2rem;
+    gap: 2rem;
+  }
+
+  input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .remember-label {
+    gap: 0.6rem;
+  }
+
+  .custom-checkbox {
+    --size: 1.35rem;
+  }
+
+  .remember-label input[type="checkbox"] {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .login-banner::before,
+  .login-banner::after {
+    opacity: 0.35;
+    filter: blur(2px);
+  }
+
+  .login-banner::before {
+    width: 260px;
+    height: 260px;
+    top: -120px;
+    right: -160px;
+  }
+
+  .login-banner::after {
+    width: 200px;
+    height: 200px;
+    bottom: -130px;
+    left: -140px;
+  }
+
+  .login-card {
+    width: 100%;
+  }
+
+  .form-field input {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-banner {
+    padding: 1.8rem;
+    border-radius: 24px;
+    gap: 1.75rem;
+  }
+
+  .login-card {
+    padding: 1.65rem;
+    gap: 1rem;
+    border-radius: 20px;
+  }
+
+  .login-card h2 {
+    font-size: 1.35rem;
+  }
+
+  .login-submit {
     font-size: 0.95rem;
+    padding: 0.85rem 1rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .login-banner {
+    padding: 1.65rem;
+    gap: 1.6rem;
+    border-radius: 22px;
+  }
+
+  .login-banner::before,
+  .login-banner::after {
+    opacity: 0.25;
+    filter: blur(4px);
+  }
+
+  .login-banner::before {
+    width: 220px;
+    height: 220px;
+    top: -140px;
+    right: -160px;
+  }
+
+  .login-banner::after {
+    width: 180px;
+    height: 180px;
+    bottom: -150px;
+    left: -160px;
+  }
+
+  .banner-copy {
+    gap: 1.25rem;
+  }
+
+  .login-card {
+    padding: 1.5rem;
+    gap: 0.95rem;
+  }
+
+  .form-field input {
+    padding: 0.8rem 0.95rem;
+    font-size: 0.88rem;
+  }
+
+  .login-submit {
+    padding: 0.8rem 0.95rem;
+    font-size: 0.92rem;
+  }
+
+  .login-meta {
+    gap: 0.65rem;
   }
 }

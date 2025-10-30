@@ -5,18 +5,7 @@ export const LoginBanner = () => {
     <section className="login-banner" aria-labelledby="login-banner-title">
       <div className="banner-copy">
         <span className="banner-eyebrow">Delegacje ARTIKON S.C</span>
-        <h1 id="login-banner-title" className="banner-title">
-          Zaloguj się i przejmij kontrolę nad podróżami służbowymi
-        </h1>
-        <p className="banner-description">
-          Zarządzaj delegacjami, kosztami i rozliczeniami w jednym miejscu. Dzięki
-          inteligentnym automatyzacjom oszczędzasz czas, zachowując pełną
-          przejrzystość procesów.
-        </p>
-        <button className="banner-cta" type="button">
-          Poznaj możliwości platformy
-          <span aria-hidden>→</span>
-        </button>
+        <h1 id="login-banner-title">Witamy w systemie do zarządzania delegacjami</h1>
       </div>
 
       <div className="banner-illustration">
@@ -30,7 +19,7 @@ export const LoginBanner = () => {
                 name="email"
                 type="email"
                 autoComplete="email"
-                placeholder="anna.kowalska@firma.pl"
+                placeholder="nazwa@artikon.pl"
               />
             </div>
             <div className="form-field">
@@ -48,10 +37,12 @@ export const LoginBanner = () => {
             </button>
           </form>
           <div className="login-meta">
-            <label>
-              <input type="checkbox" name="remember" /> Zapamiętaj mnie
+            <label className="remember-label">
+              <input type="checkbox" name="remember" />
+              <span className="custom-checkbox" aria-hidden="true"></span>
+              Zapamiętaj mnie
             </label>
-            <a href="#">Nie pamiętasz hasła?</a>
+
           </div>
         </div>
       </div>
