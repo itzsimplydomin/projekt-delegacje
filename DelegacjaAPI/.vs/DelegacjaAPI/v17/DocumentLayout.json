@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\delegacjaapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:delegacjaapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DelegacjaAPI.http",
+              "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\DelegacjaAPI.http",
+              "RelativeDocumentMoniker": "DelegacjaAPI.http",
+              "ToolTip": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\DelegacjaAPI.http",
+              "RelativeToolTip": "DelegacjaAPI.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-11-02T11:25:48.613Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Delegacje.cs",
+              "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Models\\Delegacje.cs",
+              "RelativeDocumentMoniker": "Models\\Delegacje.cs",
+              "ToolTip": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Models\\Delegacje.cs",
+              "RelativeToolTip": "Models\\Delegacje.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-02T11:25:33.512Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WeatherForecastController.cs",
+              "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Controllers\\WeatherForecastController.cs",
+              "RelativeDocumentMoniker": "Controllers\\WeatherForecastController.cs",
+              "ToolTip": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Controllers\\WeatherForecastController.cs",
+              "RelativeToolTip": "Controllers\\WeatherForecastController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-02T11:22:17.669Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
