@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "DelegacjaAPI.Controllers.DelegacjeController",
+    "Method": "GetAll",
+    "RelativePath": "api/Delegacje",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
