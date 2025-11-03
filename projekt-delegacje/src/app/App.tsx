@@ -1,4 +1,4 @@
-import '../App.css';
+import '/src/styles/App.css';
 import { LoginBanner } from '../pages/Login';
 
 export const App = () => {

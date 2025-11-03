@@ -1,4 +1,4 @@
-import './Login.css';
+import '/src/styles/Login.css';
 
 export const LoginBanner = () => {
   return (
