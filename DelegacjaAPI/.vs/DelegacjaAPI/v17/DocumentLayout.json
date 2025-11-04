@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\controllers\\delegacjecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:controllers\\delegacjecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\models\\uzytkownik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:models\\uzytkownik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\controllers\\delegacjecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:controllers\\delegacjecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,6 +39,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAABcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-04T07:43:38.333Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Uzytkownik.cs",
+              "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Models\\Uzytkownik.cs",
+              "RelativeDocumentMoniker": "Models\\Uzytkownik.cs",
+              "ToolTip": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Models\\Uzytkownik.cs",
+              "RelativeToolTip": "Models\\Uzytkownik.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-04T07:38:09.039Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "DelegacjeController.cs",
               "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Controllers\\DelegacjeController.cs",
               "RelativeDocumentMoniker": "Controllers\\DelegacjeController.cs",
@@ -43,7 +77,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -51,12 +85,11 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-02T13:56:28.689Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-02T13:56:28.689Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "DelegacjaAPI.http",
               "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\DelegacjaAPI.http",
               "RelativeDocumentMoniker": "DelegacjaAPI.http",
@@ -68,13 +101,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Delegacje.cs",
               "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Models\\Delegacje.cs",
               "RelativeDocumentMoniker": "Models\\Delegacje.cs",
               "ToolTip": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Models\\Delegacje.cs",
               "RelativeToolTip": "Models\\Delegacje.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-02T11:25:33.512Z",
               "EditorCaption": ""
