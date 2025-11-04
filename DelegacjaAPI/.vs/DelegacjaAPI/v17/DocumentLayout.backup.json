@@ -7,16 +7,16 @@
       "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\controllers\\delegacjecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:controllers\\delegacjecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\models\\uzytkownik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:models\\uzytkownik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\models\\uzytkownik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:models\\uzytkownik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\controllers\\delegacjecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:controllers\\delegacjecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\pkule\\desktop\\projekt delegacje\\projekt-delegacje\\delegacjaapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -44,14 +44,14 @@
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Controllers\\AuthController.cs",
               "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAABcAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-04T07:43:38.333Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Uzytkownik.cs",
               "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Models\\Uzytkownik.cs",
               "RelativeDocumentMoniker": "Models\\Uzytkownik.cs",
@@ -64,7 +64,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "DelegacjeController.cs",
               "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\Controllers\\DelegacjeController.cs",
               "RelativeDocumentMoniker": "Controllers\\DelegacjeController.cs",
