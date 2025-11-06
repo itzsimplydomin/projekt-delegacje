@@ -1,0 +1,11 @@
+## .NET ##
+appsettings.Development.json
+appsettings.Local.json  
+*.user
+bin/
+obj/
+.vs/
+
+## Azure ##
+*.backup
+*.temp
