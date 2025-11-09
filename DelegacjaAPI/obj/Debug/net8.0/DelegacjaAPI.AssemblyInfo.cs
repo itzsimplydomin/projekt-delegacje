@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DelegacjaAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+53db56a9edd608e9585f9113eb53ab3bebc99aea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cbfae0c813709cf1cd75368f26e18b6ef830512b")]
 [assembly: System.Reflection.AssemblyProductAttribute("DelegacjaAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DelegacjaAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

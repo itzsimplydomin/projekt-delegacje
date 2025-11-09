@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DelegacjaAPI.Models;
+using DelegacjaAPI.Services;
 
 namespace DelegacjaAPI.Controllers
 {
@@ -8,21 +9,19 @@ namespace DelegacjaAPI.Controllers
     [ApiController]
     public class DelegacjeController : ControllerBase
     {
-        [HttpGet] //endpoint get 
-        public IActionResult GetAll()
+        private readonly TableStorageServices _tableService;
+
+        public DelegacjeController(TableStorageServices tableService)
         {
-            var delegacje = new List<Delegacja>
-            {
-                new Delegacja
-                {
-                    Id= 1,
-                    Pracownik = "Jan Kowalski",
-                    DataOd =DateTime.Now,
-                    DataDo = DateTime.Now.AddDays(5),
-                    Miejsce = "Warszawa",
-                }
-            };
+            _tableService = tableService;
+        }
+        [HttpGet] //endpoint get 
+
+        public async Task<IActionResult> GetAll()
+        {
+            var delegacje = await _tableService.GetAllDelegationsAsync();
             return Ok(delegacje);
         }
+
     }
 }

@@ -31,3 +31,8 @@ C:\Users\Pkule\Desktop\Projekt delegacje\projekt-delegacje\DelegacjaAPI\obj\Debu
 C:\Users\Pkule\Desktop\Projekt delegacje\projekt-delegacje\DelegacjaAPI\obj\Debug\net8.0\DelegacjaAPI.pdb
 C:\Users\Pkule\Desktop\Projekt delegacje\projekt-delegacje\DelegacjaAPI\obj\Debug\net8.0\DelegacjaAPI.genruntimeconfig.cache
 C:\Users\Pkule\Desktop\Projekt delegacje\projekt-delegacje\DelegacjaAPI\obj\Debug\net8.0\ref\DelegacjaAPI.dll
+C:\Users\Pkule\Desktop\Projekt delegacje\projekt-delegacje\DelegacjaAPI\bin\Debug\net8.0\Azure.Core.dll
+C:\Users\Pkule\Desktop\Projekt delegacje\projekt-delegacje\DelegacjaAPI\bin\Debug\net8.0\Azure.Data.Tables.dll
+C:\Users\Pkule\Desktop\Projekt delegacje\projekt-delegacje\DelegacjaAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Pkule\Desktop\Projekt delegacje\projekt-delegacje\DelegacjaAPI\bin\Debug\net8.0\System.ClientModel.dll
+C:\Users\Pkule\Desktop\Projekt delegacje\projekt-delegacje\DelegacjaAPI\bin\Debug\net8.0\System.Memory.Data.dll
