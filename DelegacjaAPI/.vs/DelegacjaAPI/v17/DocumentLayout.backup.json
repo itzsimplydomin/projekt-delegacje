@@ -3,20 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\services\\tablestorageservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:services\\tablestorageservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\models\\uzytkownik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,11 +19,24 @@
       "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\delegacjaapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
-      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:delegacjaapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\services\\tablestorageservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:services\\tablestorageservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\appsettings.Development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8FB176BD-0036-D269-15EA-F86E90622887}|Elementy rozwi\u0105zania{8FB176BD-0036-D269-15EA-F86E90622887}|C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\appsettings.Development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8FB176BD-0036-D269-15EA-F86E90622887}|Elementy rozwi\u0105zania{8FB176BD-0036-D269-15EA-F86E90622887}|solutionrelative:appsettings.Development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:models\\delegacje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|c:\\users\\dominik\\desktop\\projekt-delegacje\\delegacjaapi\\delegacjaapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{99F6D0F5-11C8-4DCE-9B7C-DEF678E93085}|DelegacjaAPI.csproj|solutionrelative:delegacjaapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
     }
   ],
   "DocumentGroupContainers": [
@@ -45,36 +46,35 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "appsettings.Development.json",
+              "ToolTip": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\appsettings.Development.json",
+              "RelativeToolTip": "appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-25T14:01:55.232Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAACQAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-02T13:56:28.689Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-02T13:56:28.689Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\appsettings.Development.json",
-              "ToolTip": "C:\\Users\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\appsettings.Development.json",
-              "RelativeToolTip": "..\\..\\..\\..\\Pkule\\Desktop\\Projekt delegacje\\projekt-delegacje\\DelegacjaAPI\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-06T09:47:10.621Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "TableStorageServices.cs",
               "DocumentMoniker": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\Services\\TableStorageServices.cs",
               "RelativeDocumentMoniker": "Services\\TableStorageServices.cs",
@@ -82,12 +82,11 @@
               "RelativeToolTip": "Services\\TableStorageServices.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-04T16:26:13.305Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-04T16:26:13.305Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -99,7 +98,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
@@ -112,7 +111,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Uzytkownik.cs",
               "DocumentMoniker": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\Models\\Uzytkownik.cs",
               "RelativeDocumentMoniker": "Models\\Uzytkownik.cs",
@@ -124,7 +123,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "DelegacjeController.cs",
               "DocumentMoniker": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\Controllers\\DelegacjeController.cs",
               "RelativeDocumentMoniker": "Controllers\\DelegacjeController.cs",
@@ -136,7 +135,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "DelegacjaAPI.http",
               "DocumentMoniker": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\DelegacjaAPI.http",
               "RelativeDocumentMoniker": "DelegacjaAPI.http",
@@ -148,7 +147,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "Delegacje.cs",
               "DocumentMoniker": "C:\\Users\\Dominik\\Desktop\\projekt-delegacje\\DelegacjaAPI\\Models\\Delegacje.cs",
               "RelativeDocumentMoniker": "Models\\Delegacje.cs",

@@ -1,7 +1,7 @@
 import '/src/styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import { LoginBanner } from '../pages/Login';
-import { DelegationsList } from '../pages/DelegationsList';
+import { Dashboard } from '../pages/Dashboard';
 import { Providers } from './providers';
 
 export const App = () => {
@@ -10,7 +10,7 @@ export const App = () => {
       <main className="app-shell">
         <Routes>
           <Route path="/" element={<LoginBanner />} />
-          <Route path="/delegacje" element={<DelegationsList />} />
+          <Route path="/delegacje" element={<Dashboard />} />
         </Routes>
       </main>
     </Providers>

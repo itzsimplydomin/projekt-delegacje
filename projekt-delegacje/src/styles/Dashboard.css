@@ -1,0 +1,140 @@
+html {
+  -webkit-text-size-adjust: 100%;
+  /* zapobiega skalowaniu fontów na iOS */
+  -ms-text-size-adjust: 100%;
+}
+
+:root {
+  --touch-target: 44px;
+  /* minimalny rozmiar elementu dotykowego */
+  --container-max: 1200px;
+  /* maksymalna szerokość banneru na dużych ekranach */
+  --banner-padding-min: 1.8rem;
+  --banner-padding-max: 4rem;
+  --gap-min: 1.6rem;
+  --gap-max: 3rem;
+}
+
+.dark-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(
+    90deg,
+    var(--navy) 0%,
+    var(--navy-darker) 50%,
+    var(--navy-darkest) 100%
+  );
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.nav-center {
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  flex-wrap: nowrap;
+}
+
+.logo img {
+  height: 40px;
+  display: block;
+}
+
+.main-nav {
+  display: flex;
+  gap: 2em;
+}
+
+.main-nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+  color: var(--ocean-blue);
+}
+
+/* —— Menu Rozwijane —— */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  color: var(--white);
+  cursor: pointer;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+      90deg,
+      var(--navy) 0%,
+      var(--navy-darker) 50%,
+      var(--navy-darkest) 100%
+    );
+    backdrop-filter: blur(10px);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 0 0 16px 16px;
+    padding: 1.5rem 0;
+    gap: 0.5em;
+  }
+
+  .main-nav.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .menu-toggle {
+    display: block;
+    position: relative;
+  }
+
+  .nav-center {
+    padding: 0 1.5em;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-center {
+    padding: 0 1em;
+  }
+
+  .dark-header {
+    height: 70px;
+  }
+
+  .logo img {
+    height: 35px;
+  }
+
+  .menu-toggle {
+    font-size: 1.3em;
+  }
+}
