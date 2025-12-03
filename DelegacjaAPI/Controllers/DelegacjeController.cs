@@ -23,5 +23,40 @@ namespace DelegacjaAPI.Controllers
             return Ok(delegacje);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] Delegacja delegacja)
+        {
+            try
+            {
+                Console.WriteLine($"Dodawanie delegacji: {delegacja.PracownikID}");
+
+                // sprawdzenie poprawności daty5
+                if (delegacja.DataRozpoczecia > delegacja.DataZakonczenia)
+                {
+                    return BadRequest(new { message = "Data zakończenia delegacji musi być późniejsza niż data rozpoczęcia!" });
+                }
+
+                // Zapisanie do Azure przez Service
+                var result = await _tableService.AddDelegationAsync(delegacja);
+
+                Console.WriteLine($"Delegacja dodana z ID: {result}");
+                return Ok(new
+                {
+                    success = true,
+                    message = "Delegacja dodana pomyślnie!",
+                    id = result
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Błąd dodawania: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Błąd podczas dodawania delegacji"
+                });
+
+            }
+        }
     }
 }

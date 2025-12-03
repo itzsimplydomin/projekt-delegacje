@@ -1,5 +1,7 @@
 ﻿using Azure.Data.Tables;
+using DelegacjaAPI.Controllers;
 using DelegacjaAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace DelegacjaAPI.Services
@@ -45,6 +47,27 @@ namespace DelegacjaAPI.Services
 
             Console.WriteLine($"Pobrano {delegacje.Count} delegacji z bazy danych");
             return delegacje;
+        }
+
+        public async Task<string> AddDelegationAsync(Delegacja delegacja)
+        {
+            var id = Guid.NewGuid().ToString(); //id delegacji
+
+            var entity = new TableEntity("delegacja", id)
+            {
+                ["PracownikID"] = delegacja.PracownikID,
+                ["PracownikImie"] = delegacja.PracownikImie,
+                ["PracownikNazwisko"] = delegacja.PracownikNazwisko,
+                ["Miejsce"] = delegacja.Miejsce,
+                ["DataRozpoczecia"] = delegacja.DataRozpoczecia,
+                ["DataZakonczenia"] = delegacja.DataZakonczenia,
+                ["Uwagi"] = delegacja.Uwagi ?? "",
+            };
+
+            await _tableClient.AddEntityAsync(entity);
+
+            return id;
+
         }
     }
 }
