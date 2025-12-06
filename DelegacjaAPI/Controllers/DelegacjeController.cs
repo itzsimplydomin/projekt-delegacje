@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using DelegacjaAPI.Models;
 using DelegacjaAPI.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Azure;
 
 namespace DelegacjaAPI.Controllers
 {
@@ -56,6 +58,37 @@ namespace DelegacjaAPI.Controllers
                     message = "Błąd podczas dodawania delegacji"
                 });
 
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                await _tableService.DeleteDelegationAsync(id);
+
+                Console.WriteLine($"Delegacja została usunięta z ID : {id}");
+                return Ok(new
+                {
+                    success = true,
+                    message = "Delegacja została usunięta pomyślnie"
+                });
+            }
+
+            catch (RequestFailedException ex) when (ex.Status == 404)
+            {
+                Console.WriteLine($"Delegacja z id: {id} nie istnieje");
+                return NotFound(new { success = false, message = "Delegacja nie istnieje" });
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Błąd usuwania {ex.Message}");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Blad w usuwaniu delegacji"
+                });
             }
         }
     }

@@ -9,7 +9,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<TableStorageServices>();
 
-// >>> DODAJ TO – konfiguracja CORS <<<
+// konfiguracja CORS 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendClient", policy =>
@@ -18,8 +18,7 @@ builder.Services.AddCors(options =>
             .WithOrigins("http://localhost:5173") // adres frontendu Vite
             .AllowAnyHeader()
             .AllowAnyMethod();
-        // jeœli kiedyœ bêdziesz wysy³aæ ciasteczka / credentials:
-        // .AllowCredentials();
+        
     });
 });
 
@@ -34,7 +33,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// >>> DODAJ TO – u¿ycie polityki CORS <<<
+// u¿ycie polityki CORS
 app.UseCors("FrontendClient");
 
 app.UseAuthorization();

@@ -1,4 +1,5 @@
-﻿using Azure.Data.Tables;
+﻿using Azure;
+using Azure.Data.Tables;
 using DelegacjaAPI.Controllers;
 using DelegacjaAPI.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -68,6 +69,12 @@ namespace DelegacjaAPI.Services
 
             return id;
 
+        }
+
+        public async Task DeleteDelegationAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("ID nie może być puste");
+            await _tableClient.DeleteEntityAsync("delegacja", id);
         }
     }
 }
