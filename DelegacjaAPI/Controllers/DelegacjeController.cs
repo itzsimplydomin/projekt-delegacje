@@ -17,11 +17,23 @@ namespace DelegacjaAPI.Controllers
         {
             _tableService = tableService;
         }
-        [HttpGet] //endpoint get 
+        [HttpGet] 
 
         public async Task<IActionResult> GetAll()
         {
             var delegacje = await _tableService.GetAllDelegationsAsync();
+            return Ok(delegacje);
+        }
+
+        [HttpGet("{id}")]
+
+        public async Task<IActionResult> GetById(string id)
+        {
+            var delegacje = await _tableService.GetByIdDelegationAsync(id);
+            if (delegacje == null)
+            {
+                return NotFound($"Nie znaleziono delegacji o ID: {id}");
+            }
             return Ok(delegacje);
         }
 
@@ -90,6 +102,20 @@ namespace DelegacjaAPI.Controllers
                     message = "Blad w usuwaniu delegacji"
                 });
             }
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] Delegacja delegacja)
+        {
+            try
+            {
+                await _tableService.UpdateDelegationAsync(id, delegacja);
+                return Ok(); // dla testu
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message); //testowe
+            }
+            
         }
     }
 }
