@@ -23,3 +23,15 @@ export interface Delegacja {
   uwagi?: string;
   timestamp?: string | null;
 }
+
+export interface DelegacjaCreate {
+  partitionKey: string;
+  rowKey: string;
+  pracownikImie: string;
+  pracownikNazwisko: string;
+  miejsce: string;
+  pracownikID: number;
+  dataRozpoczecia: string;
+  dataZakonczenia: string;
+  uwagi?: string;
+}
