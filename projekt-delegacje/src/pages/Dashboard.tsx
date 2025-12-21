@@ -23,6 +23,8 @@ export const Dashboard = () => {
         pracownikID: '',
         miejsce: '',
         uwagi: '',
+        godzinaRozpoczecia: '08:00',
+        godzinaZakonczenia: '16:00',
     });
     const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
@@ -32,7 +34,15 @@ export const Dashboard = () => {
             queryClient.invalidateQueries({ queryKey: ['delegacje'] });
             setSubmitMessage('Delegacja została dodana do kalendarza.');
             setSelectedRange({ start: null, end: null });
-            setFormState({ pracownikImie: '', pracownikNazwisko: '', pracownikID: '', miejsce: '', uwagi: '' });
+            setFormState({ 
+                pracownikImie: '', 
+                pracownikNazwisko: '', 
+                pracownikID: '', 
+                miejsce: '', 
+                uwagi: '',
+                godzinaRozpoczecia: '08:00',
+                godzinaZakonczenia: '16:00',
+            });
         },
         onError: () => setSubmitMessage('Nie udało się zapisać delegacji. Sprawdź dane i spróbuj ponownie.'),
     });
@@ -47,12 +57,21 @@ export const Dashboard = () => {
 
     const delegationsByDay = useMemo(() =>
         monthDays.map((day) => {
-            const matches = delegacje.filter((delegacja) =>
-                isWithinInterval(day, {
-                    start: new Date(delegacja.dataRozpoczecia),
-                    end: new Date(delegacja.dataZakonczenia),
-                }),
-            );
+            const matches = delegacje.filter((delegacja) => {
+                // Konwersja dat z UTC na lokalną datę bez zmiany wartości dnia
+                const startDate = new Date(delegacja.dataRozpoczecia);
+                const endDate = new Date(delegacja.dataZakonczenia);
+                
+                // Normalizacja dat do początku dnia w lokalnej strefie czasowej
+                const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate());
+                const delegationStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+                const delegationEnd = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+                
+                return isWithinInterval(dayStart, {
+                    start: delegationStart,
+                    end: delegationEnd,
+                });
+            });
             return { day, matches };
         }),
         [delegacje, monthDays]);
@@ -79,6 +98,16 @@ export const Dashboard = () => {
             return;
         }
 
+        // Tworzenie dat z godzinami
+        const [startHour, startMinute] = formState.godzinaRozpoczecia.split(':').map(Number);
+        const [endHour, endMinute] = formState.godzinaZakonczenia.split(':').map(Number);
+
+        const startDateTime = new Date(selectedRange.start);
+        startDateTime.setHours(startHour, startMinute, 0, 0);
+
+        const endDateTime = new Date(selectedRange.end);
+        endDateTime.setHours(endHour, endMinute, 0, 0);
+
         const payload: DelegacjaCreate = {
             partitionKey: 'delegacja',
             rowKey: '',
@@ -86,8 +115,8 @@ export const Dashboard = () => {
             pracownikNazwisko: formState.pracownikNazwisko,
             pracownikID: Number(formState.pracownikID),
             miejsce: formState.miejsce,
-            dataRozpoczecia: selectedRange.start.toISOString(),
-            dataZakonczenia: selectedRange.end.toISOString(),
+            dataRozpoczecia: startDateTime.toISOString(),
+            dataZakonczenia: endDateTime.toISOString(),
             uwagi: formState.uwagi,
         };
 
@@ -146,7 +175,6 @@ export const Dashboard = () => {
                     <div className="hero-meta">
                         <p className="metric-label">Aktywne delegacje</p>
                         <p className="metric-value">{delegacje.length}</p>
-
                     </div>
                 </section>
 
@@ -219,11 +247,19 @@ export const Dashboard = () => {
                             <ul className="selection-meta">
                                 <li>
                                     <span>Od</span>
-                                    <strong>{selectedRange.start ? format(selectedRange.start, 'dd.MM.yyyy') : '—'}</strong>
+                                    <strong>
+                                        {selectedRange.start 
+                                            ? `${format(selectedRange.start, 'dd.MM.yyyy')} ${formState.godzinaRozpoczecia}`
+                                            : '—'}
+                                    </strong>
                                 </li>
                                 <li>
                                     <span>Do</span>
-                                    <strong>{selectedRange.end ? format(selectedRange.end, 'dd.MM.yyyy') : '—'}</strong>
+                                    <strong>
+                                        {selectedRange.end 
+                                            ? `${format(selectedRange.end, 'dd.MM.yyyy')} ${formState.godzinaZakonczenia}`
+                                            : '—'}
+                                    </strong>
                                 </li>
                                 <li>
                                     <span>Dni delegacji</span>
@@ -296,6 +332,26 @@ export const Dashboard = () => {
                                         value={formState.miejsce}
                                         onChange={handleInputChange}
                                         placeholder="Miasto lub region"
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Godzina rozpoczęcia
+                                    <input
+                                        type="time"
+                                        name="godzinaRozpoczecia"
+                                        value={formState.godzinaRozpoczecia}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Godzina zakończenia
+                                    <input
+                                        type="time"
+                                        name="godzinaZakonczenia"
+                                        value={formState.godzinaZakonczenia}
+                                        onChange={handleInputChange}
                                         required
                                     />
                                 </label>
