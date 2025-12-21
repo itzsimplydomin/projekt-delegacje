@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Delegacja, LoginRequest, LoginResponse } from './types';
+import type { Delegacja, DelegacjaCreate, LoginRequest, LoginResponse } from './types';
 
 // Bazowy klient HTTP dla całej aplikacji
 export const api = axios.create({
@@ -21,4 +21,9 @@ export const login = async (
 export const getDelegacje = async (): Promise<Delegacja[]> => {
   const { data } = await api.get<Delegacja[]>('/api/Delegacje');
   return data;
+};
+
+// dodanie nowej delegacji
+export const createDelegacja = async (payload: DelegacjaCreate): Promise<void> => {
+  await api.post('/api/Delegacje', payload);
 };

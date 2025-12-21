@@ -34,7 +34,7 @@ body {
       rgba(20, 40, 87, 0.3),
       transparent 50%
     ),
-    var(--light-bg);
+    var(--navy);
   display: flex;
   align-items: center;
   justify-content: center;

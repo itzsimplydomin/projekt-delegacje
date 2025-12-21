@@ -32,7 +32,7 @@ export const LoginBanner = () => {
       }
     } catch (e) {
       console.error(e);
-      setError('Błąd połączenia z serwerem. Upewnij się, że backend działa.');
+      setError('Błąd połączenia z serwerem.');
     } finally {
       setIsSubmitting(false);
     }
