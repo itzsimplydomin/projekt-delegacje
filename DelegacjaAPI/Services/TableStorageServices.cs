@@ -30,7 +30,7 @@ namespace DelegacjaAPI.Services
                     PartitionKey = entity.PartitionKey,
                     RowKey = entity.RowKey,
 
-                    PracownikID = Convert.ToInt32(entity["PracownikID"]),
+                    UserEmail = entity["UserEmail"]?.ToString() ?? "",
                     PracownikImie = entity["PracownikImie"]?.ToString() ?? "",
                     PracownikNazwisko = entity["PracownikNazwisko"]?.ToString() ?? "",
 
@@ -61,7 +61,7 @@ namespace DelegacjaAPI.Services
                 {
                     PartitionKey = response.Value.PartitionKey,
                     RowKey = response.Value.RowKey,
-                    PracownikID = Convert.ToInt32(response.Value["PracownikID"]),
+                    UserEmail = response.Value["UserEmail"]?.ToString() ?? "",
                     PracownikImie = response.Value["PracownikImie"]?.ToString() ?? "",
                     PracownikNazwisko = response.Value["PracownikNazwisko"]?.ToString() ?? "",
                     Miejsce = response.Value["Miejsce"]?.ToString() ?? "",
@@ -78,6 +78,18 @@ namespace DelegacjaAPI.Services
                 return null;
             }
         }
+        public async Task<List<Delegacja>> GetDelegacjeAsync(string userEmail, bool isAdmin)
+        {
+            var all = await GetAllDelegationsAsync();
+
+            if (isAdmin)
+                return all;
+
+            return all
+                .Where(d => d.UserEmail == userEmail)
+                .ToList();
+        }
+
 
         public async Task<string> AddDelegationAsync(Delegacja delegacja)
         {
@@ -85,7 +97,7 @@ namespace DelegacjaAPI.Services
 
             var entity = new TableEntity("delegacja", id)
             {
-                ["PracownikID"] = delegacja.PracownikID,
+                ["UserEmail"] = delegacja.UserEmail,
                 ["PracownikImie"] = delegacja.PracownikImie,
                 ["PracownikNazwisko"] = delegacja.PracownikNazwisko,
                 ["Miejsce"] = delegacja.Miejsce,
@@ -106,48 +118,21 @@ namespace DelegacjaAPI.Services
             await _tableClient.DeleteEntityAsync("delegacja", id);
         }
 
-        public async Task UpdateDelegationAsync(string id, Delegacja delegacja)
+        public async Task UpdateDelegationAsync(Delegacja delegacja)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentNullException("ID nie może być puste");
-            }
-            try
-            {
-                var response = await _tableClient.GetEntityAsync<TableEntity>("delegacja", id);
-                var existing = response.Value;
 
-                var updatedEntity = new TableEntity("delegacja", id)
+                var entity = new TableEntity("delegacja", delegacja.RowKey)
                 {
-                    ["PracownikID"] = Convert.ToInt32(existing["PracownikID"]),
-                    ["PracownikImie"] = existing["PracownikImie"]?.ToString() ?? "",
-                    ["PracownikNazwisko"] = existing["PracownikNazwisko"]?.ToString() ?? "",
-
-                    ["Miejsce"] = !string.IsNullOrEmpty(delegacja.Miejsce)
-                    ? delegacja.Miejsce
-                    : existing["Miejsce"]?.ToString() ?? "",
-
-                    ["DataRozpoczecia"] = delegacja.DataRozpoczecia != DateTime.MinValue
-                    ? delegacja.DataRozpoczecia
-                    : DateTime.Parse(existing["DataRozpoczecia"].ToString()),
-
-                    ["DataZakonczenia"] = delegacja.DataZakonczenia != DateTime.MinValue
-                    ? delegacja.DataZakonczenia
-                    : DateTime.Parse(existing["DataZakonczenia"].ToString()),
-
-                    ["Uwagi"] = delegacja.Uwagi ?? existing["Uwagi"]?.ToString() ?? ""
+                    ["UserEmail"] = delegacja.UserEmail,
+                    ["PracownikImie"] = delegacja.PracownikImie,
+                    ["PracownikNazwisko"] = delegacja.PracownikNazwisko,
+                    ["Miejsce"] = delegacja.Miejsce,
+                    ["DataRozpoczecia"] = delegacja.DataRozpoczecia,
+                    ["DataZakonczenia"] = delegacja.DataZakonczenia,
+                    ["Uwagi"] = delegacja.Uwagi ?? ""
                 };
-                await _tableClient.UpsertEntityAsync(updatedEntity);
 
-                }
-            catch (RequestFailedException ex) when (ex.Status == 404)
-            {
-                throw new KeyNotFoundException($"Delegacja {id} nie istnieje");
-            }
-
-
-
-
+                await _tableClient.UpdateEntityAsync(entity,ETag.All,TableUpdateMode.Replace);
         }
     }
 }

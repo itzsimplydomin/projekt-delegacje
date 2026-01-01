@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
+﻿using DelegacjaAPI.Services;
+using DelegacjaAPI.Models;
+using DelegacjaAPI.Models.DTO.Auth; 
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DelegacjaAPI.Controllers
 {
@@ -9,18 +15,106 @@ namespace DelegacjaAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        // GET: api/<AuthController>
+        private readonly UserServices _uzytkownikService;
+        private readonly IConfiguration _config;
 
-
-        // POST api/<AuthController>
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public AuthController(UserServices uzytkownikService, IConfiguration config)
         {
-            if (request.Email == "admin@artikon.pl" && request.Password == "test123")
-            {
-                return Ok(new { success = true, message = "Zalogowano pomyślnie" });
-            }
-            return Unauthorized(new { success = false, message = "Błędne dane!" });
+            _uzytkownikService = uzytkownikService;
+            _config = config;
         }
+
+
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+                    return BadRequest("Email i hasło są wymagane");
+
+                var existing = await _uzytkownikService.GetByEmailAsync(request.Email);
+                if (existing != null)
+                    return BadRequest("Użytkownik już istnieje");
+
+                string salt = PasswordHasher.GenerateSalt();
+                string hasloHash = PasswordHasher.HashPassword(request.Password, salt);
+
+                var uzytkownik = new Uzytkownik
+                {
+                    Email = request.Email,
+                    Imie = request.Imie,
+                    Nazwisko = request.Nazwisko,
+                    Rola = "User",
+                    Salt = salt,
+                    HashHaslo = hasloHash
+                };
+
+                await _uzytkownikService.CreateAsync(uzytkownik);
+
+                var response = new UserResponse
+                {
+                    Email = uzytkownik.Email,
+                    Imie = uzytkownik.Imie,
+                    Nazwisko = uzytkownik.Nazwisko
+                };
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Konto utworzone",
+                    user = response
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Wewnętrzny błąd");
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var uzytkownik = await _uzytkownikService.GetByEmailAsync(request.Email);
+            if (uzytkownik == null)
+                return Unauthorized("Błędny email lub hasło");
+
+            if (!PasswordHasher.VerifyPassword(
+                request.Password,
+                uzytkownik.Salt,
+                uzytkownik.HashHaslo))
+                return Unauthorized("Błędny email lub hasło");
+
+            var claims = new List<Claim>
+            {
+            new Claim(ClaimTypes.Name, uzytkownik.Email),
+            new Claim(ClaimTypes.Role, uzytkownik.Rola)
+            };
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_config["Jwt:Key"]!)
+            );
+
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(
+                    int.Parse(_config["Jwt:ExpireMinutes"]!)
+                ),
+                signingCredentials: new SigningCredentials(
+                    key, SecurityAlgorithms.HmacSha256
+                )
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(new
+            {
+                token = tokenString
+            });
+        }
+
     }
 }

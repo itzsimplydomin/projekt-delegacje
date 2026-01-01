@@ -4,29 +4,48 @@ using DelegacjaAPI.Models;
 using DelegacjaAPI.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Azure;
+using DelegacjaAPI.Models.DTO.Delegacja;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DelegacjaAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DelegacjeController : ControllerBase
     {
         private readonly TableStorageServices _tableService;
-
         public DelegacjeController(TableStorageServices tableService)
         {
             _tableService = tableService;
         }
-        [HttpGet] 
 
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var delegacje = await _tableService.GetAllDelegationsAsync();
-            return Ok(delegacje);
+            var email = User.Identity!.Name!;
+            var isAdmin = User.IsInRole("Admin");
+
+            var delegacje = await _tableService.GetDelegacjeAsync(email, isAdmin);
+
+            var response = delegacje.Select(d => new DelegacjaResponse
+            {
+                Id = d.RowKey,
+                UserEmail = d.UserEmail,
+                PracownikImie = d.PracownikImie,
+                PracownikNazwisko = d.PracownikNazwisko,
+                Miejsce = d.Miejsce,
+                DataRozpoczecia = d.DataRozpoczecia,
+                DataZakonczenia = d.DataZakonczenia,
+                Uwagi = d.Uwagi,
+                Timestamp = d.Timestamp
+            });
+
+            return Ok(response);
         }
 
-        [HttpGet("{id}")]
 
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             var delegacje = await _tableService.GetByIdDelegationAsync(id);
@@ -38,17 +57,25 @@ namespace DelegacjaAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Delegacja delegacja)
+        public async Task<IActionResult> Create([FromBody] DelegacjaCreateRequest request)
         {
             try
             {
-                Console.WriteLine($"Dodawanie delegacji: {delegacja.PracownikID}");
 
                 // sprawdzenie poprawności daty5
-                if (delegacja.DataRozpoczecia > delegacja.DataZakonczenia)
+                if (request.DataRozpoczecia > request.DataZakonczenia)
                 {
                     return BadRequest(new { message = "Data zakończenia delegacji musi być późniejsza niż data rozpoczęcia!" });
                 }
+                var delegacja = new Delegacja
+                {
+                    Miejsce = request.Miejsce,
+                    DataRozpoczecia = request.DataRozpoczecia,
+                    DataZakonczenia = request.DataZakonczenia,
+                    Uwagi = request.Uwagi,
+                    UserEmail = User.Identity!.Name!
+
+                };
 
                 // Zapisanie do Azure przez Service
                 var result = await _tableService.AddDelegationAsync(delegacja);
@@ -76,46 +103,42 @@ namespace DelegacjaAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            try
-            {
-                await _tableService.DeleteDelegationAsync(id);
+            var email = User.Identity!.Name!;
+            var isAdmin = User.IsInRole("Admin");
 
-                Console.WriteLine($"Delegacja została usunięta z ID : {id}");
-                return Ok(new
-                {
-                    success = true,
-                    message = "Delegacja została usunięta pomyślnie"
-                });
-            }
+            var delegacja = await _tableService.GetByIdDelegationAsync(id);
+            if (delegacja == null)
+                return NotFound();
 
-            catch (RequestFailedException ex) when (ex.Status == 404)
-            {
-                Console.WriteLine($"Delegacja z id: {id} nie istnieje");
-                return NotFound(new { success = false, message = "Delegacja nie istnieje" });
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Błąd usuwania {ex.Message}");
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Blad w usuwaniu delegacji"
-                });
-            }
+            if (!isAdmin && delegacja.UserEmail != email)
+                return Forbid();
+
+            await _tableService.DeleteDelegationAsync(id);
+            return Ok(new { success = true });
         }
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] Delegacja delegacja)
+        public async Task<IActionResult> Update(string id, [FromBody] DelegacjaUpdateRequest request)
         {
-            try
-            {
-                await _tableService.UpdateDelegationAsync(id, delegacja);
-                return Ok(); // dla testu
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, ex.Message); //testowe
-            }
-            
+            var email = User.Identity!.Name!;
+            var isAdmin = User.IsInRole("Admin");
+
+            var existing = await _tableService.GetByIdDelegationAsync(id);
+            if (existing == null)
+                return NotFound();
+
+
+            if (!isAdmin && existing.UserEmail != email)
+                return Forbid();
+
+            existing.Miejsce = request.Miejsce ?? existing.Miejsce;
+            existing.DataRozpoczecia = request.DataRozpoczecia ?? existing.DataRozpoczecia;
+            existing.DataZakonczenia = request.DataZakonczenia ?? existing.DataZakonczenia;
+            existing.Uwagi = request.Uwagi ?? existing.Uwagi;
+
+            await _tableService.UpdateDelegationAsync(existing);
+
+            return Ok(new { success = true });
         }
     }
 }
