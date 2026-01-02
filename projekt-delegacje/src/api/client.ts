@@ -8,13 +8,31 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
 
-// funkcja logowania
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+// funkcja logowania dodanie tokena
 export const login = async (
   payload: LoginRequest,
-): Promise<LoginResponse> => {
-  const { data } = await api.post<LoginResponse>('/api/Auth/login', payload);
-  return data;
+): Promise<{ success: boolean; message?: string }> => {
+  const { data } = await api.post<{ token: string }>(
+    '/api/Auth/login',
+    payload,
+  );
+
+  localStorage.setItem('token', data.token);
+
+  return {
+    success: true,
+    message: 'Zalogowano pomyślnie',
+  };
 };
 
 // pobranie listy delegacji

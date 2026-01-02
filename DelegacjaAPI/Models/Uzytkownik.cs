@@ -16,3 +16,6 @@
         public string Salt {  get; set; } = string.Empty ;
     }
 }
+
+// admin ma haslo admin123
+// reszta userów ma hasło password

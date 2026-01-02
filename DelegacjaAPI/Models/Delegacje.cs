@@ -13,7 +13,7 @@
         public string Miejsce { get; set; } = string.Empty;
         public DateTime DataRozpoczecia { get; set; }
         public DateTime DataZakonczenia { get; set; }
-        public string Uwagi { get; set; } = string.Empty;
+        public string Uwagi { get; set; } = "";
 
         public DateTimeOffset? Timestamp { get; set; }
 
