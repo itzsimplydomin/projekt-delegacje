@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Azure;
 using DelegacjaAPI.Models.DTO.Delegacja;
 using Microsoft.AspNetCore.Authorization;
+using QuestPDF.Fluent;
 
 namespace DelegacjaAPI.Controllers
 {
@@ -140,5 +141,30 @@ namespace DelegacjaAPI.Controllers
 
             return Ok(new { success = true });
         }
+        [HttpPost("{id}/pdf")]
+        public async Task<IActionResult> GeneratePdf(string id,[FromServices] BlobStorageService blobService)
+        {
+            var delegacja = await _tableService.GetByIdDelegationAsync(id);
+            if (delegacja == null)
+                return NotFound();
+
+            var email = User.Identity!.Name!;
+            var isAdmin = User.IsInRole("Admin");
+
+            if (!isAdmin && delegacja.UserEmail != email)
+                return Forbid();
+
+            var pdf = new Pdf.DelegacjaPdf(delegacja);
+            var pdfBytes = pdf.GeneratePdf();
+
+            var url = await blobService.UploadPdfAsync(pdfBytes, id);
+
+            return Ok(new
+            {
+                success = true,
+                pdfUrl = url
+            });
+        }
+
     }
 }

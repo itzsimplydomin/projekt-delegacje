@@ -2,6 +2,9 @@ using DelegacjaAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using QuestPDF.Infrastructure;
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +43,8 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<TableStorageServices>();
 builder.Services.AddScoped<UserServices>();
+builder.Services.AddScoped<BlobStorageService>();
+
 
 
 // konfiguracja CORS 
