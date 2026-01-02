@@ -34,11 +34,11 @@ export const Dashboard = () => {
             queryClient.invalidateQueries({ queryKey: ['delegacje'] });
             setSubmitMessage('Delegacja została dodana do kalendarza.');
             setSelectedRange({ start: null, end: null });
-            setFormState({ 
-                pracownikImie: '', 
-                pracownikNazwisko: '', 
-                pracownikID: '', 
-                miejsce: '', 
+            setFormState({
+                pracownikImie: '',
+                pracownikNazwisko: '',
+                pracownikID: '',
+                miejsce: '',
                 uwagi: '',
                 godzinaRozpoczecia: '08:00',
                 godzinaZakonczenia: '16:00',
@@ -61,12 +61,12 @@ export const Dashboard = () => {
                 // Konwersja dat z UTC na lokalną datę bez zmiany wartości dnia
                 const startDate = new Date(delegacja.dataRozpoczecia);
                 const endDate = new Date(delegacja.dataZakonczenia);
-                
+
                 // Normalizacja dat do początku dnia w lokalnej strefie czasowej
                 const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate());
                 const delegationStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
                 const delegationEnd = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-                
+
                 return isWithinInterval(dayStart, {
                     start: delegationStart,
                     end: delegationEnd,
@@ -248,7 +248,7 @@ export const Dashboard = () => {
                                 <li>
                                     <span>Od</span>
                                     <strong>
-                                        {selectedRange.start 
+                                        {selectedRange.start
                                             ? `${format(selectedRange.start, 'dd.MM.yyyy')} ${formState.godzinaRozpoczecia}`
                                             : '—'}
                                     </strong>
@@ -256,7 +256,7 @@ export const Dashboard = () => {
                                 <li>
                                     <span>Do</span>
                                     <strong>
-                                        {selectedRange.end 
+                                        {selectedRange.end
                                             ? `${format(selectedRange.end, 'dd.MM.yyyy')} ${formState.godzinaZakonczenia}`
                                             : '—'}
                                     </strong>
@@ -291,6 +291,8 @@ export const Dashboard = () => {
                             </div>
 
                             <div className="form-grid">
+                                {/* Pracownik Details 
+                                
                                 <label>
                                     Imię pracownika
                                     <input
@@ -324,6 +326,8 @@ export const Dashboard = () => {
                                         required
                                     />
                                 </label>
+                                */}
+
                                 <label>
                                     Miejsce delegacji
                                     <input
