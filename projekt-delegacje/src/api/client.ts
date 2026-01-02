@@ -3,14 +3,17 @@ import type { Delegacja, DelegacjaCreate, LoginRequest, LoginResponse } from './
 
 // Bazowy klient HTTP dla całej aplikacji
 export const api = axios.create({
-  baseURL: 'https://localhost:7244', // adres Twojego backendu ASP.NET
+  baseURL: 'https://delegacjeartikon-ebfdgjgwesagfzha.polandcentral-01.azurewebsites.net', // adres Twojego backendu ASP.NET
   headers: {
     'Content-Type': 'application/json',
   },
 });
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  if (config.url?.includes('/api/Auth/login')) {
+    return config;
+  }
 
+  const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -18,13 +21,14 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+
 // funkcja logowania dodanie tokena
-export const login = async (
-  payload: LoginRequest,
-): Promise<{ success: boolean; message?: string }> => {
+export const login = async (payload: LoginRequest) => {
+  localStorage.removeItem('token'); 
+
   const { data } = await api.post<{ token: string }>(
     '/api/Auth/login',
-    payload,
+    payload
   );
 
   localStorage.setItem('token', data.token);
@@ -34,6 +38,7 @@ export const login = async (
     message: 'Zalogowano pomyślnie',
   };
 };
+
 
 // pobranie listy delegacji
 export const getDelegacje = async (): Promise<Delegacja[]> => {
