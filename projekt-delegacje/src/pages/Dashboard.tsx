@@ -7,8 +7,11 @@ import { createDelegacja } from '../api/client';
 import { useMemo, useState } from 'react';
 import type { DelegacjaCreate } from '../api/types';
 import logo from '/src/img/logoArtikon.png';
+import { useNavigate } from 'react-router-dom';
 
 export const Dashboard = () => {
+    
+    const navigate = useNavigate();
     const { data: delegacje = [], isLoading, isError } = useDelegacje();
     const queryClient = useQueryClient();
     const [menuOpen, setMenuOpen] = useState(false);
@@ -136,6 +139,8 @@ export const Dashboard = () => {
         return <p>Nie udało się załadować strony.</p>;
     }
 
+
+
     return (
         <div className="dashboard-wrapper">
             <header className="dark-header">
@@ -157,9 +162,8 @@ export const Dashboard = () => {
                         role="navigation"
                         aria-label="Menu główne"
                     >
-                        <a href="#kalendarz">Kalendarz</a>
-                        <a href="#delegacje">Delegacje</a>
-                        <a href="#ustawienia">Ustawienia</a>
+                        <button onClick={() => navigate('/delegacje')} style={{ background: 'none', border: 'none', color: 'var(--white)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(0.8rem, 2vw, 0.9em)', cursor: 'pointer', transition: 'color 0.3s ease' }}>Kalendarz</button>
+                        <button onClick={() => navigate('/delegacje/lista')} style={{ background: 'none', border: 'none', color: 'var(--white)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(0.8rem, 2vw, 0.9em)', cursor: 'pointer', transition: 'color 0.3s ease' }}>Delegacje</button>
                     </nav>
                 </div>
             </header>
