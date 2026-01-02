@@ -45,3 +45,24 @@ export const getDelegacje = async (): Promise<Delegacja[]> => {
 export const createDelegacja = async (payload: DelegacjaCreate): Promise<void> => {
   await api.post('/api/Delegacje', payload);
 };
+
+// usunięcie delegacji
+export const deleteDelegacja = async (id: string): Promise<void> => {
+  await api.delete(`/api/Delegacje/${id}`);
+};
+
+// edycja delegacji
+export const updateDelegacja = async (
+  id: string,
+  payload: Partial<DelegacjaCreate>
+): Promise<void> => {
+  await api.put(`/api/Delegacje/${id}`, payload);
+};
+
+// generowanie PDF
+export const generatePdf = async (id: string): Promise<{ pdfUrl: string }> => {
+  const { data } = await api.post<{ success: boolean; pdfUrl: string }>(
+    `/api/Delegacje/${id}/pdf`
+  );
+  return data;
+};

@@ -10,7 +10,7 @@ import logo from '/src/img/logoArtikon.png';
 import { useNavigate } from 'react-router-dom';
 
 export const Dashboard = () => {
-    
+
     const navigate = useNavigate();
     const { data: delegacje = [], isLoading, isError } = useDelegacje();
     const queryClient = useQueryClient();
@@ -21,9 +21,6 @@ export const Dashboard = () => {
         end: null,
     });
     const [formState, setFormState] = useState({
-        pracownikImie: '',
-        pracownikNazwisko: '',
-        pracownikID: '',
         miejsce: '',
         uwagi: '',
         godzinaRozpoczecia: '08:00',
@@ -38,9 +35,6 @@ export const Dashboard = () => {
             setSubmitMessage('Delegacja została dodana do kalendarza.');
             setSelectedRange({ start: null, end: null });
             setFormState({
-                pracownikImie: '',
-                pracownikNazwisko: '',
-                pracownikID: '',
                 miejsce: '',
                 uwagi: '',
                 godzinaRozpoczecia: '08:00',
@@ -112,11 +106,6 @@ export const Dashboard = () => {
         endDateTime.setHours(endHour, endMinute, 0, 0);
 
         const payload: DelegacjaCreate = {
-            partitionKey: 'delegacja',
-            rowKey: '',
-            pracownikImie: formState.pracownikImie,
-            pracownikNazwisko: formState.pracownikNazwisko,
-            pracownikID: Number(formState.pracownikID),
             miejsce: formState.miejsce,
             dataRozpoczecia: startDateTime.toISOString(),
             dataZakonczenia: endDateTime.toISOString(),
@@ -295,43 +284,6 @@ export const Dashboard = () => {
                             </div>
 
                             <div className="form-grid">
-                                {/* Pracownik Details 
-                                
-                                <label>
-                                    Imię pracownika
-                                    <input
-                                        type="text"
-                                        name="pracownikImie"
-                                        value={formState.pracownikImie}
-                                        onChange={handleInputChange}
-                                        placeholder="np. Jan"
-                                        required
-                                    />
-                                </label>
-                                <label>
-                                    Nazwisko pracownika
-                                    <input
-                                        type="text"
-                                        name="pracownikNazwisko"
-                                        value={formState.pracownikNazwisko}
-                                        onChange={handleInputChange}
-                                        placeholder="np. Kowalski"
-                                        required
-                                    />
-                                </label>
-                                <label>
-                                    ID pracownika
-                                    <input
-                                        type="number"
-                                        name="pracownikID"
-                                        value={formState.pracownikID}
-                                        onChange={handleInputChange}
-                                        placeholder="np. 1024"
-                                        required
-                                    />
-                                </label>
-                                */}
-
                                 <label>
                                     Miejsce delegacji
                                     <input

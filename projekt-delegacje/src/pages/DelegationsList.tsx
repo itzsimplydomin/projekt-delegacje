@@ -1,11 +1,11 @@
 import '/src/styles/App.css';
 import '/src/styles/DelegationsList.css';
 import '/src/styles/Dashboard.css';
-import { useDelegacje } from '../api/hooks'
+import { useDelegacje, useDeleteDelegacja, useUpdateDelegacja, useGeneratePdf } from '../api/hooks';
 import { useNavigate } from 'react-router-dom';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import logo from '/src/img/logoArtikon.png';
-
+import type { Delegacja, DelegacjaCreate } from '../api/types';
 
 const formatDateRange = (start?: string, end?: string) => {
     if (!start || !end) {
@@ -36,23 +36,102 @@ const formatDateRange = (start?: string, end?: string) => {
 export const DelegationsList = () => {
     const navigate = useNavigate();
     const { data: delegacje = [], isLoading, isError } = useDelegacje();
+    const deleteMutation = useDeleteDelegacja();
+    const updateMutation = useUpdateDelegacja();
+    const generatePdfMutation = useGeneratePdf();
+
     const [menuOpen, setMenuOpen] = useState(false);
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editForm, setEditForm] = useState<Partial<DelegacjaCreate>>({});
+    const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+    const handleDelete = async (id: string) => {
+        if (!window.confirm('Czy na pewno chcesz usunąć tę delegację?')) return;
+
+        setActionMessage(null);
+        try {
+            await deleteMutation.mutateAsync(id);
+            setActionMessage({ type: 'success', text: 'Delegacja została usunięta' });
+            setTimeout(() => setActionMessage(null), 3000);
+        } catch (error) {
+            setActionMessage({ type: 'error', text: 'Nie udało się usunąć delegacji' });
+        }
+    };
+
+    const handleEdit = (delegacja: Delegacja) => {
+        setEditingId(delegacja.id);
+        setEditForm({
+            miejsce: delegacja.miejsce,
+            dataRozpoczecia: delegacja.dataRozpoczecia,
+            dataZakonczenia: delegacja.dataZakonczenia,
+            uwagi: delegacja.uwagi || '',
+        });
+        setActionMessage(null);
+    };
+
+    const handleCancelEdit = () => {
+        setEditingId(null);
+        setEditForm({});
+    };
+
+    const handleSaveEdit = async (id: string) => {
+        setActionMessage(null);
+        try {
+            await updateMutation.mutateAsync({ id, payload: editForm });
+            setEditingId(null);
+            setEditForm({});
+            setActionMessage({ type: 'success', text: 'Delegacja została zaktualizowana' });
+            setTimeout(() => setActionMessage(null), 3000);
+        } catch (error) {
+            setActionMessage({ type: 'error', text: 'Nie udało się zaktualizować delegacji' });
+        }
+    };
+
+    const handleGeneratePdf = async (id: string) => {
+        setActionMessage(null);
+        try {
+            const result = await generatePdfMutation.mutateAsync(id);
+            window.open(result.pdfUrl, '_blank');
+            setActionMessage({ type: 'success', text: 'PDF wygenerowany pomyślnie' });
+            setTimeout(() => setActionMessage(null), 3000);
+        } catch (error) {
+            setActionMessage({ type: 'error', text: 'Nie udało się wygenerować PDF' });
+        }
+    };
 
     if (isLoading) {
         return (
-            <section className="delegations-list" aria-busy="true">
-                <p className="delegations-status">Ładowanie delegacji...</p>
-            </section>
+            <div className="dashboard-wrapper">
+                <header className="dark-header">
+                    <div className="nav-center">
+                        <div className="logo">
+                            <img src={logo} alt="Logo Artikon" loading="lazy" />
+                        </div>
+                    </div>
+                </header>
+                <div className="dashboard-main">
+                    <p className="delegations-status">Ładowanie delegacji...</p>
+                </div>
+            </div>
         );
     }
 
     if (isError) {
         return (
-            <section className="delegations-list">
-                <p className="delegations-status delegations-status-error">
-                    Nie udało się pobrać delegacji. Spróbuj ponownie później.
-                </p>
-            </section>
+            <div className="dashboard-wrapper">
+                <header className="dark-header">
+                    <div className="nav-center">
+                        <div className="logo">
+                            <img src={logo} alt="Logo Artikon" loading="lazy" />
+                        </div>
+                    </div>
+                </header>
+                <div className="dashboard-main">
+                    <p className="delegations-status delegations-status-error">
+                        Nie udało się pobrać delegacji. Spróbuj ponownie później.
+                    </p>
+                </div>
+            </div>
         );
     }
 
@@ -83,66 +162,144 @@ export const DelegationsList = () => {
                 </div>
             </header>
 
-            <section className="delegations-list">
-                <header className="delegations-header">
+            <main className="dashboard-main">
+                <section className="hero-card">
                     <div>
-                        <p className="delegations-eyebrow">Panel delegacji</p>
                         <h1>Lista delegacji</h1>
-                        <p className="delegations-subtitle">
-                            Przeglądaj delegacje zapisane w systemie.
+                        <p className="subtitle">
+                            Przeglądaj, edytuj i zarządzaj delegacjami zapisanymi w systemie.
                         </p>
                     </div>
-                    <div className="delegations-summary">
-                        <span className="delegations-summary-label">Wszystkich delegacji</span>
-                        <span className="delegations-summary-value">{delegacje.length}</span>
+                    <div className="hero-meta">
+                        <p className="metric-label">Wszystkich delegacji</p>
+                        <p className="metric-value">{delegacje.length}</p>
                     </div>
-                </header>
+                </section>
+
+                {actionMessage && (
+                    <div className={`action-message ${actionMessage.type}`}>
+                        {actionMessage.text}
+                    </div>
+                )}
 
                 {delegacje.length === 0 ? (
-                    <p className="delegations-status">Brak zapisanych delegacji.</p>
+                    <div className="empty-state">
+                        <p>Brak zapisanych delegacji.</p>
+                        <button className="primary" onClick={() => navigate('/delegacje')}>
+                            Dodaj pierwszą delegację
+                        </button>
+                    </div>
                 ) : (
                     <div className="delegations-grid" role="list">
                         {delegacje.map((delegacja) => (
                             <article
                                 className="delegations-card"
-                                key={`${delegacja.partitionKey}-${delegacja.rowKey}`}
+                                key={delegacja.id}
                                 role="listitem"
                             >
-                                <header>
-                                    <p className="delegations-card-title">
-                                        {delegacja.pracownikImie} {delegacja.pracownikNazwisko}
-                                    </p>
-                                    <p className="delegations-card-meta">
-                                        ID pracownika: {delegacja.pracownikID}
-                                    </p>
-                                </header>
+                                {editingId === delegacja.id ? (
+                                    // Tryb edycji
+                                    <div className="edit-mode">
+                                        <div className="form-grid">
+                                            <label>
+                                                Miejsce
+                                                <input
+                                                    type="text"
+                                                    value={editForm.miejsce || ''}
+                                                    onChange={(e) => setEditForm({ ...editForm, miejsce: e.target.value })}
+                                                />
+                                            </label>
+                                            <label>
+                                                Data rozpoczęcia
+                                                <input
+                                                    type="datetime-local"
+                                                    value={editForm.dataRozpoczecia ? new Date(editForm.dataRozpoczecia).toISOString().slice(0, 16) : ''}
+                                                    onChange={(e) => setEditForm({ ...editForm, dataRozpoczecia: new Date(e.target.value).toISOString() })}
+                                                />
+                                            </label>
+                                            <label>
+                                                Data zakończenia
+                                                <input
+                                                    type="datetime-local"
+                                                    value={editForm.dataZakonczenia ? new Date(editForm.dataZakonczenia).toISOString().slice(0, 16) : ''}
+                                                    onChange={(e) => setEditForm({ ...editForm, dataZakonczenia: new Date(e.target.value).toISOString() })}
+                                                />
+                                            </label>
+                                            <label className="full-width">
+                                                Uwagi
+                                                <textarea
+                                                    value={editForm.uwagi || ''}
+                                                    onChange={(e) => setEditForm({ ...editForm, uwagi: e.target.value })}
+                                                    rows={3}
+                                                />
+                                            </label>
+                                        </div>
+                                        <div className="card-actions">
+                                            <button className="primary" onClick={() => handleSaveEdit(delegacja.id)}>
+                                                Zapisz
+                                            </button>
+                                            <button className="secondary" onClick={handleCancelEdit}>
+                                                Anuluj
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    // Tryb wyświetlania
+                                    <>
+                                        <header className="card-header">
+                                            <div>
+                                                <p className="card-title">{delegacja.miejsce}</p>
+                                                <p className="card-meta">
+                                                    {delegacja.userEmail}
+                                                </p>
+                                            </div>
+                                        </header>
 
-                                <div className="delegations-card-body">
-                                    <div>
-                                        <span className="delegations-card-label">Miejsce</span>
-                                        <p>{delegacja.miejsce}</p>
-                                    </div>
-                                    <div>
-                                        <span className="delegations-card-label">Termin</span>
-                                        <p>{formatDateRange(delegacja.dataRozpoczecia, delegacja.dataZakonczenia)}</p>
-                                    </div>
-                                </div>
+                                        <div className="card-body">
+                                            <div className="card-row">
+                                                <span className="card-label">Termin</span>
+                                                <p>{formatDateRange(delegacja.dataRozpoczecia, delegacja.dataZakonczenia)}</p>
+                                            </div>
+                                            {delegacja.uwagi && (
+                                                <div className="card-row">
+                                                    <span className="card-label">Uwagi</span>
+                                                    <p>{delegacja.uwagi}</p>
+                                                </div>
+                                            )}
+                                        </div>
 
-                                {delegacja.uwagi && (
-                                    <div className="delegations-card-footer">
-                                        <span className="delegations-card-label">Uwagi</span>
-                                        <p>{delegacja.uwagi}</p>
-                                    </div>
+                                        <div className="card-actions">
+                                            <button
+                                                className="action-btn edit-btn"
+                                                onClick={() => handleEdit(delegacja)}
+                                                title="Edytuj delegację"
+                                            >
+                                                ✏️ Edytuj
+                                            </button>
+                                            <button
+                                                className="action-btn pdf-btn"
+                                                onClick={() => handleGeneratePdf(delegacja.id)}
+                                                title="Generuj PDF"
+                                            >
+                                                📄 PDF
+                                            </button>
+                                            <button
+                                                className="action-btn delete-btn"
+                                                onClick={() => handleDelete(delegacja.id)}
+                                                title="Usuń delegację"
+                                            >
+                                                🗑️ Usuń
+                                            </button>
+                                        </div>
+                                    </>
                                 )}
                             </article>
                         ))}
                     </div>
                 )}
-            </section>
-
+            </main>
         </div>
     );
 };
-
 
 export default DelegationsList;

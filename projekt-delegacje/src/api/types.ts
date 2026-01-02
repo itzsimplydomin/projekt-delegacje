@@ -10,28 +10,31 @@ export interface LoginResponse {
   message?: string;
 }
 
-// model delegacji - zgodny z klasą Delegacja z backendu
+// model delegacji 
 export interface Delegacja {
-  partitionKey: string;
-  rowKey: string;
+  id: string; // RowKey z Azure
+  userEmail: string;
   pracownikImie: string;
   pracownikNazwisko: string;
   miejsce: string;
-  pracownikID: number;
   dataRozpoczecia: string;
   dataZakonczenia: string;
   uwagi?: string;
   timestamp?: string | null;
 }
 
+// Request do tworzenia delegacji 
 export interface DelegacjaCreate {
-  partitionKey: string;
-  rowKey: string;
-  pracownikImie: string;
-  pracownikNazwisko: string;
   miejsce: string;
-  pracownikID: number;
   dataRozpoczecia: string;
   dataZakonczenia: string;
+  uwagi?: string;
+}
+
+// Request do aktualizacji delegacji 
+export interface DelegacjaUpdate {
+  miejsce?: string;
+  dataRozpoczecia?: string;
+  dataZakonczenia?: string;
   uwagi?: string;
 }
