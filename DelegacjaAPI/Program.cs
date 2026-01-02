@@ -50,15 +50,15 @@ builder.Services.AddScoped<BlobStorageService>();
 // konfiguracja CORS 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("FrontendClient", policy =>
+    options.AddDefaultPolicy(policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173") // adres frontendu Vite
+            .AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod();
-        
     });
 });
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
@@ -85,17 +85,18 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Delegacje API v1");
+    c.RoutePrefix = string.Empty; 
+});
+
 
 app.UseHttpsRedirection();
 
 // u¿ycie polityki CORS
-app.UseCors("FrontendClient");
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
