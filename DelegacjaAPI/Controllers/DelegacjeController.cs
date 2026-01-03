@@ -7,6 +7,7 @@ using Azure;
 using DelegacjaAPI.Models.DTO.Delegacja;
 using Microsoft.AspNetCore.Authorization;
 using QuestPDF.Fluent;
+using DelegacjaAPI.Pdf;
 
 namespace DelegacjaAPI.Controllers
 {
@@ -148,23 +149,25 @@ namespace DelegacjaAPI.Controllers
             if (delegacja == null)
                 return NotFound();
 
-            var email = User.Identity!.Name!;
-            var isAdmin = User.IsInRole("Admin");
+            var document = new DelegacjaPdf(delegacja);
 
-            if (!isAdmin && delegacja.UserEmail != email)
-                return Forbid();
-
-            var pdf = new Pdf.DelegacjaPdf(delegacja);
-            var pdfBytes = pdf.GeneratePdf();
-
-            var url = await blobService.UploadPdfAsync(pdfBytes, id);
-
-            return Ok(new
+            byte[] pdfBytes;
+            using (var stream = new MemoryStream())
             {
-                success = true,
-                pdfUrl = url
-            });
+                document.GeneratePdf(stream);
+                pdfBytes = stream.ToArray();
+            }
+
+            // zapis do Azure Blob
+            await blobService.UploadPdfAsync(pdfBytes, id);
+
+            return File(
+                pdfBytes,
+                "application/pdf",
+                $"delegacja-{id}.pdf"
+            );
         }
+
 
     }
 }

@@ -29,8 +29,8 @@ namespace DelegacjaAPI.Pdf
 
                     col.Item().Text($"Email: {_d.UserEmail}");
                     col.Item().Text($"Miejsce: {_d.Miejsce}");
-                    col.Item().Text($"Od: {_d.DataRozpoczecia:yyyy-MM-dd}");
-                    col.Item().Text($"Do: {_d.DataZakonczenia:yyyy-MM-dd}");
+                    col.Item().Text($"Od: {_d.DataRozpoczecia:yyyy-MM-dd HH:mm}");
+                    col.Item().Text($"Do: {_d.DataZakonczenia:yyyy-MM-dd HH:mm}");
                     col.Item().Text($"Uwagi: {_d.Uwagi}");
                 });
             });

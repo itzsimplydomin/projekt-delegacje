@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Delegacja, DelegacjaCreate, LoginRequest, LoginResponse } from './types';
+import type { Delegacja, DelegacjaCreate, LoginRequest} from './types';
 
 // Bazowy klient HTTP dla całej aplikacji
 export const api = axios.create({
@@ -65,9 +65,22 @@ export const updateDelegacja = async (
 };
 
 // generowanie PDF
-export const generatePdf = async (id: string): Promise<{ pdfUrl: string }> => {
-  const { data } = await api.post<{ success: boolean; pdfUrl: string }>(
-    `/api/Delegacje/${id}/pdf`
+export const generatePdf = async (id: string) => {
+  const response = await api.post(
+    `/api/Delegacje/${id}/pdf`,
+    null,
+    { responseType: 'blob' } 
   );
-  return data;
+
+  const blob = new Blob([response.data], { type: 'application/pdf' });
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `delegacja-${id}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+
+  a.remove();
+  window.URL.revokeObjectURL(url);
 };

@@ -33,10 +33,9 @@ namespace DelegacjaAPI.Services
                     UserEmail = entity["UserEmail"]?.ToString() ?? "",
                     PracownikImie = entity["PracownikImie"]?.ToString() ?? "",
                     PracownikNazwisko = entity["PracownikNazwisko"]?.ToString() ?? "",
-
                     Miejsce = entity["Miejsce"]?.ToString() ?? "",
-                    DataRozpoczecia = DateTime.Parse(entity["DataRozpoczecia"].ToString()),
-                    DataZakonczenia = DateTime.Parse(entity["DataZakonczenia"].ToString()),
+                    DataRozpoczecia = DateTime.SpecifyKind(DateTime.Parse(entity["DataRozpoczecia"].ToString()),DateTimeKind.Utc),
+                    DataZakonczenia = DateTime.SpecifyKind(DateTime.Parse(entity["DataZakonczenia"].ToString()),DateTimeKind.Utc),
                     Uwagi = entity["Uwagi"]?.ToString() ?? "",
 
                     Timestamp = entity.Timestamp
@@ -65,8 +64,8 @@ namespace DelegacjaAPI.Services
                     PracownikImie = response.Value["PracownikImie"]?.ToString() ?? "",
                     PracownikNazwisko = response.Value["PracownikNazwisko"]?.ToString() ?? "",
                     Miejsce = response.Value["Miejsce"]?.ToString() ?? "",
-                    DataRozpoczecia = DateTime.Parse(response.Value["DataRozpoczecia"].ToString()),
-                    DataZakonczenia = DateTime.Parse(response.Value["DataZakonczenia"].ToString()),
+                    DataRozpoczecia = DateTime.SpecifyKind(DateTime.Parse(response.Value["DataRozpoczecia"].ToString()),DateTimeKind.Utc),
+                    DataZakonczenia = DateTime.SpecifyKind(DateTime.Parse(response.Value["DataZakonczenia"].ToString()),DateTimeKind.Utc),
                     Uwagi = response.Value["Uwagi"]?.ToString() ?? "",
                     Timestamp = response.Value.Timestamp
 
@@ -101,8 +100,8 @@ namespace DelegacjaAPI.Services
                 ["PracownikImie"] = delegacja.PracownikImie,
                 ["PracownikNazwisko"] = delegacja.PracownikNazwisko,
                 ["Miejsce"] = delegacja.Miejsce,
-                ["DataRozpoczecia"] = delegacja.DataRozpoczecia,
-                ["DataZakonczenia"] = delegacja.DataZakonczenia,
+                ["DataRozpoczecia"] = DateTime.SpecifyKind(delegacja.DataRozpoczecia, DateTimeKind.Utc),
+                ["DataZakonczenia"] = DateTime.SpecifyKind(delegacja.DataZakonczenia, DateTimeKind.Utc),
                 ["Uwagi"] = delegacja.Uwagi ?? "",
             };
 
@@ -127,8 +126,8 @@ namespace DelegacjaAPI.Services
                     ["PracownikImie"] = delegacja.PracownikImie,
                     ["PracownikNazwisko"] = delegacja.PracownikNazwisko,
                     ["Miejsce"] = delegacja.Miejsce,
-                    ["DataRozpoczecia"] = delegacja.DataRozpoczecia,
-                    ["DataZakonczenia"] = delegacja.DataZakonczenia,
+                    ["DataRozpoczecia"] = DateTime.SpecifyKind(delegacja.DataRozpoczecia, DateTimeKind.Utc),
+                    ["DataZakonczenia"] = DateTime.SpecifyKind(delegacja.DataZakonczenia, DateTimeKind.Utc),
                     ["Uwagi"] = delegacja.Uwagi ?? ""
                 };
 

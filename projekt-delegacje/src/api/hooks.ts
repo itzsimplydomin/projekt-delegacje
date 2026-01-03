@@ -1,6 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getDelegacje, deleteDelegacja, updateDelegacja, generatePdf } from './client';
+import { getDelegacje, deleteDelegacja, updateDelegacja} from './client';
 import type { Delegacja, DelegacjaCreate } from './types';
+import { api } from './client';
+
 
 // istniejacy hook do pobierania delegacji
 export const useDelegacje = () => {
@@ -36,6 +38,13 @@ export const useUpdateDelegacja = () => {
 
 export const useGeneratePdf = () => {
   return useMutation({
-    mutationFn: generatePdf,
+    mutationFn: async (id: string) => {
+      const response = await api.post(
+        `/api/Delegacje/${id}/pdf`,
+        null,
+        { responseType: 'blob' }
+      );
+      return response.data as Blob;
+    },
   });
 };

@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace DelegacjaAPI.Services
 {
@@ -8,24 +9,28 @@ namespace DelegacjaAPI.Services
 
         public BlobStorageService(IConfiguration config)
         {
-            var connectionString = config["AzureBlobStorage:ConnectionString"];
-            var containerName = config["AzureBlobStorage:ContainerName"];
+            var connectionString = config["AzureBlobStorage"];
+            var blobServiceClient = new BlobServiceClient(connectionString);
 
-            var blobService = new BlobServiceClient(connectionString);
-            _container = blobService.GetBlobContainerClient(containerName);
+            _container = blobServiceClient.GetBlobContainerClient("delegacje-pdf");
+            _container.CreateIfNotExists();
         }
 
-        public async Task<string> UploadPdfAsync(
-            byte[] pdfBytes,
-            string delegacjaId)
+        public async Task UploadPdfAsync(byte[] pdfBytes, string delegacjaId)
         {
-            var blobName = $"{delegacjaId}/delegacja.pdf";
-            var blob = _container.GetBlobClient(blobName);
+            var blob = _container.GetBlobClient($"{delegacjaId}.pdf");
 
             using var stream = new MemoryStream(pdfBytes);
+
             await blob.UploadAsync(stream, overwrite: true);
 
-            return blob.Uri.ToString();
+            await blob.SetHttpHeadersAsync(new BlobHttpHeaders
+            {
+                ContentType = "application/pdf"
+            });
         }
+
     }
+
+
 }

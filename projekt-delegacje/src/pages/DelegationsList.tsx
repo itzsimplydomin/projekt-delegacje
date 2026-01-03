@@ -57,6 +57,40 @@ export const DelegationsList = () => {
             setActionMessage({ type: 'error', text: 'Nie udało się usunąć delegacji' });
         }
     };
+    const handleGeneratePdf = async (id: string) => {
+  setActionMessage(null);
+
+  try {
+    const pdfBlob = await generatePdfMutation.mutateAsync(id);
+
+    const url = window.URL.createObjectURL(
+      new Blob([pdfBlob], { type: 'application/pdf' })
+    );
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `delegacja-${id}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+
+    a.remove();
+    window.URL.revokeObjectURL(url);
+
+    setActionMessage({
+      type: 'success',
+      text: 'PDF wygenerowany i pobrany',
+    });
+
+    setTimeout(() => setActionMessage(null), 3000);
+  } catch (error) {
+    console.error(error);
+    setActionMessage({
+      type: 'error',
+      text: 'Nie udało się wygenerować PDF',
+    });
+  }
+};
+
 
     const handleEdit = (delegacja: Delegacja) => {
         setEditingId(delegacja.id);
@@ -84,18 +118,6 @@ export const DelegationsList = () => {
             setTimeout(() => setActionMessage(null), 3000);
         } catch (error) {
             setActionMessage({ type: 'error', text: 'Nie udało się zaktualizować delegacji' });
-        }
-    };
-
-    const handleGeneratePdf = async (id: string) => {
-        setActionMessage(null);
-        try {
-            const result = await generatePdfMutation.mutateAsync(id);
-            window.open(result.pdfUrl, '_blank');
-            setActionMessage({ type: 'success', text: 'PDF wygenerowany pomyślnie' });
-            setTimeout(() => setActionMessage(null), 3000);
-        } catch (error) {
-            setActionMessage({ type: 'error', text: 'Nie udało się wygenerować PDF' });
         }
     };
 
