@@ -28,6 +28,11 @@ export const Dashboard = () => {
     });
     const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
+    const toLocalISOString = (date: Date) => {
+        const tzOffset = date.getTimezoneOffset() * 60000;
+        return new Date(date.getTime() - tzOffset).toISOString().slice(0, 19);
+    };
+
     const mutation = useMutation({
         mutationFn: async (payload: DelegacjaCreate) => createDelegacja(payload),
         onSuccess: () => {
@@ -107,8 +112,8 @@ export const Dashboard = () => {
 
         const payload: DelegacjaCreate = {
             miejsce: formState.miejsce,
-            dataRozpoczecia: startDateTime.toISOString(),
-            dataZakonczenia: endDateTime.toISOString(),
+            dataRozpoczecia: toLocalISOString(startDateTime),
+            dataZakonczenia: toLocalISOString(endDateTime),
             uwagi: formState.uwagi,
         };
 
@@ -162,7 +167,7 @@ export const Dashboard = () => {
                     <div>
                         <h1>Planowanie delegacji</h1>
                         <p className="subtitle">
-                            Zaznacz na kalendarzu daty delegacji, uzupełnij szczegóły i wyślij do systemu.
+                            Zaznacz na kalendarzu daty delegacji i uzupełnij szczegóły.
                         </p>
                     </div>
                     <div className="hero-meta">

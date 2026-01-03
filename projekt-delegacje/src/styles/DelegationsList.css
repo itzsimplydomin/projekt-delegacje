@@ -1,24 +1,149 @@
-/* Wiadomości akcji */
-.action-message {
-    background: linear-gradient(135deg, rgba(10, 26, 58, 0.7), rgba(0, 46, 122, 0.5));
+/* Filtrowanie */
+.hero-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.hero-card > div:first-child {
+    flex: 1 1 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-meta {
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(200, 216, 235, 0.25);
     border-radius: clamp(12px, 3vw, 16px);
-    padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 2.5vw, 1.3rem);
+    padding: 0 clamp(1.2rem, 2vw, 1.5rem); 
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(18px);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 140px; 
+}
+
+/* Style tekstowe wewnątrz licznika */
+.metric-label {
+    margin: 0;
+    color: rgba(200, 216, 235, 0.7);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.metric-value {
+    margin: 0;
+    color: var(--white);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.month-filter {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(200, 216, 235, 0.25);
+    border-radius: clamp(12px, 3vw, 16px);
+    padding: clamp(0.8rem, 2vw, 1.1rem);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    height: auto;
+}
+
+.month-filter-label {
+    margin: 0;
+    color: rgba(200, 216, 235, 0.85);
+    font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+}
+
+/* Input spójny z resztą formularzy */
+.month-filter-input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(200, 216, 235, 0.35);
+    border-radius: clamp(8px, 2vw, 10px);
+    padding: 0.55rem 0.75rem;
+    color: var(--white);
     font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+    min-height: var(--touch-target);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.month-filter-input:focus {
+    outline: none;
+    border-color: var(--pale-blue);
+    box-shadow: 0 0 0 3px rgba(200, 216, 235, 0.2);
+}
+
+/* Ikonka kalendarza */
+.month-filter-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+    opacity: 0.85;
+}
+
+.month-filter-input::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* Przycisk wyczyść */
+.month-filter-clear {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(200, 216, 235, 0.35);
+    border-radius: clamp(8px, 2vw, 10px);
+    color: var(--white);
+    font-weight: 700;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    padding: 0.55rem 0.9rem;
+    cursor: pointer;
+    min-height: var(--touch-target);
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.month-filter-clear:hover,
+.month-filter-clear:active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--pale-blue);
+    box-shadow: 0 8px 24px rgba(200, 216, 235, 0.25);
+}
+
+/* Wiadomości akcji */
+.action-message {
+    background: transparent;
+    border: none;
+    padding: 0.4rem 0;
+    margin: 0.5rem 0 1rem;
+    box-shadow: none;
+    backdrop-filter: none;
+    font-size: 0.9rem;
     font-weight: 500;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+/* Sukces */
 .action-message.success {
-    border-color: rgba(52, 211, 153, 0.5);
     color: #34d399;
+    /* zielony jak statusy */
 }
 
+/* Błąd */
 .action-message.error {
-    border-color: rgba(239, 68, 68, 0.5);
-    color: #ef4444;
+    color: #fca5a5;
 }
 
 /* Stan pusty */
@@ -251,6 +376,22 @@
     border-top: none;
     padding-top: 0;
     margin-top: 0;
+    flex-direction: column;
+    gap: clamp(0.6rem, 1.5vw, 0.8rem);
+}
+
+.edit-mode .card-actions button {
+    width: 100%;
+}
+
+.edit-mode input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.edit-mode input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
 }
 
 /* Status wiadomość */
@@ -270,75 +411,113 @@
     color: #fca5a5;
 }
 
+.hero-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch; 
+    justify-content: space-between;
+    gap: clamp(1rem, 2vw, 1.5rem);
+}
+
 /* ============================================
-   RESPONSYWNOŚĆ
+   MOBILE OPTIMIZATION (iPhone / Android)
    ============================================ */
 
-/* Tablet - 768px to 1023px */
-@media (min-width: 768px) and (max-width: 1023px) {
-    .delegations-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+@media (max-width: 768px) {
+    .hero-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem; 
+        padding: 1rem; 
+        align-items: stretch;
     }
 
-    .edit-mode .form-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .hero-card > div:first-child {
+        grid-column: 1 / -1; 
+        text-align: center; 
+        margin-bottom: 0.2rem;
     }
 
-    .edit-mode .full-width {
-        grid-column: 1 / -1;
+    .hero-card h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
     }
-}
-
-/* Desktop - 1024px+ */
-@media (min-width: 1024px) {
-    .delegations-grid {
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    }
-
-    .edit-mode .form-grid {
-        grid-template-columns: repeat(2, 1fr);
+    
+    .hero-card .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
     }
 
-    .edit-mode .full-width {
-        grid-column: 1 / -1;
-    }
-
-    .action-btn:hover {
-        transform: translateY(-1px);
-    }
-}
-
-/* Mobile - 480px and down */
-@media (max-width: 480px) {
-    .delegations-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .card-actions {
+    .hero-meta {
+        grid-column: 1 / 2; 
+        width: 100%; 
+        min-width: 0;
+        padding: 0.8rem 0.5rem;
+        display: flex;
         flex-direction: column;
+        justify-content: center;
+        margin: 0; 
+        border-radius: 12px;
+    }
+    
+    .metric-value {
+        font-size: 1.8rem; 
     }
 
-    .action-btn {
+    .month-filter {
+        grid-column: 2 / 3; 
         width: 100%;
+        padding: 0.8rem 0.5rem;
+        flex-direction: column; 
+        justify-content: center;
+        gap: 0.4rem;
+        height: auto;
+        margin: 0;
+        border-radius: 12px;
     }
 
-    .edit-mode .card-actions {
-        flex-direction: row;
-        gap: clamp(0.5rem, 2vw, 0.6rem);
+    .month-filter-label {
+        font-size: 0.7rem;
+        text-align: center;
+        width: 100%;
+        margin: 0;
     }
 
-    .edit-mode .card-actions button {
-        flex: 1;
+    .month-filter-input {
+        width: 100%;
+        padding: 0.3rem 0.2rem;
+        font-size: 0.8rem;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 6px;
+        min-height: 32px; 
+    }
+
+    .month-filter-clear {
+        padding: 0.3rem;
+        font-size: 0.75rem;
+        width: 100%;
+        margin-top: 0.2rem;
+        min-height: 30px;
+    }
+
+    .delegations-grid {
+        grid-template-columns: 1fr; 
+        gap: 1rem;
+    }
+
+    .delegations-card {
+        padding: 1rem;
     }
 }
 
-/* Very small mobile - 375px and down */
-@media (max-width: 375px) {
-    .delegations-card {
-        padding: clamp(0.8rem, 2vw, 1rem);
+/* Fix dla bardzo małych ekranów  */
+@media (max-width: 360px) {
+    .hero-card {
+        grid-template-columns: 1fr; 
     }
-
-    .card-title {
-        font-size: clamp(0.95rem, 2vw, 1rem);
+    .hero-meta, .month-filter {
+        grid-column: 1 / -1;
     }
 }

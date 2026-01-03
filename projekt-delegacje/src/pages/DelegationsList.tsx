@@ -45,6 +45,28 @@ export const DelegationsList = () => {
     const [editForm, setEditForm] = useState<Partial<DelegacjaCreate>>({});
     const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+    const [monthFilter, setMonthFilter] = useState<string>(''); // format: "YYYY-MM" lub '' = wszystkie
+    const overlapsMonth = (startIso?: string, endIso?: string, yyyyMm?: string) => {
+        if (!startIso || !endIso || !yyyyMm) return true;
+
+        const [y, m] = yyyyMm.split('-').map(Number);
+        if (!y || !m) return true;
+
+        // zakres wybranego miesiąca (lokalnie)
+        const monthStart = new Date(y, m - 1, 1, 0, 0, 0, 0);
+        const monthEnd = new Date(y, m, 0, 23, 59, 59, 999); // ostatni dzień miesiąca
+
+        const start = new Date(startIso);
+        const end = new Date(endIso);
+
+        // delegacja pasuje jeśli przecina się z zakresem miesiąca
+        return start <= monthEnd && end >= monthStart;
+    };
+
+    const filteredDelegacje = delegacje.filter((d) =>
+        overlapsMonth(d.dataRozpoczecia, d.dataZakonczenia, monthFilter),
+    );
+
     const handleDelete = async (id: string) => {
         if (!window.confirm('Czy na pewno chcesz usunąć tę delegację?')) return;
 
@@ -194,8 +216,31 @@ export const DelegationsList = () => {
                     </div>
                     <div className="hero-meta">
                         <p className="metric-label">Wszystkich delegacji</p>
-                        <p className="metric-value">{delegacje.length}</p>
+                        <p className="metric-value">{filteredDelegacje.length}</p>
                     </div>
+                    <div className="month-filter">
+                        <label className="month-filter-label" htmlFor="monthFilter">
+                            Miesiąc
+                        </label>
+                        <input
+                            id="monthFilter"
+                            className="month-filter-input"
+                            type="month"
+                            value={monthFilter}
+                            onChange={(e) => setMonthFilter(e.target.value)}
+                        />
+                        {monthFilter && (
+                            <button
+                                type="button"
+                                className="month-filter-clear"
+                                onClick={() => setMonthFilter('')}
+                                title="Wyczyść filtr"
+                            >
+                                Wyczyść
+                            </button>
+                        )}
+                    </div>
+                    
                 </section>
 
                 {actionMessage && (
@@ -213,7 +258,7 @@ export const DelegationsList = () => {
                     </div>
                 ) : (
                     <div className="delegations-grid" role="list">
-                        {delegacje.map((delegacja) => (
+                        {filteredDelegacje.map((delegacja) => (
                             <article
                                 className="delegations-card"
                                 key={delegacja.id}
