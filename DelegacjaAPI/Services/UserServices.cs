@@ -19,16 +19,32 @@ namespace DelegacjaAPI.Services
         {
             try
             {
-                string normEmail = email.ToLower().Trim();
+                var normalizedEmail = email.ToLower().Trim();
 
-                var response = await _tableClient.GetEntityAsync<TableEntity>(partitionKey: "uzytkownik", rowKey: normEmail);
-                return MapToUzytkownik(response.Value);
+                var response = await _tableClient.GetEntityAsync<TableEntity>(
+                    "uzytkownik",
+                    normalizedEmail
+                );
+
+                return new Uzytkownik
+                {
+                    PartitionKey = response.Value.PartitionKey,
+                    RowKey = response.Value.RowKey,
+                    Email = response.Value["Email"]?.ToString() ?? "",
+                    Imie = response.Value["Imie"]?.ToString() ?? "",
+                    Nazwisko = response.Value["Nazwisko"]?.ToString() ?? "",
+                    Rola = response.Value["Rola"]?.ToString() ?? "User",
+                    HashHaslo = response.Value["HashHaslo"]?.ToString() ?? "",
+                    Salt = response.Value["Salt"]?.ToString() ?? ""
+                };
             }
             catch (RequestFailedException ex) when (ex.Status == 404)
             {
                 return null;
             }
         }
+
+
 
         public async Task CreateAsync(Uzytkownik user)
         {
@@ -64,5 +80,7 @@ namespace DelegacjaAPI.Services
             };
 
         }
+
     }
+
 }

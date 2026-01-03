@@ -17,10 +17,17 @@ namespace DelegacjaAPI.Controllers
     public class DelegacjeController : ControllerBase
     {
         private readonly TableStorageServices _tableService;
-        public DelegacjeController(TableStorageServices tableService)
+        private readonly UserServices _userService;
+
+        public DelegacjeController(
+            TableStorageServices tableService,
+            UserServices userService
+        )
         {
             _tableService = tableService;
+            _userService = userService;
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -61,46 +68,57 @@ namespace DelegacjaAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] DelegacjaCreateRequest request)
         {
-            try
+            var isAdmin = User.IsInRole("Admin");
+            var loggedEmail = User.Identity!.Name!;
+
+            if (request.DataRozpoczecia > request.DataZakonczenia)
+                return BadRequest("Niepoprawny zakres dat");
+
+            string email;
+            string imie;
+            string nazwisko;
+
+            if (isAdmin && !string.IsNullOrEmpty(request.UserEmail))
             {
+                // Admin moze komus stworzyc
+                var user = await _userService.GetByEmailAsync(request.UserEmail);
+                if (user == null)
+                    return BadRequest("Użytkownik nie istnieje");
 
-                // sprawdzenie poprawności daty5
-                if (request.DataRozpoczecia > request.DataZakonczenia)
-                {
-                    return BadRequest(new { message = "Data zakończenia delegacji musi być późniejsza niż data rozpoczęcia!" });
-                }
-                var delegacja = new Delegacja
-                {
-                    Miejsce = request.Miejsce,
-                    DataRozpoczecia = request.DataRozpoczecia,
-                    DataZakonczenia = request.DataZakonczenia,
-                    Uwagi = request.Uwagi,
-                    UserEmail = User.Identity!.Name!
-
-                };
-
-                // Zapisanie do Azure przez Service
-                var result = await _tableService.AddDelegationAsync(delegacja);
-
-                Console.WriteLine($"Delegacja dodana z ID: {result}");
-                return Ok(new
-                {
-                    success = true,
-                    message = "Delegacja dodana pomyślnie!",
-                    id = result
-                });
+                email = user.Email;
+                imie = user.Imie;
+                nazwisko = user.Nazwisko;
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine($"Błąd dodawania: {ex.Message}");
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Błąd podczas dodawania delegacji"
-                });
+                // user dla siebie 
+                var user = await _userService.GetByEmailAsync(loggedEmail);
+                if (user == null)
+                    return Unauthorized();
 
+                email = user.Email;
+                imie = user.Imie;
+                nazwisko = user.Nazwisko;
             }
+
+            var delegacja = new Delegacja
+            {
+                UserEmail = email,
+                PracownikImie = imie,
+                PracownikNazwisko = nazwisko,
+                Miejsce = request.Miejsce,
+                DataRozpoczecia = request.DataRozpoczecia,
+                DataZakonczenia = request.DataZakonczenia,
+                Uwagi = request.Uwagi
+            };
+
+            var id = await _tableService.AddDelegationAsync(delegacja);
+
+            return Ok(new { success = true, id });
         }
+
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)

@@ -37,7 +37,7 @@ namespace DelegacjaAPI.Services
                     DataRozpoczecia = DateTime.SpecifyKind(DateTime.Parse(entity["DataRozpoczecia"].ToString()),DateTimeKind.Utc),
                     DataZakonczenia = DateTime.SpecifyKind(DateTime.Parse(entity["DataZakonczenia"].ToString()),DateTimeKind.Utc),
                     Uwagi = entity["Uwagi"]?.ToString() ?? "",
-
+ 
                     Timestamp = entity.Timestamp
                 });
             }

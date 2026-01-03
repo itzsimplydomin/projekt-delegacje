@@ -25,7 +25,7 @@ namespace DelegacjaAPI.Controllers
         }
 
 
-
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -72,7 +72,7 @@ namespace DelegacjaAPI.Controllers
                 return StatusCode(500, "Wewnętrzny błąd");
             }
         }
-
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
