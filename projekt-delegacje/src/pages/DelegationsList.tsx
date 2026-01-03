@@ -12,6 +12,7 @@ const formatDateRange = (start?: string, end?: string) => {
         return 'Brak daty';
     }
 
+    // Parsuj jako UTC i konwertuj na lokalny czas bez zmiany wartości
     const startDate = new Date(start);
     const endDate = new Date(end);
 
@@ -19,18 +20,73 @@ const formatDateRange = (start?: string, end?: string) => {
         return 'Brak daty';
     }
 
-    const formattedStart = startDate.toLocaleDateString('pl-PL', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-    });
-    const formattedEnd = endDate.toLocaleDateString('pl-PL', {
+    // Pobierz składowe daty bezpośrednio z ISO string (UTC)
+    const startParts = start.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+    const endParts = end.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+
+    if (!startParts || !endParts) {
+        return 'Brak daty';
+    }
+
+    const formattedStart = new Date(
+        parseInt(startParts[1]),
+        parseInt(startParts[2]) - 1,
+        parseInt(startParts[3])
+    ).toLocaleDateString('pl-PL', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
     });
 
-    return `${formattedStart} - ${formattedEnd}`;
+    const formattedEnd = new Date(
+        parseInt(endParts[1]),
+        parseInt(endParts[2]) - 1,
+        parseInt(endParts[3])
+    ).toLocaleDateString('pl-PL', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+    });
+
+    // Użyj godzin bezpośrednio z UTC string
+    const startTime = `${startParts[4]}:${startParts[5]}`;
+    const endTime = `${endParts[4]}:${endParts[5]}`;
+
+    return `${formattedStart} ${startTime} - ${formattedEnd} ${endTime}`;
+};
+
+
+const calculateDiet = (startIso?: string, endIso?: string) => {
+    if (!startIso || !endIso) return 0;
+
+    const start = new Date(startIso);
+    const end = new Date(endIso);
+
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 0;
+
+    const diffMs = end.getTime() - start.getTime();
+    const diffHours = diffMs / (1000 * 60 * 60);
+
+    // < 8h = 0 zł
+    if (diffHours < 8) return 0;
+
+    // 8-12h = 50% (22.50 zł)
+    if (diffHours >= 8 && diffHours <= 12) return 22.50;
+
+    // > 12h - liczymy pełne doby
+    const fullDays = Math.floor(diffHours / 24);
+    const remainingHours = diffHours % 24;
+
+    let diet = fullDays * 45; // pełne doby po 45 zł
+
+    // ostatni niepełny dzień
+    if (remainingHours >= 8 && remainingHours <= 12) {
+        diet += 22.50;
+    } else if (remainingHours > 12) {
+        diet += 45;
+    }
+
+    return diet;
 };
 
 export const DelegationsList = () => {
@@ -65,6 +121,10 @@ export const DelegationsList = () => {
 
     const filteredDelegacje = delegacje.filter((d) =>
         overlapsMonth(d.dataRozpoczecia, d.dataZakonczenia, monthFilter),
+    );
+
+    const totalDiet = filteredDelegacje.reduce((sum, d) =>
+        sum + calculateDiet(d.dataRozpoczecia, d.dataZakonczenia), 0
     );
 
     const handleDelete = async (id: string) => {
@@ -133,7 +193,32 @@ export const DelegationsList = () => {
     const handleSaveEdit = async (id: string) => {
         setActionMessage(null);
         try {
-            await updateMutation.mutateAsync({ id, payload: editForm });
+            // Poprawiona konwersja dat - zachowaj lokalny czas
+            const payload: Partial<DelegacjaCreate> = {};
+
+            if (editForm.miejsce !== undefined) {
+                payload.miejsce = editForm.miejsce;
+            }
+
+            if (editForm.dataRozpoczecia) {
+                const localDate = new Date(editForm.dataRozpoczecia);
+                // Usuń offset strefy czasowej
+                const tzOffset = localDate.getTimezoneOffset() * 60000;
+                payload.dataRozpoczecia = new Date(localDate.getTime() - tzOffset).toISOString();
+            }
+
+            if (editForm.dataZakonczenia) {
+                const localDate = new Date(editForm.dataZakonczenia);
+                // Usuń offset strefy czasowej
+                const tzOffset = localDate.getTimezoneOffset() * 60000;
+                payload.dataZakonczenia = new Date(localDate.getTime() - tzOffset).toISOString();
+            }
+
+            if (editForm.uwagi !== undefined) {
+                payload.uwagi = editForm.uwagi;
+            }
+
+            await updateMutation.mutateAsync({ id, payload });
             setEditingId(null);
             setEditForm({});
             setActionMessage({ type: 'success', text: 'Delegacja została zaktualizowana' });
@@ -218,6 +303,14 @@ export const DelegationsList = () => {
                         <p className="metric-label">Wszystkich delegacji</p>
                         <p className="metric-value">{filteredDelegacje.length}</p>
                     </div>
+
+                    <div className="hero-meta hero-meta-diet">
+                        <p className="metric-label">Suma diet</p>
+                        <p className="metric-value">
+                            {totalDiet.toFixed(2)} <span className="metric-currency">zł</span>
+                        </p>
+                        <p className="metric-sublabel">45 zł/doba, 12h</p>
+                    </div>
                     <div className="month-filter">
                         <label className="month-filter-label" htmlFor="monthFilter">
                             Miesiąc
@@ -240,12 +333,15 @@ export const DelegationsList = () => {
                             </button>
                         )}
                     </div>
-                    
+
                 </section>
 
                 {actionMessage && (
                     <div className={`action-message ${actionMessage.type}`}>
-                        {actionMessage.text}
+                        <span className="action-message-icon">
+                            {actionMessage.type === 'success' ? '✓' : '⚠'}
+                        </span>
+                        <span className="action-message-text">{actionMessage.text}</span>
                     </div>
                 )}
 
