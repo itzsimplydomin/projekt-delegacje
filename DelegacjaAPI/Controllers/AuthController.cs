@@ -25,10 +25,14 @@ namespace DelegacjaAPI.Controllers
         }
 
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
+            var allowedRoles = new[] { "Admin", "User" };
+
+            if (!allowedRoles.Contains(request.Rola))
+                return BadRequest("Nieprawidłowa rola");
             try
             {
                 if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
@@ -46,7 +50,7 @@ namespace DelegacjaAPI.Controllers
                     Email = request.Email,
                     Imie = request.Imie,
                     Nazwisko = request.Nazwisko,
-                    Rola = "User",
+                    Rola = request.Rola,
                     Salt = salt,
                     HashHaslo = hasloHash
                 };
@@ -57,7 +61,8 @@ namespace DelegacjaAPI.Controllers
                 {
                     Email = uzytkownik.Email,
                     Imie = uzytkownik.Imie,
-                    Nazwisko = uzytkownik.Nazwisko
+                    Nazwisko = uzytkownik.Nazwisko,
+                    Rola = uzytkownik.Rola
                 };
 
                 return Ok(new
@@ -114,6 +119,59 @@ namespace DelegacjaAPI.Controllers
             {
                 token = tokenString
             });
+        }
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            // walidacja
+            if (string.IsNullOrEmpty(request.CurrentPassword) || string.IsNullOrEmpty(request.NewPassword) || string.IsNullOrEmpty(request.ConfirmNewPassword))
+            {
+                return BadRequest("Wszystkie pola są wymagane");
+            }
+
+            if (request.NewPassword != request.ConfirmNewPassword)
+            {
+                return BadRequest("Nowe hasła nie są takie same");
+            }
+
+            if (request.NewPassword.Length < 6)
+            {
+                return BadRequest("Hasło musi mieć minimum 6 znaków");
+            }
+
+            //pobranie aktualnego usera z JWT
+            var email = User.Identity!.Name!;
+            var user = await _uzytkownikService.GetByEmailAsync(email);
+
+            if (user == null)
+                return Unauthorized();
+
+            // weryfikacja starego hasła
+            var valid = PasswordHasher.VerifyPassword(
+                request.CurrentPassword,
+                user.Salt,
+                user.HashHaslo
+            );
+
+            if (!valid)
+                return BadRequest("Aktualne hasło jest nieprawidłowe");
+
+            // nowe hasło
+            var newSalt = PasswordHasher.GenerateSalt();
+            var newHash = PasswordHasher.HashPassword(
+                request.NewPassword,
+                newSalt
+            );
+
+            //zapis do bazy
+            await _uzytkownikService.UpdatePasswordAsync(
+                email,
+                newHash,
+                newSalt
+            );
+
+            return Ok(new { success = true });
         }
 
     }

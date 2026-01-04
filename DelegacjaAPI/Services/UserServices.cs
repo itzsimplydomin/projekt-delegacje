@@ -33,7 +33,7 @@ namespace DelegacjaAPI.Services
                     Email = response.Value["Email"]?.ToString() ?? "",
                     Imie = response.Value["Imie"]?.ToString() ?? "",
                     Nazwisko = response.Value["Nazwisko"]?.ToString() ?? "",
-                    Rola = response.Value["Rola"]?.ToString() ?? "User",
+                    Rola = response.Value["Rola"]?.ToString() ?? "",
                     HashHaslo = response.Value["HashHaslo"]?.ToString() ?? "",
                     Salt = response.Value["Salt"]?.ToString() ?? ""
                 };
@@ -74,12 +74,31 @@ namespace DelegacjaAPI.Services
                 Imie = entity["Imie"]?.ToString() ?? "",
                 Nazwisko = entity["Nazwisko"]?.ToString() ?? "",
                 Email = entity["Email"]?.ToString() ?? "",
-                Rola = entity["Rola"]?.ToString() ?? "User",
+                Rola = entity["Rola"]?.ToString() ?? "",
                 HashHaslo = entity["HashHaslo"].ToString() ?? "",
                 Salt = entity["Salt"]?.ToString() ?? ""
             };
 
         }
+        public async Task UpdatePasswordAsync(string email, string newHash, string newSalt)
+        {
+            var normalizedEmail = email.ToLower().Trim();
+
+            var entity = await _tableClient.GetEntityAsync<TableEntity>(
+                "uzytkownik",
+                normalizedEmail
+            );
+
+            entity.Value["HashHaslo"] = newHash;
+            entity.Value["Salt"] = newSalt;
+
+            await _tableClient.UpdateEntityAsync(
+                entity.Value,
+                entity.Value.ETag,
+                TableUpdateMode.Replace
+            );
+        }
+
 
     }
 
