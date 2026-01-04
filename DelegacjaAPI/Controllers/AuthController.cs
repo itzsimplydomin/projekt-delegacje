@@ -24,59 +24,6 @@ namespace DelegacjaAPI.Controllers
             _config = config;
         }
 
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
-        {
-            var allowedRoles = new[] { "Admin", "User" };
-
-            if (!allowedRoles.Contains(request.Rola))
-                return BadRequest("Nieprawidłowa rola");
-            try
-            {
-                if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
-                    return BadRequest("Email i hasło są wymagane");
-
-                var existing = await _uzytkownikService.GetByEmailAsync(request.Email);
-                if (existing != null)
-                    return BadRequest("Użytkownik już istnieje");
-
-                string salt = PasswordHasher.GenerateSalt();
-                string hasloHash = PasswordHasher.HashPassword(request.Password, salt);
-
-                var uzytkownik = new Uzytkownik
-                {
-                    Email = request.Email,
-                    Imie = request.Imie,
-                    Nazwisko = request.Nazwisko,
-                    Rola = request.Rola,
-                    Salt = salt,
-                    HashHaslo = hasloHash
-                };
-
-                await _uzytkownikService.CreateAsync(uzytkownik);
-
-                var response = new UserResponse
-                {
-                    Email = uzytkownik.Email,
-                    Imie = uzytkownik.Imie,
-                    Nazwisko = uzytkownik.Nazwisko,
-                    Rola = uzytkownik.Rola
-                };
-
-                return Ok(new
-                {
-                    success = true,
-                    message = "Konto utworzone",
-                    user = response
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Wewnętrzny błąd");
-            }
-        }
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)

@@ -98,6 +98,26 @@ namespace DelegacjaAPI.Services
                 TableUpdateMode.Replace
             );
         }
+        public async Task<List<Uzytkownik>> GetAllAsync()
+        {
+            var users = new List<Uzytkownik>();
+
+            await foreach (var entity in _tableClient.QueryAsync<TableEntity>())
+            {
+                users.Add(new Uzytkownik
+                {
+                    PartitionKey = entity.PartitionKey,
+                    RowKey = entity.RowKey,
+                    Email = entity["Email"]?.ToString() ?? "",
+                    Imie = entity["Imie"]?.ToString() ?? "",
+                    Nazwisko = entity["Nazwisko"]?.ToString() ?? "",
+                    Rola = entity["Rola"]?.ToString() ?? "User"
+                });
+            }
+
+            return users;
+        }
+
 
 
     }

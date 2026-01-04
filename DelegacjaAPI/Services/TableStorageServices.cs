@@ -133,5 +133,14 @@ namespace DelegacjaAPI.Services
 
                 await _tableClient.UpdateEntityAsync(entity,ETag.All,TableUpdateMode.Replace);
         }
+        public async Task<List<Delegacja>> GetDelegacjeByUserAsync(string email)
+        {
+            var all = await GetAllDelegationsAsync();
+
+            return all
+                .Where(d => d.UserEmail == email)
+                .ToList();
+        }
+
     }
 }
