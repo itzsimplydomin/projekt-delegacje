@@ -10,6 +10,19 @@ export interface LoginResponse {
   message?: string;
 }
 
+// Request do zmiany hasła
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+// Response dla zmiany hasła
+export interface ChangePasswordResponse {
+  success: boolean;
+  message?: string;
+}
+
 // model delegacji 
 export interface Delegacja {
   id: string; // RowKey z Azure

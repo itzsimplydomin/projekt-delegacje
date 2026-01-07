@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Delegacja, DelegacjaCreate, LoginRequest} from './types';
+import type { Delegacja, DelegacjaCreate, LoginRequest, ChangePasswordRequest, ChangePasswordResponse} from './types';
 
 // Bazowy klient HTTP dla całej aplikacji
 export const api = axios.create({
@@ -37,6 +37,27 @@ export const login = async (payload: LoginRequest) => {
     success: true,
     message: 'Zalogowano pomyślnie',
   };
+};
+
+export const changePassword = async (
+  payload: ChangePasswordRequest
+): Promise<ChangePasswordResponse> => {
+  try {
+    const { data } = await api.post<{ success: boolean }>(
+      '/api/Auth/change-password',
+      payload
+    );
+
+    return {
+      success: data.success,
+      message: 'Hasło zostało pomyślnie zmienione',
+    };
+  } catch (error: any) {
+    if (error.response?.data) {
+      throw new Error(error.response.data);
+    }
+    throw new Error('Nie udało się zmienić hasła');
+  }
 };
 
 

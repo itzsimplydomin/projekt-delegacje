@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getDelegacje, deleteDelegacja, updateDelegacja} from './client';
-import type { Delegacja, DelegacjaCreate } from './types';
+import { getDelegacje, deleteDelegacja, updateDelegacja, changePassword} from './client';
+import type { Delegacja, DelegacjaCreate, ChangePasswordRequest } from './types';
 import { api } from './client';
 
 
@@ -46,5 +46,12 @@ export const useGeneratePdf = () => {
       );
       return response.data as Blob;
     },
+  });
+};
+
+// hook do zmiany hasła
+export const useChangePassword = () => {
+  return useMutation({
+    mutationFn: (payload: ChangePasswordRequest) => changePassword(payload),
   });
 };
