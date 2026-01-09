@@ -26,6 +26,11 @@ export const Settings = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/');
+    };
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage(null);
@@ -220,6 +225,19 @@ export const Settings = () => {
                                     ? 'Zmieniam hasło...'
                                     : 'Zmień hasło'}
                             </button>
+
+                            <button
+                                className="logout-btn"
+                                type="button"
+                                onClick={handleLogout}
+                            >
+                                Wyloguj się
+                            </button>
+
+                            <div className="settings-footer">
+                                <p className="app-version">Wersja aplikacji: 0.0.0</p>
+                                <p className="app-license">©Artikon 2026 - Wszystkie prawa zastrzeżone</p>
+                            </div>
                         </form>
                     </div>
                 </section>

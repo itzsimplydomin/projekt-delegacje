@@ -1,20 +1,25 @@
+
+
 .settings-container {
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - clamp(60px, 12vw, 80px) - 200px);
 }
 
 .settings-card {
-  background: linear-gradient(
-    135deg,
-    rgba(10, 26, 58, 0.7),
-    rgba(0, 46, 122, 0.5)
-  );
+  background: linear-gradient(135deg,
+      rgba(10, 26, 58, 0.7),
+      rgba(0, 46, 122, 0.5));
   border: 1px solid rgba(200, 216, 235, 0.25);
   border-radius: clamp(16px, 4vw, 20px);
   padding: clamp(1.5rem, 3vw, 2rem);
   backdrop-filter: blur(18px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  width: 100%;
 }
 
 .settings-header {
@@ -91,7 +96,57 @@
 .settings-form button[type='submit'] {
   margin-top: clamp(0.5rem, 1vw, 1rem);
   width: 100%;
+  max-width: 100%;
 }
+
+.settings-footer {
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+  padding-top: clamp(1rem, 2vw, 1.5rem);
+  border-top: 1px solid rgba(200, 216, 235, 0.2);
+  text-align: center;
+}
+
+.logout-btn {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  padding: clamp(0.7rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.3rem);
+  border-radius: clamp(10px, 2vw, 12px);
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: var(--touch-target);
+  width: 100%;
+  max-width: 100%;
+}
+
+.logout-btn:hover,
+.logout-btn:active {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.7);
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+  transform: translateY(-1px);
+}
+
+.logout-btn:active {
+  transform: translateY(1px);
+}
+
+.app-version {
+  color: rgba(200, 216, 235, 0.7);
+  font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+  margin-bottom: clamp(0.3rem, 0.8vw, 0.5rem);
+}
+
+.app-license {
+  color: rgba(200, 216, 235, 0.6);
+  font-size: clamp(0.7rem, 1.3vw, 0.8rem);
+}
+
+
 
 /* Tablet - 768px+ */
 @media (min-width: 768px) {
@@ -107,6 +162,20 @@
     max-width: 300px;
     width: auto;
     justify-self: start;
+  }
+
+  .settings-form .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .settings-form label.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .settings-form button[type='submit'] {
+    max-width: 100%;
+    width: 100%;
+    justify-self: center;
   }
 }
 
