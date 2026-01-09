@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import logo from '/src/img/logoArtikon.png';
 import type { Delegacja, DelegacjaCreate } from '../api/types';
+import { isAdmin } from '../api/client';
 
 const formatDateRange = (start?: string, end?: string) => {
     if (!start || !end) {
@@ -101,6 +102,9 @@ export const DelegationsList = () => {
     const [editForm, setEditForm] = useState<Partial<DelegacjaCreate>>({});
     const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+    const [employeeFilter, setEmployeeFilter] = useState<string>(''); // filtr po pracowniku
+    const isAdminUser = isAdmin(); // sprawdź czy admin
+
     const [monthFilter, setMonthFilter] = useState<string>(''); // format: "YYYY-MM" lub '' = wszystkie
     const overlapsMonth = (startIso?: string, endIso?: string, yyyyMm?: string) => {
         if (!startIso || !endIso || !yyyyMm) return true;
@@ -119,9 +123,20 @@ export const DelegationsList = () => {
         return start <= monthEnd && end >= monthStart;
     };
 
-    const filteredDelegacje = delegacje.filter((d) =>
-        overlapsMonth(d.dataRozpoczecia, d.dataZakonczenia, monthFilter),
-    );
+    const filteredDelegacje = delegacje.filter((d) => {
+        const matchesMonth = overlapsMonth(d.dataRozpoczecia, d.dataZakonczenia, monthFilter);
+
+        if (!isAdminUser) return matchesMonth;
+
+        // Dla admina dodatkowe filtrowanie po pracowniku
+        if (employeeFilter) {
+            const searchTerm = employeeFilter.toLowerCase();
+            const fullName = `${d.pracownikImie} ${d.pracownikNazwisko}`.toLowerCase();
+            return matchesMonth && fullName.includes(searchTerm);
+        }
+
+        return matchesMonth;
+    });
 
     const totalDiet = filteredDelegacje.reduce((sum, d) =>
         sum + calculateDiet(d.dataRozpoczecia, d.dataZakonczenia), 0
@@ -140,38 +155,38 @@ export const DelegationsList = () => {
         }
     };
     const handleGeneratePdf = async (id: string) => {
-  setActionMessage(null);
+        setActionMessage(null);
 
-  try {
-    const pdfBlob = await generatePdfMutation.mutateAsync(id);
+        try {
+            const pdfBlob = await generatePdfMutation.mutateAsync(id);
 
-    const url = window.URL.createObjectURL(
-      new Blob([pdfBlob], { type: 'application/pdf' })
-    );
+            const url = window.URL.createObjectURL(
+                new Blob([pdfBlob], { type: 'application/pdf' })
+            );
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `delegacja-${id}.pdf`;
-    document.body.appendChild(a);
-    a.click();
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `delegacja-${id}.pdf`;
+            document.body.appendChild(a);
+            a.click();
 
-    a.remove();
-    window.URL.revokeObjectURL(url);
+            a.remove();
+            window.URL.revokeObjectURL(url);
 
-    setActionMessage({
-      type: 'success',
-      text: 'PDF wygenerowany i pobrany',
-    });
+            setActionMessage({
+                type: 'success',
+                text: 'PDF wygenerowany i pobrany',
+            });
 
-    setTimeout(() => setActionMessage(null), 3000);
-  } catch (error) {
-    console.error(error);
-    setActionMessage({
-      type: 'error',
-      text: 'Nie udało się wygenerować PDF',
-    });
-  }
-};
+            setTimeout(() => setActionMessage(null), 3000);
+        } catch (error) {
+            console.error(error);
+            setActionMessage({
+                type: 'error',
+                text: 'Nie udało się wygenerować PDF',
+            });
+        }
+    };
 
 
     const handleEdit = (delegacja: Delegacja) => {
@@ -287,7 +302,7 @@ export const DelegationsList = () => {
                     >
                         <button onClick={() => navigate('/delegacje')} style={{ background: 'none', border: 'none', color: 'var(--white)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(0.8rem, 2vw, 0.9em)', cursor: 'pointer', transition: 'color 0.3s ease' }}>Kalendarz</button>
                         <button onClick={() => navigate('/delegacje/lista')} style={{ background: 'none', border: 'none', color: 'var(--white)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(0.8rem, 2vw, 0.9em)', cursor: 'pointer', transition: 'color 0.3s ease' }}>Delegacje</button>
-                        <button onClick={() => navigate('/delegacje/ustawienia')} style={{ background: 'none', border: 'none', color: 'var(--white)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(0.8rem, 2vw, 0.9em)', cursor: 'pointer', transition: 'color 0.3s ease' }}>Ustawienia</button>   
+                        <button onClick={() => navigate('/delegacje/ustawienia')} style={{ background: 'none', border: 'none', color: 'var(--white)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(0.8rem, 2vw, 0.9em)', cursor: 'pointer', transition: 'color 0.3s ease' }}>Ustawienia</button>
                     </nav>
                 </div>
             </header>
@@ -334,6 +349,32 @@ export const DelegationsList = () => {
                             </button>
                         )}
                     </div>
+
+                    {isAdminUser && (
+                        <div className="employee-filter">
+                            <label className="employee-filter-label" htmlFor="employeeFilter">
+                                Pracownik
+                            </label>
+                            <input
+                                id="employeeFilter"
+                                className="employee-filter-input"
+                                type="text"
+                                placeholder="Wpisz imię lub nazwisko..."
+                                value={employeeFilter}
+                                onChange={(e) => setEmployeeFilter(e.target.value)}
+                            />
+                            {employeeFilter && (
+                                <button
+                                    type="button"
+                                    className="employee-filter-clear"
+                                    onClick={() => setEmployeeFilter('')}
+                                    title="Wyczyść filtr"
+                                >
+                                    Wyczyść
+                                </button>
+                            )}
+                        </div>
+                    )}
 
                 </section>
 
@@ -414,8 +455,9 @@ export const DelegationsList = () => {
                                             <div>
                                                 <p className="card-title">{delegacja.miejsce}</p>
                                                 <p className="card-meta">
-                                                    {delegacja.userEmail}
+                                                    {delegacja.pracownikImie} {delegacja.pracownikNazwisko}
                                                 </p>
+
                                             </div>
                                         </header>
 

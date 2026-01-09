@@ -87,6 +87,75 @@
     font-weight: 700;
 }
 
+/* Filtr pracowników dla admina */
+.employee-filter {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(200, 216, 235, 0.25);
+    border-radius: clamp(12px, 3vw, 16px);
+    padding: clamp(0.8rem, 2vw, 1.1rem);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    height: auto;
+}
+
+.employee-filter-label {
+    margin: 0;
+    color: rgba(200, 216, 235, 0.85);
+    font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+}
+
+.employee-filter-input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(200, 216, 235, 0.35);
+    border-radius: clamp(8px, 2vw, 10px);
+    padding: 0.55rem 0.75rem;
+    color: var(--white);
+    font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+    min-height: var(--touch-target);
+    -webkit-tap-highlight-color: transparent;
+    flex: 1;
+    min-width: 200px;
+}
+
+.employee-filter-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.employee-filter-input:focus {
+    outline: none;
+    border-color: var(--pale-blue);
+    box-shadow: 0 0 0 3px rgba(200, 216, 235, 0.2);
+}
+
+.employee-filter-clear {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(200, 216, 235, 0.35);
+    border-radius: clamp(8px, 2vw, 10px);
+    color: var(--white);
+    font-weight: 700;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    padding: 0.55rem 0.9rem;
+    cursor: pointer;
+    min-height: var(--touch-target);
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.employee-filter-clear:hover,
+.employee-filter-clear:active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--pale-blue);
+    box-shadow: 0 8px 24px rgba(200, 216, 235, 0.25);
+}
+
 /* Input spójny z resztą formularzy */
 .month-filter-input {
     background: rgba(255, 255, 255, 0.08);
@@ -548,7 +617,8 @@
     }
 
     /* Filtr miesiąca na całą szerokość */
-    .month-filter {
+    .month-filter,
+    .employee-filter {
         grid-column: 1 / -1;
         width: 100%;
         padding: 0.8rem 0.5rem;
