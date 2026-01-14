@@ -3,17 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import '/src/styles/Login.css';
 import { login } from '../api/client';
 
+// Komponent baneru logowania
 export const LoginBanner = () => {
+
+  // Nawigacja do innych stron
   const navigate = useNavigate();
 
-
+  // Stany komponentu
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  // Dodatkowe stany do obsługi formularza
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
+  // Obsługa wysłania formularza logowania
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -38,6 +43,7 @@ export const LoginBanner = () => {
     }
   };
 
+  // Renderowanie komponentu
   return (
     <section className="login-banner" aria-labelledby="login-banner-title">
       <div className="banner-copy">

@@ -15,11 +15,13 @@ api.interceptors.request.use((config) => {
     return config;
   }
 
+  // Dodanie tokena z localStorage do nagłówków Authorization
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
+  // Zwracanie zmodyfikowanej konfiguracji żądania
   return config;
 });
 
@@ -28,13 +30,16 @@ api.interceptors.request.use((config) => {
 export const login = async (payload: LoginRequest) => {
   localStorage.removeItem('token'); 
 
+  // Wywołanie endpointu logowania
   const { data } = await api.post<{ token: string }>(
     '/api/Auth/login',
     payload
   );
 
+  // Zapisanie tokena w localStorage
   localStorage.setItem('token', data.token);
 
+  // Zwracanie odpowiedzi
   return {
     success: true,
     message: 'Zalogowano pomyślnie',
@@ -46,11 +51,14 @@ export const changePassword = async (
   payload: ChangePasswordRequest
 ): Promise<ChangePasswordResponse> => {
   try {
+
+    // Wywołanie endpointu zmiany hasła
     const { data } = await api.post<{ success: boolean }>(
       '/api/Auth/change-password',
       payload
     );
 
+    // Zwracanie odpowiedzi
     return {
       success: data.success,
       message: 'Hasło zostało pomyślnie zmienione',
@@ -96,23 +104,28 @@ export const generatePdf = async (id: string) => {
     { responseType: 'blob' } 
   );
 
+  // Pobieranie pliku PDF
   const blob = new Blob([response.data], { type: 'application/pdf' });
   const url = window.URL.createObjectURL(blob);
 
+  // Tworzenie linku do pobrania
   const a = document.createElement('a');
   a.href = url;
   a.download = `delegacja-${id}.pdf`;
   document.body.appendChild(a);
   a.click();
 
+  // Czyszczenie
   a.remove();
   window.URL.revokeObjectURL(url);
 };
 
+// Sprawdzanie czy użytkownik ma rolę Admin
 export const isAdmin = (): boolean => {
   const token = localStorage.getItem('token');
   if (!token) return false;
   
+  // Parowanie tokena JWT i sprawdzanie roli
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin';

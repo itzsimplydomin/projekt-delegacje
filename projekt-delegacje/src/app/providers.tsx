@@ -19,5 +19,6 @@ export const Providers = ({ children }: ProvidersProps) => {
       }),
   );
 
+  // Zwracanie dostawcy kontekstu React Query
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };

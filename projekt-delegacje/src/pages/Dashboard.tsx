@@ -9,30 +9,42 @@ import type { DelegacjaCreate } from '../api/types';
 import logo from '/src/img/logoArtikon.png';
 import { useNavigate } from 'react-router-dom';
 
+// Główna strona dashboardu z kalendarzem delegacji i formularzem dodawania nowych
 export const Dashboard = () => {
 
+    // Nawigacja do innych stron
     const navigate = useNavigate();
+
+    // Pobieramy listę delegacji z hooka API (React Query wrapper)
     const { data: delegacje = [], isLoading, isError } = useDelegacje();
     const queryClient = useQueryClient();
     const [menuOpen, setMenuOpen] = useState(false);
     const [currentMonth, setCurrentMonth] = useState(new Date());
+
+    // Wybrany zakres dat (start i koniec) dla tworzonej delegacji
     const [selectedRange, setSelectedRange] = useState<{ start: Date | null; end: Date | null }>({
         start: null,
         end: null,
     });
+
+    // Stan formularza tworzenia delegacji
     const [formState, setFormState] = useState({
         miejsce: '',
         uwagi: '',
         godzinaRozpoczecia: '08:00',
         godzinaZakonczenia: '16:00',
     });
+
+    // Wiadomość po wysłaniu formularza
     const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
+    // Konwersja daty do lokalnego formatu ISO bez przesunięcia czasowego
     const toLocalISOString = (date: Date) => {
         const tzOffset = date.getTimezoneOffset() * 60000;
         return new Date(date.getTime() - tzOffset).toISOString().slice(0, 19);
     };
 
+    // Mutacja do tworzenia nowej delegacji
     const mutation = useMutation({
         mutationFn: async (payload: DelegacjaCreate) => createDelegacja(payload),
         onSuccess: () => {
@@ -49,6 +61,7 @@ export const Dashboard = () => {
         onError: () => setSubmitMessage('Nie udało się zapisać delegacji. Sprawdź dane i spróbuj ponownie.'),
     });
 
+    // Obliczanie wszystkich dni widocznych w kalendarzu dla bieżącego miesiąca
     const monthDays = useMemo(() => {
         const monthStart = startOfMonth(currentMonth);
         const monthEnd = endOfMonth(monthStart);
@@ -57,14 +70,16 @@ export const Dashboard = () => {
         return eachDayOfInterval({ start: calendarStart, end: calendarEnd });
     }, [currentMonth]);
 
+    // Grupowanie delegacji według dni widocznych w kalendarzu
+    // Uwaga: delegacje przechowywane są w ISO/UTC - normalizujemy je do dat bez czasu
     const delegationsByDay = useMemo(() =>
         monthDays.map((day) => {
             const matches = delegacje.filter((delegacja) => {
-                // Konwersja dat z UTC na lokalną datę bez zmiany wartości dnia
+                // Konwersja dat z serwera na obiekty Date
                 const startDate = new Date(delegacja.dataRozpoczecia);
                 const endDate = new Date(delegacja.dataZakonczenia);
 
-                // Normalizacja dat do początku dnia w lokalnej strefie czasowej
+                // Normalizacja porównujemy tylko komponenty daty (ignorujemy czas)
                 const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate());
                 const delegationStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
                 const delegationEnd = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
@@ -78,6 +93,7 @@ export const Dashboard = () => {
         }),
         [delegacje, monthDays]);
 
+    // Obsługa zaznaczania dni w kalendarzu
     const handleDaySelection = (day: Date) => {
         setSubmitMessage(null);
         if (!selectedRange.start || (selectedRange.start && selectedRange.end)) {
@@ -91,6 +107,7 @@ export const Dashboard = () => {
         }
     };
 
+    // Obsługa wysłania formularza tworzenia delegacji
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setSubmitMessage(null);
@@ -120,6 +137,7 @@ export const Dashboard = () => {
         mutation.mutate(payload);
     };
 
+    // Obsługa zmian w formularzu tworzenia delegacji
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
         setFormState((prev) => ({ ...prev, [name]: value }));
@@ -133,8 +151,7 @@ export const Dashboard = () => {
         return <p>Nie udało się załadować strony.</p>;
     }
 
-
-
+    // Główne renderowanie komponentu - header, kalendarz i panel tworzenia delegacji
     return (
         <div className="dashboard-wrapper dashboard-page">
             <header className="dark-header">
@@ -151,6 +168,7 @@ export const Dashboard = () => {
                         ☰
                     </button>
 
+                    {/* Nawigacja główna - ukrywana na małych ekranach */}
                     <nav
                         id='main-nav'
                         className={`main-nav ${menuOpen ? 'open' : ''}`}
@@ -169,7 +187,7 @@ export const Dashboard = () => {
                     </nav>
                 </div>
             </header>
-
+            
             <main className="dashboard-main">
                 <section className="hero-card">
                     <div>

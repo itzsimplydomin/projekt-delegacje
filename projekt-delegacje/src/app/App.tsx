@@ -9,6 +9,8 @@ import { Providers } from './providers';
 // Główna aplikacja
 export const App = () => {
   return (
+
+    // Otaczanie aplikacji dostawcami kontekstu
     <Providers>
       <main className="app-shell">
         <Routes>

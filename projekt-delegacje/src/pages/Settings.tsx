@@ -6,31 +6,38 @@ import { useNavigate } from 'react-router-dom';
 import { useChangePassword } from '../api/hooks';
 import logo from '/src/img/logoArtikon.png';
 
+// Strona ustawień użytkownika - zmiana hasła i wylogowanie
 export const Settings = () => {
     const navigate = useNavigate();
     const changePasswordMutation = useChangePassword();
 
+    // Stan komponentu
     const [menuOpen, setMenuOpen] = useState(false);
     const [formData, setFormData] = useState({
         currentPassword: '',
         newPassword: '',
         confirmNewPassword: '',
     });
+
+    // Wiadomość akcji (sukces/błąd)
     const [message, setMessage] = useState<{
         type: 'success' | 'error';
         text: string;
     } | null>(null);
 
+    // Obsługa zmiany wartości w polach formularza
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    // Obsługa wylogowania
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/');
     };
 
+    // Obsługa wysłania formularza zmiany hasła
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage(null);
@@ -82,6 +89,7 @@ export const Settings = () => {
         }
     };
 
+    // Renderowanie komponentu
     return (
         <div className="dashboard-wrapper settings-page">
             <header className="dark-header">
@@ -97,7 +105,7 @@ export const Settings = () => {
                     >
                         ☰
                     </button>
-
+    
                     <nav
                         id='main-nav'
                         className={`main-nav ${menuOpen ? 'open' : ''}`}

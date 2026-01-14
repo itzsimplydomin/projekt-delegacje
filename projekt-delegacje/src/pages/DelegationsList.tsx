@@ -8,6 +8,7 @@ import logo from '/src/img/logoArtikon.png';
 import type { Delegacja, DelegacjaCreate } from '../api/types';
 import { isAdmin } from '../api/client';
 
+// Formatuje zakres dat do czytelnego formatu "DD MMM RRRR GG:MM - DD MMM RRRR GG:MM"
 const formatDateRange = (start?: string, end?: string) => {
     if (!start || !end) {
         return 'Brak daty';
@@ -29,6 +30,7 @@ const formatDateRange = (start?: string, end?: string) => {
         return 'Brak daty';
     }
 
+    // Formatuj daty lokalnie
     const formattedStart = new Date(
         parseInt(startParts[1]),
         parseInt(startParts[2]) - 1,
@@ -39,6 +41,7 @@ const formatDateRange = (start?: string, end?: string) => {
         day: 'numeric',
     });
 
+    // Formatuj daty lokalnie
     const formattedEnd = new Date(
         parseInt(endParts[1]),
         parseInt(endParts[2]) - 1,
@@ -56,7 +59,7 @@ const formatDateRange = (start?: string, end?: string) => {
     return `${formattedStart} ${startTime} - ${formattedEnd} ${endTime}`;
 };
 
-
+// Oblicza dietę na podstawie różnicy dat
 const calculateDiet = (startIso?: string, endIso?: string) => {
     if (!startIso || !endIso) return 0;
 
@@ -90,21 +93,29 @@ const calculateDiet = (startIso?: string, endIso?: string) => {
     return diet;
 };
 
+// Główna lista delegacji
 export const DelegationsList = () => {
+
+    // Nawigacja
     const navigate = useNavigate();
+
+    // Pobierz delegacje i mutacje
     const { data: delegacje = [], isLoading, isError } = useDelegacje();
     const deleteMutation = useDeleteDelegacja();
     const updateMutation = useUpdateDelegacja();
     const generatePdfMutation = useGeneratePdf();
 
+    // Stany komponentu
     const [menuOpen, setMenuOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editForm, setEditForm] = useState<Partial<DelegacjaCreate>>({});
     const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+    // Filtrowanie delegacji
     const [employeeFilter, setEmployeeFilter] = useState<string>(''); // filtr po pracowniku
     const isAdminUser = isAdmin(); // sprawdź czy admin
 
+    // Filtrowanie po miesiącu
     const [monthFilter, setMonthFilter] = useState<string>(''); // format: "YYYY-MM" lub '' = wszystkie
     const overlapsMonth = (startIso?: string, endIso?: string, yyyyMm?: string) => {
         if (!startIso || !endIso || !yyyyMm) return true;
@@ -123,6 +134,7 @@ export const DelegationsList = () => {
         return start <= monthEnd && end >= monthStart;
     };
 
+    // Filtrowanie delegacji
     const filteredDelegacje = delegacje.filter((d) => {
         const matchesMonth = overlapsMonth(d.dataRozpoczecia, d.dataZakonczenia, monthFilter);
 
@@ -138,10 +150,12 @@ export const DelegationsList = () => {
         return matchesMonth;
     });
 
+    // Oblicz łączną dietę dla przefiltrowanych delegacji
     const totalDiet = filteredDelegacje.reduce((sum, d) =>
         sum + calculateDiet(d.dataRozpoczecia, d.dataZakonczenia), 0
     );
 
+    // Handlery akcji
     const handleDelete = async (id: string) => {
         if (!window.confirm('Czy na pewno chcesz usunąć tę delegację?')) return;
 
@@ -154,6 +168,8 @@ export const DelegationsList = () => {
             setActionMessage({ type: 'error', text: 'Nie udało się usunąć delegacji' });
         }
     };
+
+    // Handler generowania PDF
     const handleGeneratePdf = async (id: string) => {
         setActionMessage(null);
 
@@ -188,7 +204,7 @@ export const DelegationsList = () => {
         }
     };
 
-
+    // Handlery edycji
     const handleEdit = (delegacja: Delegacja) => {
         setEditingId(delegacja.id);
         setEditForm({
@@ -200,11 +216,13 @@ export const DelegationsList = () => {
         setActionMessage(null);
     };
 
+    // Handler anulowania edycji
     const handleCancelEdit = () => {
         setEditingId(null);
         setEditForm({});
     };
 
+    // Handler zapisywania edycji
     const handleSaveEdit = async (id: string) => {
         setActionMessage(null);
         try {
@@ -243,6 +261,7 @@ export const DelegationsList = () => {
         }
     };
 
+    // Renderowanie komponentu
     if (isLoading) {
         return (
             <div className="dashboard-wrapper">

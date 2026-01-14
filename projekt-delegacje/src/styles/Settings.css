@@ -1,3 +1,4 @@
+/* Kontener centrujący kartę ustawień */
 .settings-container {
   max-width: 900px;
   margin: 0 auto;
@@ -8,6 +9,7 @@
   padding: clamp(0.5rem, 2vw, 1.25rem) 0;
 }
 
+/* Główna karta ustawień */
 .settings-card {
   background: linear-gradient(
     135deg,
@@ -23,6 +25,7 @@
   max-width: 900px;
 }
 
+/* Nagłówek karty - tytuł sekcji */
 .settings-header {
   margin-bottom: clamp(1.5rem, 3vw, 2rem);
   padding-bottom: clamp(1rem, 2vw, 1.5rem);
@@ -35,6 +38,7 @@
   color: var(--white);
 }
 
+/* Formularz ustawień - flex column z gap'em */
 .settings-form {
   display: flex;
   flex-direction: column;
@@ -47,6 +51,7 @@
   gap: clamp(1rem, 2vw, 1.2rem);
 }
 
+/* Etykieta pola formularza */
 .settings-form label {
   display: flex;
   flex-direction: column;
@@ -56,6 +61,7 @@
   font-size: clamp(0.85rem, 1.8vw, 0.95rem);
 }
 
+/* Input pola formularza */
 .settings-form input {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(200, 216, 235, 0.35);
@@ -94,12 +100,14 @@
   border: 1px solid rgba(200, 216, 235, 0.35) !important;
 }
 
+/* Przycisk submit - responsywny, fullwidth */
 .settings-form button[type="submit"] {
   margin-top: clamp(0.5rem, 1vw, 1rem);
   width: 100%;
   max-width: 100%;
 }
 
+/* Footer karty - informacja i przycisk logout */
 .settings-footer {
   margin-top: clamp(1.5rem, 3vw, 2rem);
   padding-top: clamp(1rem, 2vw, 1.5rem);
@@ -107,6 +115,7 @@
   text-align: center;
 }
 
+/* Przycisk logout */
 .logout-btn {
   background: rgba(239, 68, 68, 0.15);
   color: #fca5a5;
@@ -136,6 +145,7 @@
   transform: translateY(1px);
 }
 
+/* Wersja i licencja aplikacji */
 .app-version {
   color: rgba(200, 216, 235, 0.7);
   font-size: clamp(0.75rem, 1.5vw, 0.85rem);
@@ -146,6 +156,11 @@
   color: rgba(200, 216, 235, 0.6);
   font-size: clamp(0.7rem, 1.3vw, 0.8rem);
 }
+
+/* ============================================
+   DESKTOP - 1440px x 900px (small desktop)
+   Optimalizacja dla małych ekranów
+   ============================================ */
 
 @media (max-width: 1440px) and (max-height: 900px) {
   .settings-page {
@@ -195,22 +210,27 @@
   }
 }
 
-@media (max-height: 820px) {
-  .settings-page .settings-card {
-    padding: 0.95rem;
+/* ============================================
+   DESKTOP - 1025px+ (large screens with hover)
+   ============================================ */
+
+@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+  .settings-page .dashboard-main {
+    justify-content: center;
+    min-height: calc(100vh - clamp(60px, 12vw, 80px));
   }
 
-  .settings-page .settings-header h2 {
-    font-size: 1.15rem;
-  }
-
-  .settings-page .settings-form {
-    gap: 0.75rem;
+  .settings-page .settings-container {
+    padding: 0;
   }
 }
 
+/* ============================================
+   TABLET - 768px x 860px 
+   2-kolumnowy layout formularza
+   ============================================ */
+
 @media (min-width: 768px) and (max-height: 860px) {
-  /* mniej "pustego" miejsca na dole strony (Dashboard.css daje duży padding) */
   .settings-page .dashboard-main {
     padding-bottom: 1rem;
   }
@@ -228,7 +248,6 @@
     padding-bottom: 0.5rem;
   }
 
-  /* form jako GRID żeby zbić wysokość */
   .settings-page .settings-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -246,7 +265,7 @@
 
   .settings-page .settings-form button[type="submit"] {
     grid-area: submit;
-    margin-top: 0.2rem;   /* było większe przez clamp w bazie */
+    margin-top: 0.2rem;   
     min-height: 38px;
     padding: 0.55rem 0.8rem;
   }
@@ -265,6 +284,29 @@
   }
 }
 
+/* ============================================
+   TABLET - max-height: 820px
+   ============================================ */
+
+@media (max-height: 820px) {
+  .settings-page .settings-card {
+    padding: 0.95rem;
+  }
+
+  .settings-page .settings-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .settings-page .settings-form {
+    gap: 0.75rem;
+  }
+}
+
+/* ============================================
+   TABLET - 768px x 780px (very tight)
+   Minimalne spacing dla małych ekranów
+   ============================================ */
+
 @media (min-width: 768px) and (max-height: 780px) {
   .settings-page .settings-card {
     padding: 0.75rem;
@@ -279,6 +321,11 @@
     padding: 0.45rem 0.65rem;
   }
 }
+
+/* ============================================
+   TABLET - 768px-1440px x max-height: 900px
+   Zbalansowany layout dla średnich ekranów
+   ============================================ */
 
 @media (min-width: 768px) and (max-width: 1440px) and (max-height: 900px) {
   .settings-page .settings-container {
@@ -334,6 +381,10 @@
   }
 }
 
+/* ============================================
+   TABLET - 767px+
+   Tablet responsive - ulepszone spacing
+   ============================================ */
 
 @media (min-width: 767px) {
   .settings-page .settings-container {
@@ -392,6 +443,11 @@
   }
 }
 
+/* ============================================
+   MOBILE - 480px and down
+   Extra tight spacing
+   ============================================ */
+
 @media (max-width: 480px) {
   .settings-card {
     padding: clamp(1rem, 2.5vw, 1.3rem);
@@ -424,6 +480,11 @@
     padding-top: 0.75rem;
   }
 }
+
+/* ============================================
+   VERY SMALL MOBILE - 375px and down
+   Minimalny rozmiar dla starych smartfonów
+   ============================================ */
 
 @media (max-width: 375px) {
   .settings-page .settings-container {
