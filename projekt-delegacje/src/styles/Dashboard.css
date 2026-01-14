@@ -432,36 +432,6 @@ body {
   white-space: nowrap;
 }
 
-.planner-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(1rem, 2vw, 1.5rem);
-}
-
-.planner-grid::-webkit-scrollbar {
-  width: 8px;
-}
-
-.planner-grid::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-}
-
-.planner-grid::-webkit-scrollbar-thumb {
-  background: rgba(200, 216, 235, 0.3);
-  border-radius: 4px;
-}
-
-.planner-grid::-webkit-scrollbar-thumb:hover {
-  background: rgba(200, 216, 235, 0.5);
-}
-
-/* Firefox */
-.planner-grid {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(200, 216, 235, 0.3) rgba(255, 255, 255, 0.05);
-}
-
 .selection-card,
 .delegation-form {
   background: linear-gradient(135deg,
@@ -1194,4 +1164,54 @@ body {
   .dashboard-wrapper {
     padding-bottom: max(0, env(safe-area-inset-bottom));
   }
+}
+
+/* ============================================
+   Jednolite scrollbary 
+   ============================================ */
+
+:root {
+  --sb-track: rgba(255, 255, 255, 0.05);
+  --sb-thumb: rgba(200, 216, 235, 0.3);
+  --sb-thumb-hover: rgba(200, 216, 235, 0.5);
+}
+
+/* Chrome / Edge / Safari */
+.dashboard-wrapper::-webkit-scrollbar,
+.calendar-scroll::-webkit-scrollbar,
+.planner-grid::-webkit-scrollbar,
+.delegations-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dashboard-wrapper::-webkit-scrollbar-track,
+.calendar-scroll::-webkit-scrollbar-track,
+.planner-grid::-webkit-scrollbar-track,
+.delegations-grid::-webkit-scrollbar-track {
+  background: var(--sb-track);
+  border-radius: 4px;
+}
+
+.dashboard-wrapper::-webkit-scrollbar-thumb,
+.calendar-scroll::-webkit-scrollbar-thumb,
+.planner-grid::-webkit-scrollbar-thumb,
+.delegations-grid::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb);
+  border-radius: 4px;
+}
+
+.dashboard-wrapper::-webkit-scrollbar-thumb:hover,
+.calendar-scroll::-webkit-scrollbar-thumb:hover,
+.planner-grid::-webkit-scrollbar-thumb:hover,
+.delegations-grid::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-hover);
+}
+
+/* Firefox */
+.dashboard-wrapper,
+.calendar-scroll,
+.planner-grid,
+.delegations-grid {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb) var(--sb-track);
 }

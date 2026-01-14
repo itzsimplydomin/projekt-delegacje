@@ -9,9 +9,11 @@
 }
 
 .settings-card {
-  background: linear-gradient(135deg,
-      rgba(10, 26, 58, 0.7),
-      rgba(0, 46, 122, 0.5));
+  background: linear-gradient(
+    135deg,
+    rgba(10, 26, 58, 0.7),
+    rgba(0, 46, 122, 0.5)
+  );
   border: 1px solid rgba(200, 216, 235, 0.25);
   border-radius: clamp(16px, 4vw, 20px);
   padding: clamp(1.5rem, 3vw, 2rem);
@@ -61,8 +63,8 @@
   padding: clamp(0.7rem, 1.8vw, 0.85rem) clamp(0.8rem, 2vw, 1rem);
   color: white;
   font-size: clamp(0.9rem, 1.8vw, 1rem);
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   -webkit-appearance: none;
@@ -92,7 +94,7 @@
   border: 1px solid rgba(200, 216, 235, 0.35) !important;
 }
 
-.settings-form button[type='submit'] {
+.settings-form button[type="submit"] {
   margin-top: clamp(0.5rem, 1vw, 1rem);
   width: 100%;
   max-width: 100%;
@@ -145,51 +147,248 @@
   font-size: clamp(0.7rem, 1.3vw, 0.8rem);
 }
 
-
-@media (min-width: 767px) {
-  .settings-form .form-grid {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 1440px) and (max-height: 900px) {
+  .settings-page {
+    --touch-target: 40px;
   }
 
-  .settings-form label.full-width {
-    grid-column: 1 / -1;
+  .settings-page .settings-container {
+    max-width: 760px;
+    padding: 0.75rem 1rem;
   }
 
-  .settings-form button[type='submit'] {
-    max-width: 300px;
-    width: auto;
-    justify-self: start;
-  }
-
-  .settings-form .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .settings-form label.full-width {
-    grid-column: 1 / -1;
-  }
-
-  .settings-form button[type='submit'] {
-    max-width: 100%;
-    width: 100%;
-    justify-self: center;
-  }
-
-  .settings-container {
-    padding: 0;
-  }
-
-  .settings-card {
-    padding: clamp(1rem, 4vw, 1.5rem);
+  .settings-page .settings-card {
+    padding: 1.1rem;
     border-radius: 16px;
   }
 
-  .settings-header h2 {
-    font-size: clamp(1.2rem, 3vw, 1.4rem);
+  .settings-page .settings-header {
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.7rem;
   }
 
-  .logout-btn {
+  .settings-page .settings-form {
+    gap: 0.85rem;
+  }
+
+  .settings-page .settings-form .form-grid {
+    gap: 0.75rem;
+  }
+
+  .settings-page .settings-form input {
+    padding: 0.55rem 0.75rem;
+    min-height: 40px;
+  }
+
+  .settings-page .settings-form button[type='submit'],
+  .settings-page .logout-btn {
+    padding: 0.6rem 0.9rem;
+    min-height: 40px;
+    max-width: 520px;
     width: 100%;
+    justify-self: center; 
+  }
+
+  .settings-page .settings-footer {
+    margin-top: 0.9rem;
+    padding-top: 0.65rem;
+  }
+}
+
+@media (max-height: 820px) {
+  .settings-page .settings-card {
+    padding: 0.95rem;
+  }
+
+  .settings-page .settings-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .settings-page .settings-form {
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 768px) and (max-height: 860px) {
+  /* mniej "pustego" miejsca na dole strony (Dashboard.css daje duży padding) */
+  .settings-page .dashboard-main {
+    padding-bottom: 1rem;
+  }
+
+  .settings-page .settings-container {
+    padding: 0.35rem 0.75rem;
+  }
+
+  .settings-page .settings-card {
+    padding: 0.85rem;
+  }
+
+  .settings-page .settings-header {
+    margin-bottom: 0.55rem;
+    padding-bottom: 0.5rem;
+  }
+
+  /* form jako GRID żeby zbić wysokość */
+  .settings-page .settings-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "grid grid"
+      "submit logout"
+      "footer footer";
+    gap: 0.6rem 0.75rem;
+  }
+
+  .settings-page .settings-form .form-grid {
+    grid-area: grid;
+    gap: 0.55rem;
+  }
+
+  .settings-page .settings-form button[type="submit"] {
+    grid-area: submit;
+    margin-top: 0.2rem;   /* było większe przez clamp w bazie */
+    min-height: 38px;
+    padding: 0.55rem 0.8rem;
+  }
+
+  .settings-page .logout-btn {
+    grid-area: logout;
+    margin-top: 0.2rem;
+    min-height: 38px;
+    padding: 0.55rem 0.8rem;
+  }
+
+  .settings-page .settings-footer {
+    grid-area: footer;
+    margin-top: 0.6rem;   
+    padding-top: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-height: 780px) {
+  .settings-page .settings-card {
+    padding: 0.75rem;
+  }
+
+  .settings-page .settings-form .form-grid {
+    gap: 0.45rem;
+  }
+
+  .settings-page .settings-form input {
+    min-height: 36px;
+    padding: 0.45rem 0.65rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1440px) and (max-height: 900px) {
+  .settings-page .settings-container {
+    padding: 0.4rem 0.75rem;
+    max-width: 760px;
+  }
+
+  .settings-page .settings-card {
+    padding: 0.85rem;
+    border-radius: 12px;
+  }
+
+  .settings-page .settings-header {
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.55rem;
+  }
+
+  .settings-page .settings-header h2 {
+    font-size: 1.05rem;
+    margin: 0.25rem 0 0.15rem;
+  }
+
+  .settings-page .settings-form {
+    gap: 0.7rem;
+  }
+
+  .settings-page .settings-form .form-grid {
+    gap: 0.55rem;
+  }
+
+  .settings-page .settings-form input {
+    padding: 0.5rem 0.65rem;
+    font-size: 0.9rem;
+    min-height: 38px;
+  }
+  
+  .settings-page .settings-form button[type="submit"] {
+    margin-top: 0.35rem;
+    min-height: 38px;
+    padding: 0.55rem 0.9rem;
+  }
+
+  .settings-page .logout-btn {
+    margin-top: 0.5rem;
+    min-height: 38px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.9rem;
+  }
+
+  .settings-page .settings-footer {
+    margin-top: 0.75rem;
+    padding-top: 0.55rem;
+  }
+}
+
+
+@media (min-width: 767px) {
+  .settings-page .settings-container {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .settings-page .settings-card {
+    padding: 0.95rem;
+    border-radius: 14px;
+  }
+
+  .settings-page .settings-header {
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .settings-page .settings-header h2 {
+    font-size: 1.15rem;
+    margin: 0.35rem 0 0.2rem;
+  }
+
+  .settings-page .settings-form {
+    gap: 0.85rem;
+  }
+
+  .settings-page .settings-form .form-grid {
+    gap: 0.65rem;
+  }
+
+  .settings-page .settings-form label {
+    font-size: 0.82rem;
+    gap: 0.25rem;
+  }
+
+  .settings-page .settings-form input {
+    padding: 0.55rem 0.7rem;
+    font-size: 0.9rem;
+    min-height: 42px;
+  }
+
+  .settings-page .settings-form button[type="submit"],
+  .settings-page .logout-btn {
+    padding: 0.65rem 0.9rem;
+    font-size: 0.9rem;
+    min-height: 42px;
+  }
+
+  .settings-page .settings-footer {
+    margin-top: 1rem;
+    padding-top: 0.65rem;
+  }
+
+  .settings-page .app-version,
+  .settings-page .app-license {
+    font-size: 0.75rem;
   }
 }
 
@@ -227,13 +426,21 @@
 }
 
 @media (max-width: 375px) {
-    .settings-card {
-        padding: 0.75rem;
-    }
+  .settings-page .settings-container {
+    padding: 0.4rem 0.6rem;
+  }
 
-    .settings-form button[type='submit'],
-    .logout-btn {
-        font-size: 0.8rem;
-        padding: 0.6rem 0.9rem;
-    }
+  .settings-page .settings-card {
+    padding: 0.8rem;
+  }
+
+  .settings-page .settings-form input,
+  .settings-page .settings-form button[type="submit"],
+  .settings-page .logout-btn {
+    min-height: 40px;
+  }
 }
+
+
+
+
