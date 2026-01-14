@@ -1,5 +1,3 @@
-
-
 .settings-container {
   max-width: 900px;
   margin: 0 auto;
@@ -148,9 +146,7 @@
 }
 
 
-
-/* Tablet - 768px+ */
-@media (min-width: 768px) {
+@media (min-width: 767px) {
   .settings-form .form-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -178,30 +174,25 @@
     width: 100%;
     justify-self: center;
   }
-}
 
-@media (max-width: 767px) {
   .settings-container {
     padding: 0;
   }
 
   .settings-card {
-    padding: clamp(1rem, 4vw, 1.25rem);
+    padding: clamp(1rem, 4vw, 1.5rem);
+    border-radius: 16px;
+  }
+
+  .settings-header h2 {
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+  }
+
+  .logout-btn {
+    width: 100%;
   }
 }
 
-/* Desktop - 1024px+ */
-@media (min-width: 1024px) {
-  .settings-container {
-    max-width: 700px;
-  }
-
-  .settings-card {
-    padding: 2.5rem;
-  }
-}
-
-/* Mobile - max 480px */
 @media (max-width: 480px) {
   .settings-card {
     padding: clamp(1rem, 2.5vw, 1.3rem);
@@ -212,7 +203,37 @@
     padding-bottom: 0.8rem;
   }
 
-  .settings-form .form-grid {
-    gap: 0.8rem;
+  .settings-header h2 {
+    font-size: 1.15rem;
   }
+
+  .settings-form .form-grid {
+    gap: 0.75rem;
+  }
+
+  .settings-form label {
+    font-size: 0.8rem;
+  }
+
+  .settings-form input {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.7rem;
+  }
+
+  .settings-footer {
+    margin-top: 1.25rem;
+    padding-top: 0.75rem;
+  }
+}
+
+@media (max-width: 375px) {
+    .settings-card {
+        padding: 0.75rem;
+    }
+
+    .settings-form button[type='submit'],
+    .logout-btn {
+        font-size: 0.8rem;
+        padding: 0.6rem 0.9rem;
+    }
 }

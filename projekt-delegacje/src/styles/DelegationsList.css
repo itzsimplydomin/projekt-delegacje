@@ -308,10 +308,7 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: clamp(1rem, 2vw, 1.5rem);
     width: 100%;
-    max-height: calc(100vh - clamp(60px, 12vw, 80px) - 300px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 0.5rem;
+
 }
 
 .delegations-grid::-webkit-scrollbar {
@@ -590,142 +587,102 @@
    (iPhone / Android)
    ============================================ */
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
+    
     .hero-card {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.8rem;
-        padding: 1rem;
-        align-items: stretch;
+        align-items: center;
+        text-align: center;
+        padding: 0.85rem;
+        gap: 0.75rem;
     }
 
     .hero-card>div:first-child {
-        grid-column: 1 / -1;
+        width: 100%;
         text-align: center;
-        margin-bottom: 0.2rem;
-    }
-
-    /* Licznik delegacji */
-    .hero-meta:not(.hero-meta-diet):not(.month-filter) {
-        grid-column: 1 / 2;
-    }
-
-    /* DODAJ: Licznik diet */
-    .hero-meta-diet {
-        grid-column: 2 / 3;
-        padding: 0.8rem 0.5rem;
-    }
-
-    /* Filtr miesiąca na całą szerokość */
-    .month-filter,
-    .employee-filter {
-        grid-column: 1 / -1;
-        width: 100%;
-        padding: 0.8rem 0.5rem;
-        flex-direction: row;
-        justify-content: center;
-        gap: 0.4rem;
-        height: auto;
-        margin: 0;
-        border-radius: 12px;
-    }
-
-    .hero-card h1 {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .hero-card .subtitle {
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-        opacity: 0.8;
-    }
-
-    .hero-meta {
-        grid-column: 1 / 2;
-        width: 100%;
-        min-width: 0;
-        padding: 0.8rem 0.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 0;
-        border-radius: 12px;
-    }
-
-
-
-    .metric-value {
-        font-size: 1.8rem;
-    }
-
-    .month-filter {
-        grid-column: 2 / 3;
-        width: 100%;
-        padding: 0.8rem 0.5rem;
-        flex-direction: column;
-        justify-content: center;
-        gap: 0.4rem;
-        height: auto;
-        margin: 0;
-        border-radius: 12px;
-    }
-
-    .month-filter-label {
-        font-size: 0.7rem;
-        text-align: center;
-        width: 100%;
-        margin: 0;
-    }
-
-    .month-filter-input {
-        width: 100%;
-        padding: 0.3rem 0.2rem;
-        font-size: 0.8rem;
-        text-align: center;
-        background: rgba(255, 255, 255, 0.12);
-        border-radius: 6px;
-        min-height: 32px;
-    }
-
-    .month-filter-clear {
-        padding: 0.3rem;
-        font-size: 0.75rem;
-        width: 100%;
-        margin-top: 0.2rem;
-        min-height: 30px;
-    }
-
-    .delegations-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .delegations-card {
-        padding: 1rem;
-    }
-
-    .action-message {
-        max-width: calc(100% - 2rem);
-        font-size: 0.85rem;
-        padding: 0.65rem 0.85rem;
-    }
-
-    .action-message-icon {
-        width: 20px;
-        height: 20px;
-        font-size: 0.9rem;
-    }
-}
-
-/* Fix dla bardzo małych ekranów  */
-@media (max-width: 360px) {
-    .hero-card {
-        grid-template-columns: 1fr;
     }
 
     .hero-meta,
-    .month-filter {
-        grid-column: 1 / -1;
+    .hero-meta-diet,
+    .month-filter,
+    .employee-filter {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .hero-card h1 {
+        font-size: clamp(1.25rem, 4vw, 1.5rem);
+    }
+
+    .hero-card .subtitle {
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+    }
+
+    .metric-value {
+        font-size: clamp(1.6rem, 5vw, 2rem);
+    }
+
+    .employee-filter {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .employee-filter-label {
+        font-size: 0.75rem;
+        text-align: center;
+        width: 100%;
+    }
+
+    .employee-filter-input {
+        width: 100%;
+        min-width: 0;
+        font-size: 0.85rem;
+    }
+
+    .employee-filter-clear {
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+}
+
+/* Small mobile - 480px and down */
+@media (max-width: 480px) {
+
+    .delegations-card {
+        padding: clamp(0.8rem, 2vw, 1rem);
+    }
+
+    .card-title {
+        font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    }
+
+    .action-btn {
+        font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+        padding: clamp(0.45rem, 1.2vw, 0.6rem) clamp(0.6rem, 1.5vw, 0.8rem);
+    }
+
+    .month-filter-input,
+    .employee-filter-input {
+        font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+        padding: 0.5rem 0.65rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .hero-card {
+        padding: 0.8rem;
+    }
+
+    .delegations-card {
+        padding: 0.75rem;
+    }
+
+    .card-actions {
+        flex-direction: column;
+    }
+
+    .action-btn {
+        width: 100%;
     }
 }
