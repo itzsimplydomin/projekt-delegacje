@@ -3,11 +3,13 @@ import type { Delegacja, DelegacjaCreate, LoginRequest, ChangePasswordRequest, C
 
 // Bazowy klient HTTP dla całej aplikacji
 export const api = axios.create({
-  baseURL: 'https://delegacjeartikon-ebfdgjgwesagfzha.polandcentral-01.azurewebsites.net', // adres Twojego backendu ASP.NET
+  baseURL: 'https://delegacjeartikon-ebfdgjgwesagfzha.polandcentral-01.azurewebsites.net', // adres backendu ASP.NET
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+// interceptor dodający token do nagłówków żądań
 api.interceptors.request.use((config) => {
   if (config.url?.includes('/api/Auth/login')) {
     return config;
@@ -39,6 +41,7 @@ export const login = async (payload: LoginRequest) => {
   };
 };
 
+// funkcja zmiany hasła
 export const changePassword = async (
   payload: ChangePasswordRequest
 ): Promise<ChangePasswordResponse> => {

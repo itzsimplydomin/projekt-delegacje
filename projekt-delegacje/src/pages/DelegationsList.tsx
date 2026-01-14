@@ -208,7 +208,7 @@ export const DelegationsList = () => {
     const handleSaveEdit = async (id: string) => {
         setActionMessage(null);
         try {
-            // Poprawiona konwersja dat - zachowaj lokalny czas
+            // Poprawiona konwersja dat
             const payload: Partial<DelegacjaCreate> = {};
 
             if (editForm.miejsce !== undefined) {
@@ -296,13 +296,20 @@ export const DelegationsList = () => {
                     </button>
 
                     <nav
+                        id='main-nav'
                         className={`main-nav ${menuOpen ? 'open' : ''}`}
                         role="navigation"
                         aria-label="Menu główne"
                     >
-                        <button onClick={() => navigate('/delegacje')} style={{ background: 'none', border: 'none', color: 'var(--white)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(0.8rem, 2vw, 0.9em)', cursor: 'pointer', transition: 'color 0.3s ease' }}>Kalendarz</button>
-                        <button onClick={() => navigate('/delegacje/lista')} style={{ background: 'none', border: 'none', color: 'var(--white)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(0.8rem, 2vw, 0.9em)', cursor: 'pointer', transition: 'color 0.3s ease' }}>Delegacje</button>
-                        <button onClick={() => navigate('/delegacje/ustawienia')} style={{ background: 'none', border: 'none', color: 'var(--white)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(0.8rem, 2vw, 0.9em)', cursor: 'pointer', transition: 'color 0.3s ease' }}>Ustawienia</button>
+                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje'); }}>
+                            Kalendarz
+                        </button>
+                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/lista'); }}>
+                            Delegacje
+                        </button>
+                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/ustawienia'); }}>
+                            Ustawienia
+                        </button>
                     </nav>
                 </div>
             </header>

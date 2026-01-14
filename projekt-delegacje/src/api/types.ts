@@ -1,10 +1,10 @@
-// typ requestu logowania - zgodny z kontrolerem w ASP.NET
+// typ requestu logowania zgodny z kontrolerem w ASP.NET
 export interface LoginRequest {
   email: string;
   password: string;
 }
 
-// to, co zwraca AuthController
+// to co zwraca AuthController
 export interface LoginResponse {
   success: boolean;
   message?: string;

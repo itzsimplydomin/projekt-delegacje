@@ -34,13 +34,16 @@ body {
   left: 0;
   width: 100%;
   height: clamp(60px, 12vw, 80px);
-  background: linear-gradient(90deg,
-      var(--navy) 0%,
-      var(--navy-darker) 50%,
-      var(--navy-darkest) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--navy) 0%,
+    var(--navy-darker) 50%,
+    var(--navy-darkest) 100%
+  );
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) 0 env(safe-area-inset-left, 0);
+  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) 0
+    env(safe-area-inset-left, 0);
 }
 
 .nav-center {
@@ -86,6 +89,38 @@ body {
   white-space: nowrap;
 }
 
+.main-nav .nav-link {
+  background: none;
+  border: none;
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(0.8rem, 2vw, 0.9em);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  min-height: var(--touch-target);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+}
+
+.main-nav .nav-link:hover {
+  color: var(--ocean-blue);
+}
+
+.main-nav .nav-link:active {
+  transform: translateY(1px);
+}
+
+.main-nav .nav-link:focus-visible {
+  outline: 2px solid rgba(200, 216, 235, 0.7);
+  outline-offset: 2px;
+}
+
 .main-nav a:hover {
   color: var(--ocean-blue);
 }
@@ -113,11 +148,13 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0)
+    env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
 }
 
 .dashboard-main {
-  padding: calc(clamp(60px, 12vw, 80px) + clamp(0.75rem, 2vw, 1.25rem)) clamp(0.75rem, 3vw, 1rem) clamp(1.5rem, 3vw, 3rem);
+  padding: calc(clamp(60px, 12vw, 80px) + clamp(0.75rem, 2vw, 1.25rem))
+    clamp(0.75rem, 3vw, 1rem) clamp(1.5rem, 3vw, 3rem);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -126,7 +163,11 @@ body {
 }
 
 .hero-card {
-  background: linear-gradient(135deg, rgba(10, 26, 58, 0.7), rgba(0, 46, 122, 0.5));
+  background: linear-gradient(
+    135deg,
+    rgba(10, 26, 58, 0.7),
+    rgba(0, 46, 122, 0.5)
+  );
   border: 1px solid rgba(200, 216, 235, 0.25);
   border-radius: clamp(16px, 4vw, 20px);
   padding: clamp(1rem, 3vw, 1.5rem);
@@ -239,7 +280,11 @@ body {
 }
 
 .calendar-shell {
-  background: linear-gradient(135deg, rgba(10, 26, 58, 0.7), rgba(0, 46, 122, 0.5));
+  background: linear-gradient(
+    135deg,
+    rgba(10, 26, 58, 0.7),
+    rgba(0, 46, 122, 0.5)
+  );
   border: 1px solid rgba(200, 216, 235, 0.25);
   border-radius: clamp(16px, 4vw, 20px);
   padding: clamp(1rem, 2.5vw, 1.5rem);
@@ -304,7 +349,6 @@ body {
   gap: clamp(0.2rem, 0.5vw, 0.25rem);
 }
 
-
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -323,7 +367,8 @@ body {
   color: white;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease,
+    background 0.2s ease;
   font-size: clamp(0.75rem, 1.5vw, 0.9rem);
   backdrop-filter: blur(10px);
   display: flex;
@@ -365,7 +410,11 @@ body {
 .calendar-day.selected {
   border-color: var(--pale-blue);
   box-shadow: 0 8px 40px rgba(200, 216, 235, 0.4);
-  background: linear-gradient(135deg, rgba(106, 155, 216, 0.3), rgba(200, 216, 235, 0.2));
+  background: linear-gradient(
+    135deg,
+    rgba(106, 155, 216, 0.3),
+    rgba(200, 216, 235, 0.2)
+  );
 }
 
 .calendar-day.range-edge {
@@ -374,7 +423,7 @@ body {
 }
 
 .calendar-day.has-delegation::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: clamp(8px, 2vw, 14px);
@@ -401,32 +450,36 @@ body {
 }
 
 .planner-grid::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 .planner-grid::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
 }
 
 .planner-grid::-webkit-scrollbar-thumb {
-    background: rgba(200, 216, 235, 0.3);
-    border-radius: 4px;
+  background: rgba(200, 216, 235, 0.3);
+  border-radius: 4px;
 }
 
 .planner-grid::-webkit-scrollbar-thumb:hover {
-    background: rgba(200, 216, 235, 0.5);
+  background: rgba(200, 216, 235, 0.5);
 }
 
 /* Firefox */
 .planner-grid {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(200, 216, 235, 0.3) rgba(255, 255, 255, 0.05);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 216, 235, 0.3) rgba(255, 255, 255, 0.05);
 }
 
 .selection-card,
 .delegation-form {
-  background: linear-gradient(135deg, rgba(10, 26, 58, 0.7), rgba(0, 46, 122, 0.5));
+  background: linear-gradient(
+    135deg,
+    rgba(10, 26, 58, 0.7),
+    rgba(0, 46, 122, 0.5)
+  );
   border: 1px solid rgba(200, 216, 235, 0.25);
   border-radius: clamp(12px, 3vw, 16px);
   padding: clamp(1rem, 2.5vw, 1.2rem) clamp(1rem, 2.5vw, 1.3rem);
@@ -521,7 +574,8 @@ body {
   padding: clamp(0.6rem, 1.5vw, 0.75rem) clamp(0.7rem, 1.5vw, 0.9rem);
   color: white;
   font-size: clamp(0.9rem, 1.5vw, 1rem);
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   -webkit-appearance: none;
@@ -599,7 +653,6 @@ body {
    ============================================ */
 
 @media (min-width: 1024px) {
-
   .form-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -633,7 +686,7 @@ body {
     overflow-x: hidden;
   }
 
-  .dashboard-main {
+  .dashboard-page .dashboard-main {
     display: grid;
     grid-template-rows: auto 1fr;
     height: 100vh;
@@ -724,11 +777,64 @@ body {
   }
 }
 
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .dashboard-main {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
 /* ============================================
    TABLET - 768px to 1023px
    ============================================ */
 
 @media (min-width: 768px) and (max-width: 1023px) {
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-center {
+    justify-content: space-between;
+  }
+
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+      90deg,
+      var(--navy) 0%,
+      var(--navy-darker) 50%,
+      var(--navy-darkest) 100%
+    );
+    backdrop-filter: blur(10px);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 0 0 16px 16px;
+    padding: 1.5rem 0;
+    gap: 0.75rem;
+  }
+
+  .main-nav.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .main-nav .nav-link {
+    width: min(520px, 92%);
+    justify-content: center;
+  }
 
   .form-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -814,10 +920,12 @@ body {
     top: 100%;
     left: 0;
     right: 0;
-    background: linear-gradient(90deg,
-        var(--navy) 0%,
-        var(--navy-darker) 50%,
-        var(--navy-darkest) 100%);
+    background: linear-gradient(
+      90deg,
+      var(--navy) 0%,
+      var(--navy-darker) 50%,
+      var(--navy-darkest) 100%
+    );
     backdrop-filter: blur(10px);
     transform: translateY(-100%);
     opacity: 0;
@@ -934,7 +1042,8 @@ body {
   }
 
   .dashboard-main {
-    padding: calc(clamp(60px, 12vw, 70px) + 0.75rem) clamp(0.6rem, 2vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+    padding: calc(clamp(60px, 12vw, 70px) + 0.75rem) clamp(0.6rem, 2vw, 0.75rem)
+      clamp(1rem, 2vw, 1.5rem);
     gap: 1rem;
   }
 

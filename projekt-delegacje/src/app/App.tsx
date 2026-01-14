@@ -6,6 +6,7 @@ import { DelegationsList } from '../pages/DelegationsList';
 import { Settings } from '../pages/Settings';
 import { Providers } from './providers';
 
+// Główna aplikacja
 export const App = () => {
   return (
     <Providers>

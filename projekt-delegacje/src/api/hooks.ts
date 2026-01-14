@@ -3,8 +3,9 @@ import { getDelegacje, deleteDelegacja, updateDelegacja, changePassword} from '.
 import type { Delegacja, DelegacjaCreate, ChangePasswordRequest } from './types';
 import { api } from './client';
 
+// pobieranie, cachewanie, synchronizacja danych z serwerem 
 
-// istniejacy hook do pobierania delegacji
+// hook do pobierania delegacji
 export const useDelegacje = () => {
   return useQuery<Delegacja[]>({
     queryKey: ['delegacje'],
@@ -12,7 +13,7 @@ export const useDelegacje = () => {
   });
 };
 
-// nowe hooki
+// hook do usunięcia delegacji
 export const useDeleteDelegacja = () => {
   const queryClient = useQueryClient();
   
@@ -24,6 +25,7 @@ export const useDeleteDelegacja = () => {
   });
 };
 
+// hook do edycji delegacji
 export const useUpdateDelegacja = () => {
   const queryClient = useQueryClient();
   
@@ -36,6 +38,7 @@ export const useUpdateDelegacja = () => {
   });
 };
 
+// hook do generowania PDF
 export const useGeneratePdf = () => {
   return useMutation({
     mutationFn: async (id: string) => {

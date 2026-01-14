@@ -1,12 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { type ReactNode, useState } from 'react';
 
+// Provider dla React Query
 interface ProvidersProps {
   children: ReactNode;
 }
 
+// Ustawienia i konfiguracja dostawców kontekstu
 export const Providers = ({ children }: ProvidersProps) => {
-  // QueryClient musi być tworzony raz na cały lifecycle aplikacji
   const [queryClient] = useState(
     () =>
       new QueryClient({
