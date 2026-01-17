@@ -1,3 +1,13 @@
+## Dane autora projektu
+
+| Pole | Wartość |
+|------|----------|
+| **Imię i nazwisko:** | Dominik Pakuła, Paweł Kulesza |
+| **Numer indeksu:** | 322960, 322948 |
+| **Temat projektu:** | Aplikacja do delegacji |
+
+---
+
 # 📄 Aplikacja Delegacje
 
 Aplikacja **Delegacje** to system umożliwiający obsługę delegacji służbowych w przedsiębiorstwie. Projekt składa się z części backendowej oraz frontendowej i został wdrożony w środowisku chmurowym **Microsoft Azure**.
