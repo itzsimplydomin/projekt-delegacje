@@ -141,6 +141,16 @@ namespace DelegacjaAPI.Services
                 .Where(d => d.UserEmail == email)
                 .ToList();
         }
+        public async Task<List<Delegacja>> GetDelegacjeByMonthAsync(int year, int month)
+        {
+            var all = await GetAllDelegationsAsync();
+
+            return all
+                .Where(d =>
+                    d.DataZakonczenia.Year == year &&
+                    d.DataZakonczenia.Month == month)
+                .ToList();
+        }
 
     }
 }

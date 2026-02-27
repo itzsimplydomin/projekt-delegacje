@@ -185,6 +185,45 @@ namespace DelegacjaAPI.Controllers
                 $"delegacja-{id}.pdf"
             );
         }
+        [Authorize(Roles = "Admin")]
+        [HttpPost("monthly-pdf")]
+        public async Task<IActionResult> GenerateMonthlyPdf(int year,int month,[FromServices] BlobStorageService blobService)
+        {
+            var delegacje = await _tableService
+                .GetDelegacjeByMonthAsync(year, month);
+
+            if (!delegacje.Any())
+                return NotFound("Brak delegacji w podanym miesiącu.");
+
+            var document = new DelegacjeMonthlyPdf(delegacje, year, month);
+
+            byte[] pdfBytes;
+
+            using (var stream = new MemoryStream())
+            {
+                document.GeneratePdf(stream);
+                pdfBytes = stream.ToArray();
+            }
+
+            var fileName = $"delegacje-{year}-{month:D2}.pdf";
+
+            // zapis lokalny
+            var localPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                fileName
+            );
+
+            await System.IO.File.WriteAllBytesAsync(localPath, pdfBytes);
+
+            // zapis do Azure Blob
+            await blobService.UploadPdfAsync(pdfBytes, fileName);
+
+            return File(
+                pdfBytes,
+                "application/pdf",
+                fileName
+            );
+        }
 
 
     }
