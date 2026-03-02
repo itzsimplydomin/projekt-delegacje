@@ -185,20 +185,39 @@ namespace DelegacjaAPI.Controllers
                 $"delegacja-{id}.pdf"
             );
         }
-        [Authorize(Roles = "Admin")]
         [HttpPost("monthly-pdf")]
-        public async Task<IActionResult> GenerateMonthlyPdf(int year,int month,[FromServices] BlobStorageService blobService)
+        [Authorize]
+        public async Task<IActionResult> GenerateMonthlyPdf(
+    int year,
+    int month,
+    string? userEmail,
+    [FromServices] BlobStorageService blobService)
         {
+            var isAdmin = User.IsInRole("Admin");
+            var loggedEmail = User.Identity!.Name!;
+
+            string? filterEmail = null;
+
+            if (isAdmin)
+            {
+                // admin może filtrować po użytkowniku lub nie
+                filterEmail = userEmail;
+            }
+            else
+            {
+                // pracownik widzi tylko siebie
+                filterEmail = loggedEmail;
+            }
+
             var delegacje = await _tableService
-                .GetDelegacjeByMonthAsync(year, month);
+                .GetDelegacjeByMonthAsync(year, month, filterEmail);
 
             if (!delegacje.Any())
-                return NotFound("Brak delegacji w podanym miesiącu.");
+                return NotFound("Brak delegacji");
 
             var document = new DelegacjeMonthlyPdf(delegacje, year, month);
 
             byte[] pdfBytes;
-
             using (var stream = new MemoryStream())
             {
                 document.GeneratePdf(stream);
@@ -207,22 +226,10 @@ namespace DelegacjaAPI.Controllers
 
             var fileName = $"delegacje-{year}-{month:D2}.pdf";
 
-            // zapis lokalny
-            var localPath = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                fileName
-            );
-
-            await System.IO.File.WriteAllBytesAsync(localPath, pdfBytes);
-
-            // zapis do Azure Blob
+            await blobService.SavePdfLocallyAsync(pdfBytes, fileName);
             await blobService.UploadPdfAsync(pdfBytes, fileName);
 
-            return File(
-                pdfBytes,
-                "application/pdf",
-                fileName
-            );
+            return File(pdfBytes, "application/pdf", fileName);
         }
 
 
