@@ -16,9 +16,12 @@ namespace DelegacjaAPI.Services
             _container.CreateIfNotExists();
         }
 
-        public async Task UploadPdfAsync(byte[] pdfBytes, string delegacjaId)
+        public async Task UploadPdfAsync(byte[] pdfBytes, string fileName)
         {
-            var blob = _container.GetBlobClient($"{delegacjaId}.pdf");
+            if (!fileName.EndsWith(".pdf"))
+                fileName += ".pdf";
+
+            var blob = _container.GetBlobClient(fileName);
 
             using var stream = new MemoryStream(pdfBytes);
 
@@ -28,6 +31,18 @@ namespace DelegacjaAPI.Services
             {
                 ContentType = "application/pdf"
             });
+        }
+        public async Task SavePdfLocallyAsync(byte[] pdfBytes, string fileName)
+        {
+            if (!fileName.EndsWith(".pdf"))
+                fileName += ".pdf";
+
+            var path = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                fileName
+            );
+
+            await File.WriteAllBytesAsync(path, pdfBytes);
         }
 
     }

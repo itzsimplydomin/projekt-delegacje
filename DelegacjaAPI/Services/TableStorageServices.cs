@@ -141,6 +141,58 @@ namespace DelegacjaAPI.Services
                 .Where(d => d.UserEmail == email)
                 .ToList();
         }
+        public async Task<List<Delegacja>> GetDelegacjeByMonthAsync(int year, int month, string? email = null)
+        {
+            var all = await GetAllDelegationsAsync();
+
+            var filtered = all
+                .Where(d =>
+                    d.DataZakonczenia.Year == year &&
+                    d.DataZakonczenia.Month == month);
+
+            if (!string.IsNullOrEmpty(email))
+                filtered = filtered.Where(d => d.UserEmail == email);
+
+            return filtered
+                .OrderBy(d => d.PracownikNazwisko)
+                .ThenBy(d => d.PracownikImie)
+                .ThenBy(d => d.DataRozpoczecia)
+                .ToList();
+        }
+        public decimal CalculateDelegationValue(Delegacja d)
+        {
+            var start = d.DataRozpoczecia;
+            var end = d.DataZakonczenia;
+
+            if (end <= start)
+                return 0;
+
+            decimal total = 0;
+
+            var current = start.Date;
+
+            while (current <= end.Date)
+            {
+                DateTime dayStart = current == start.Date
+                    ? start
+                    : current;
+
+                DateTime dayEnd = current == end.Date
+                    ? end
+                    : current.AddDays(1);
+
+                var hours = (dayEnd - dayStart).TotalHours;
+
+                if (hours >= 12)
+                    total += 45m;
+                else if (hours >= 8)
+                    total += 22.5m;
+
+                current = current.AddDays(1);
+            }
+
+            return total;
+        }
 
     }
 }
