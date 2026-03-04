@@ -43,12 +43,14 @@
   display: flex;
   flex-direction: column;
   gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: center;
 }
 
 .settings-form .form-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: clamp(1rem, 2vw, 1.2rem);
+  width: 100%;
 }
 
 /* Etykieta pola formularza */
@@ -100,11 +102,11 @@
   border: 1px solid rgba(200, 216, 235, 0.35) !important;
 }
 
-/* Przycisk submit - responsywny, fullwidth */
+/* Przycisk submit - responsywny */
 .settings-form button[type="submit"] {
   margin-top: clamp(0.5rem, 1vw, 1rem);
   width: 100%;
-  max-width: 100%;
+  max-width: 400px;
 }
 
 /* Footer karty - informacja i przycisk logout */
@@ -130,7 +132,7 @@
   touch-action: manipulation;
   min-height: var(--touch-target);
   width: 100%;
-  max-width: 100%;
+  max-width: 400px;
 }
 
 .logout-btn:hover,

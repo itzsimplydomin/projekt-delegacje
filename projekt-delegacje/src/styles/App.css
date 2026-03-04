@@ -3,3 +3,12 @@
   margin: 0 auto;
   padding: 3rem 0;
 }
+
+.route-loading {
+  display: grid;
+  place-items: center;
+  min-height: 50vh;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
