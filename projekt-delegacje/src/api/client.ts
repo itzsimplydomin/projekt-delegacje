@@ -120,6 +120,30 @@ export const generatePdf = async (id: string) => {
   window.URL.revokeObjectURL(url);
 };
 
+// Generowanie miesięcznego PDF
+export const generateMonthlyPdf = async (params: {
+  year: number;
+  month: number;
+  userEmail?: string;
+}): Promise<Blob> => {
+  const searchParams = new URLSearchParams({
+    year: params.year.toString(),
+    month: params.month.toString(),
+  });
+
+  if (params.userEmail) {
+    searchParams.append('userEmail', params.userEmail);
+  }
+
+  const response = await api.post(
+    `/api/Delegacje/monthly-pdf?${searchParams.toString()}`,
+    null,
+    { responseType: 'blob' }
+  );
+
+  return response.data as Blob;
+};
+
 // Sprawdzanie czy użytkownik ma rolę Admin
 export const isAdmin = (): boolean => {
   const token = localStorage.getItem('token');

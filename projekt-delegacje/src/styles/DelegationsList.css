@@ -589,13 +589,84 @@
     gap: clamp(1rem, 2vw, 1.5rem);
 }
 
+/* Przycisk raportu miesięcznego PDF */
+.monthly-pdf-btn-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.monthly-pdf-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(106, 155, 216, 0.25), rgba(200, 216, 235, 0.15));
+    border: 1px solid rgba(200, 216, 235, 0.4);
+    border-radius: clamp(10px, 2vw, 12px);
+    color: var(--white);
+    font-weight: 700;
+    font-size: clamp(0.82rem, 1.5vw, 0.92rem);
+    padding: clamp(0.65rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.4rem);
+    cursor: pointer;
+    min-height: var(--touch-target);
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    box-shadow: 0 4px 16px rgba(106, 155, 216, 0.2);
+}
+
+.monthly-pdf-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(106, 155, 216, 0.4), rgba(200, 216, 235, 0.25));
+    border-color: var(--pale-blue);
+    box-shadow: 0 8px 28px rgba(106, 155, 216, 0.35);
+    transform: translateY(-1px);
+}
+
+.monthly-pdf-btn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.monthly-pdf-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Badge z miesiącem / pracownikiem */
+.monthly-pdf-badge {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(200, 216, 235, 0.3);
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+    font-size: 0.8em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.monthly-pdf-badge--person {
+    background: rgba(106, 155, 216, 0.2);
+    border-color: rgba(106, 155, 216, 0.4);
+}
+
+/* Podpowiedź gdy brak miesiąca */
+.monthly-pdf-hint {
+    color: rgba(200, 216, 235, 0.55);
+    font-size: clamp(0.7rem, 1.2vw, 0.75rem);
+    text-align: center;
+    margin: 0;
+}
+
+
 /* ============================================
    MOBILE - 0 to 767px
    1-kolumnowy layout, filtry fullwidth
    ============================================ */
 
 @media (max-width: 767px) {
-    
+
     .hero-card {
         display: grid;
         align-items: center;
@@ -650,6 +721,14 @@
         width: 100%;
         font-size: 0.8rem;
         padding: 0.5rem;
+    }
+
+    .monthly-pdf-btn-wrap {
+        width: 100%;
+    }
+
+    .monthly-pdf-btn {
+        width: 100%;
     }
 }
 

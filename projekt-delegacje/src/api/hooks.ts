@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'; // Importowanie hooków z React Query
-import { getDelegacje, deleteDelegacja, updateDelegacja, changePassword} from './client';
+import { getDelegacje, deleteDelegacja, updateDelegacja, changePassword, generateMonthlyPdf } from './client';
 import type { Delegacja, DelegacjaCreate, ChangePasswordRequest } from './types';
 import { api } from './client';
 
@@ -68,5 +68,12 @@ export const useChangePassword = () => {
   // Użycie hooka useMutation do zmiany hasła
   return useMutation({
     mutationFn: (payload: ChangePasswordRequest) => changePassword(payload),
+  });
+};
+
+// hook do generowania miesięcznego PDF
+export const useGenerateMonthlyPdf = () => {
+  return useMutation({
+    mutationFn: generateMonthlyPdf,
   });
 };

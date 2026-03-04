@@ -1,7 +1,7 @@
 import '/src/styles/App.css';
 import '/src/styles/DelegationsList.css';
 import '/src/styles/Dashboard.css';
-import { useDelegacje, useDeleteDelegacja, useUpdateDelegacja, useGeneratePdf } from '../api/hooks';
+import { useDelegacje, useDeleteDelegacja, useUpdateDelegacja, useGeneratePdf, useGenerateMonthlyPdf } from '../api/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import logo from '/src/img/logoArtikon.png';
@@ -104,6 +104,7 @@ export const DelegationsList = () => {
     const deleteMutation = useDeleteDelegacja();
     const updateMutation = useUpdateDelegacja();
     const generatePdfMutation = useGeneratePdf();
+    const generateMonthlyPdfMutation = useGenerateMonthlyPdf();
 
     // Stany komponentu
     const [menuOpen, setMenuOpen] = useState(false);
@@ -201,6 +202,51 @@ export const DelegationsList = () => {
                 type: 'error',
                 text: 'Nie udało się wygenerować PDF',
             });
+        }
+    };
+
+    const handleGenerateMonthlyPdf = async () => {
+        if (!monthFilter) {
+            setActionMessage({ type: 'error', text: 'Najpierw wybierz miesiąc w filtrze powyżej' });
+            return;
+        }
+
+        setActionMessage(null);
+        const [year, month] = monthFilter.split('-').map(Number);
+
+        // employeeFilter to imię/nazwisko - dla admina szukamy emaila pasującego delegacji
+        // backend przyjmuje userEmail, więc dla admina z filtrem pracownika
+        // znajdź email pierwszego pasującego pracownika z aktualnie przefiltrowanych delegacji
+        let resolvedEmail: string | undefined;
+        if (isAdminUser && employeeFilter) {
+            const match = filteredDelegacje[0];
+            resolvedEmail = match?.userEmail;
+            if (!resolvedEmail) {
+                setActionMessage({ type: 'error', text: 'Nie znaleziono pracownika pasującego do filtra' });
+                return;
+            }
+        }
+
+        try {
+            const blob = await generateMonthlyPdfMutation.mutateAsync({
+                year,
+                month,
+                userEmail: resolvedEmail,
+            });
+
+            const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `delegacje-${monthFilter}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+
+            setActionMessage({ type: 'success', text: 'Raport PDF pobrany' });
+            setTimeout(() => setActionMessage(null), 3000);
+        } catch {
+            setActionMessage({ type: 'error', text: 'Nie udało się wygenerować raportu. Sprawdź czy istnieją delegacje w wybranym miesiącu.' });
         }
     };
 
@@ -401,6 +447,37 @@ export const DelegationsList = () => {
                             )}
                         </div>
                     )}
+
+                    <div className="monthly-pdf-btn-wrap">
+                        <button
+                            type="button"
+                            className="monthly-pdf-btn"
+                            onClick={handleGenerateMonthlyPdf}
+                            disabled={generateMonthlyPdfMutation.isPending || !monthFilter}
+                            title={!monthFilter ? 'Wybierz miesiąc, aby pobrać raport' : 'Pobierz raport PDF za wybrany miesiąc'}
+                        >
+                            {generateMonthlyPdfMutation.isPending ? (
+                                <>⏳ Generuję...</>
+                            ) : (
+                                <>
+                                    📊 PDF miesiąca
+                                    {monthFilter && (
+                                        <span className="monthly-pdf-badge">
+                                            {new Date(monthFilter + '-01').toLocaleDateString('pl-PL', { month: 'short', year: 'numeric' })}
+                                        </span>
+                                    )}
+                                    {isAdminUser && employeeFilter && (
+                                        <span className="monthly-pdf-badge monthly-pdf-badge--person">
+                                            👤 {employeeFilter}
+                                        </span>
+                                    )}
+                                </>
+                            )}
+                        </button>
+                        {!monthFilter && (
+                            <p className="monthly-pdf-hint">Wybierz miesiąc w filtrze, aby odblokować</p>
+                        )}
+                    </div>
 
                 </section>
 
