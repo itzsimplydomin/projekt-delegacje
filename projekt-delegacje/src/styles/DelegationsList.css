@@ -581,28 +581,22 @@
     color: #fca5a5;
 }
 
-.hero-card {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    justify-content: space-between;
-    gap: clamp(1rem, 2vw, 1.5rem);
-}
-
 /* Przycisk raportu miesięcznego PDF */
 .monthly-pdf-btn-wrap {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     gap: 0.4rem;
+    align-self: stretch;
+    flex-shrink: 0;
 }
 
 .monthly-pdf-btn {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
     justify-content: center;
+    gap: 0.3rem;
     background: linear-gradient(135deg, rgba(106, 155, 216, 0.25), rgba(200, 216, 235, 0.15));
     border: 1px solid rgba(200, 216, 235, 0.4);
     border-radius: clamp(10px, 2vw, 12px);
@@ -611,6 +605,8 @@
     font-size: clamp(0.82rem, 1.5vw, 0.92rem);
     padding: clamp(0.65rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.4rem);
     cursor: pointer;
+    width: 100%;
+    height: 100%;
     min-height: var(--touch-target);
     transition: all 0.2s ease;
     -webkit-tap-highlight-color: transparent;
@@ -644,6 +640,8 @@
     font-size: 0.8em;
     font-weight: 600;
     white-space: nowrap;
+    display: block;
+    text-align: center;
 }
 
 .monthly-pdf-badge--person {
@@ -657,6 +655,7 @@
     font-size: clamp(0.7rem, 1.2vw, 0.75rem);
     text-align: center;
     margin: 0;
+    min-height: 1.2em;
 }
 
 

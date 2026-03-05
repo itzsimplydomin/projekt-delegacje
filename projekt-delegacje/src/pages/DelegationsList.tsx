@@ -478,7 +478,7 @@ export const DelegationsList = () => {
                             <p className="monthly-pdf-hint">Wybierz miesiąc w filtrze, aby odblokować</p>
                         )}
                     </div>
-
+                    
                 </section>
 
                 {actionMessage && (
