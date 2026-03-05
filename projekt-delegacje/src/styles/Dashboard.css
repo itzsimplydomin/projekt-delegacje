@@ -200,19 +200,6 @@ body {
   width: 100%;
 }
 
-/* Box z metryką (np. liczba dni, delegacji) */
-.hero-meta {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(200, 216, 235, 0.25);
-  border-radius: clamp(12px, 3vw, 16px);
-  padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1rem, 2vw, 1.6rem);
-  width: 100%;
-  max-width: 280px;
-  text-align: center;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(18px);
-}
-
 .metric-label {
   color: rgba(200, 216, 235, 0.85);
   margin: 0;

@@ -1,9 +1,9 @@
 import '/src/styles/App.css';
-import '/src/styles/DelegationsList.css';
 import '/src/styles/Dashboard.css';
+import '/src/styles/DelegationsList.css';
 import { useDelegacje, useDeleteDelegacja, useUpdateDelegacja, useGeneratePdf, useGenerateMonthlyPdf } from '../api/hooks';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import logo from '/src/img/logoArtikon.png';
 import type { Delegacja, DelegacjaCreate } from '../api/types';
 import { isAdmin } from '../api/client';
@@ -114,7 +114,7 @@ export const DelegationsList = () => {
 
     // Filtrowanie delegacji
     const [employeeFilter, setEmployeeFilter] = useState<string>(''); // filtr po pracowniku
-    const isAdminUser = isAdmin(); // sprawdź czy admin
+    const isAdminUser = useMemo(() => isAdmin(), []); // sprawdź czy admin
 
     // Filtrowanie po miesiącu
     const [monthFilter, setMonthFilter] = useState<string>(''); // format: "YYYY-MM" lub '' = wszystkie
@@ -345,7 +345,7 @@ export const DelegationsList = () => {
     }
 
     return (
-        <div className="dashboard-wrapper">
+        <div className="dashboard-wrapper delegations-page">
             <header className="dark-header">
                 <div className="nav-center">
                     <div className="logo">
@@ -387,60 +387,65 @@ export const DelegationsList = () => {
                             Przeglądaj, edytuj i zarządzaj delegacjami zapisanymi w systemie.
                         </p>
                     </div>
-                    <div className="hero-meta">
-                        <p className="metric-label">Wszystkich delegacji</p>
-                        <p className="metric-value">{filteredDelegacje.length}</p>
-                    </div>
+                    <div className="hero-metrics-group">
+                        <div className="hero-meta">
+                            <p className="metric-label">Wszystkich delegacji</p>
+                            <p className="metric-value">{filteredDelegacje.length}</p>
+                        </div>
 
-                    <div className="hero-meta hero-meta-diet">
-                        <p className="metric-label">Suma diet</p>
-                        <p className="metric-value">
-                            {totalDiet.toFixed(2)} <span className="metric-currency">zł</span>
-                        </p>
-                        <p className="metric-sublabel">45 zł/doba, 12h</p>
+                        <div className="hero-meta hero-meta-diet">
+                            <p className="metric-label">Suma diet</p>
+                            <p className="metric-value">
+                                {totalDiet.toFixed(2)} <span className="metric-currency">zł</span>
+                            </p>
+                            <p className="metric-sublabel">45 zł/doba, 12h</p>
+                        </div>
                     </div>
-                    <div className="month-filter">
-                        <input
-                            id="monthFilter"
-                            className="month-filter-input"
-                            type="month"
-                            value={monthFilter}
-                            onChange={(e) => setMonthFilter(e.target.value)}
-                        />
-                        {monthFilter && (
-                            <button
-                                type="button"
-                                className="month-filter-clear"
-                                onClick={() => setMonthFilter('')}
-                                title="Wyczyść filtr"
-                            >
-                                Wyczyść
-                            </button>
-                        )}
-                    </div>
-
-                    {isAdminUser && (
-                        <div className="employee-filter">
+                    <div className="hero-filters-group">
+                        <div className="month-filter">
                             <input
-                                id="employeeFilter"
-                                className="employee-filter-input"
-                                type="text"
-                                placeholder="Wpisz imię lub nazwisko..."
-                                value={employeeFilter}
-                                onChange={(e) => setEmployeeFilter(e.target.value)}
+                                id="monthFilter"
+                                className="month-filter-input"
+                                type="month"
+                                value={monthFilter}
+                                onChange={(e) => setMonthFilter(e.target.value)}
                             />
-                            {employeeFilter && (
+                            {monthFilter && (
                                 <button
                                     type="button"
-                                    className="employee-filter-clear"
-                                    onClick={() => setEmployeeFilter('')}
+                                    className="month-filter-clear"
+                                    onClick={() => setMonthFilter('')}
                                     title="Wyczyść filtr"
                                 >
                                     Wyczyść
                                 </button>
                             )}
                         </div>
-                    )}
+
+                        {isAdminUser && (
+                            <div className="employee-filter">
+                                <input
+                                    id="employeeFilter"
+                                    className="employee-filter-input"
+                                    type="text"
+                                    placeholder="Wpisz imię lub nazwisko..."
+                                    value={employeeFilter}
+                                    onChange={(e) => setEmployeeFilter(e.target.value)}
+                                />
+                                {employeeFilter && (
+                                    <button
+                                        type="button"
+                                        className="employee-filter-clear"
+                                        onClick={() => setEmployeeFilter('')}
+                                        title="Wyczyść filtr"
+                                    >
+                                        Wyczyść
+                                    </button>
+                                )}
+                            </div>
+                        )}
+
+                    </div>
 
                     <div className="monthly-pdf-btn-wrap">
                         <button
@@ -472,7 +477,7 @@ export const DelegationsList = () => {
                             <p className="monthly-pdf-hint">Wybierz miesiąc w filtrze, aby odblokować</p>
                         )}
                     </div>
-                    
+
                 </section>
 
                 {actionMessage && (

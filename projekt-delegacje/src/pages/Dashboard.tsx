@@ -187,7 +187,7 @@ export const Dashboard = () => {
                     </nav>
                 </div>
             </header>
-            
+
             <main className="dashboard-main">
                 <section className="hero-card">
                     <div>
@@ -196,10 +196,7 @@ export const Dashboard = () => {
                             Zaznacz na kalendarzu daty delegacji i uzupełnij szczegóły.
                         </p>
                     </div>
-                    <div className="hero-meta">
-                        <p className="metric-label">Aktywne delegacje</p>
-                        <p className="metric-value">{delegacje.length}</p>
-                    </div>
+
                 </section>
 
                 <section className="workbench" id="kalendarz">
