@@ -400,9 +400,6 @@ export const DelegationsList = () => {
                         <p className="metric-sublabel">45 zł/doba, 12h</p>
                     </div>
                     <div className="month-filter">
-                        <label className="month-filter-label" htmlFor="monthFilter">
-                            Miesiąc
-                        </label>
                         <input
                             id="monthFilter"
                             className="month-filter-input"
@@ -424,9 +421,6 @@ export const DelegationsList = () => {
 
                     {isAdminUser && (
                         <div className="employee-filter">
-                            <label className="employee-filter-label" htmlFor="employeeFilter">
-                                Pracownik
-                            </label>
                             <input
                                 id="employeeFilter"
                                 className="employee-filter-input"
