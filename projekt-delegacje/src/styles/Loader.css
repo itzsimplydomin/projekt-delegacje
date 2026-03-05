@@ -1,0 +1,137 @@
+/* Kontener nadrzędny – wypełnia obszar rodzica */
+.loader-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    rgba(10, 26, 58, 0.85),
+    rgba(0, 46, 122, 0.8)
+  );
+  backdrop-filter: blur(12px);
+  z-index: 9999;
+  transition: all 0.2s ease;
+}
+
+/* Wariant pełnoekranowy – fixed, pokrywa cały widok */
+.loader-wrapper-full {
+  position: fixed;
+  inset: 0;
+}
+
+/* Wariant lokalny – wypełnia kontener (np. kartę) */
+.loader-wrapper-inline {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit; /* dopasowuje się do zaokrąglenia rodzica */
+}
+
+/* Kontener wewnętrzny – centruje zawartość */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Opcjonalne logo */
+.loader-logo {
+  height: 48px;
+  width: auto;
+  opacity: 0.9;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* Główny spinner */
+.loader-spinner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Zewnętrzny okrąg */
+.loader-spinner-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top-color: var(--ocean-blue, #6a9bd8);
+  border-right-color: var(--pale-blue, #c8d8eb);
+  border-radius: 50%;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+/* Wewnętrzny okrąg – odwrotny kierunek dla efektu */
+.loader-spinner-circle.inner {
+  width: 70%;
+  height: 70%;
+  top: 15%;
+  left: 15%;
+  border-width: 2px;
+  border-top-color: var(--pale-blue, #c8d8eb);
+  border-right-color: transparent;
+  border-bottom-color: var(--ocean-blue, #6a9bd8);
+  animation: spin-reverse 1.8s cubic-bezier(0.3, 0, 0.7, 1) infinite;
+}
+
+/* Wiadomość */
+.loader-message {
+  color: var(--white, #ffffff);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  max-width: 280px;
+  line-height: 1.5;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Animacje */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+  .loader-message {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loader-container {
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+}

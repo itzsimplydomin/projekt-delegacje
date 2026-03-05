@@ -26,6 +26,7 @@
   display: flex;
   gap: clamp(0.6rem, 1.2vw, 1rem);
   align-items: stretch;
+  width: 100%;
   min-width: 0;
 }
 
@@ -52,6 +53,9 @@
   justify-content: center;
   align-items: center;
   min-width: 140px;
+
+  flex: 1;
+  min-width: 20ch;
 }
 
 /* Styl komponenty metryki - waluta, wartość, label */
@@ -619,6 +623,7 @@
   align-items: stretch;
   gap: 0.4rem;
   min-width: 140px;
+  width: 100%;
 }
 
 .delegations-page .monthly-pdf-btn {

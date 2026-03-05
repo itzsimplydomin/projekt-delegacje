@@ -1209,7 +1209,7 @@ body {
 
 /* ============================================
    Jednolite scrollbary
-   Chrome/Edge/Safari i Firefox — own skin
+   Chrome/Edge/Safari i Firefox - own skin
    ============================================ */
 
 :root {
@@ -1258,16 +1258,3 @@ body {
   scrollbar-color: var(--sb-thumb) var(--sb-track);
 }
 
-.settings-page.dashboard-wrapper,
-.delegations-page.dashboard-wrapper {
-  top: calc(clamp(60px, 12vw, 80px) + env(safe-area-inset-top, 0));
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-.settings-page .dashboard-main,
-.delegations-page .dashboard-main {
-  padding-top: clamp(0.75rem, 2vw, 1.25rem);
-  min-height: 100%;
-}

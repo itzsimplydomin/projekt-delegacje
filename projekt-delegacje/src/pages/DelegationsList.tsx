@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react';
 import logo from '/src/img/logoArtikon.png';
 import type { Delegacja, DelegacjaCreate } from '../api/types';
 import { isAdmin } from '../api/client';
+import Loader from './Loader';
 
 // Formatuje zakres dat do czytelnego formatu "DD MMM RRRR GG:MM - DD MMM RRRR GG:MM"
 const formatDateRange = (start?: string, end?: string) => {
@@ -318,6 +319,7 @@ export const DelegationsList = () => {
                         </div>
                     </div>
                 </header>
+                <Loader fullScreen message="Pobieranie listy delegacji..." />
                 <div className="dashboard-main">
                     <p className="delegations-status">Ładowanie delegacji...</p>
                 </div>

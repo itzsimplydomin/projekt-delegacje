@@ -8,6 +8,7 @@ import { useMemo, useState } from 'react';
 import type { DelegacjaCreate } from '../api/types';
 import logo from '/src/img/logoArtikon.png';
 import { useNavigate } from 'react-router-dom';
+import { Loader } from './Loader';
 
 // Główna strona dashboardu z kalendarzem delegacji i formularzem dodawania nowych
 export const Dashboard = () => {
@@ -144,7 +145,7 @@ export const Dashboard = () => {
     };
 
     if (isLoading) {
-        return <p>Ładowanie delegacji...</p>;
+        return <Loader fullScreen message="Ładowanie kalendarza delegacji..." />;
     }
 
     if (isError) {

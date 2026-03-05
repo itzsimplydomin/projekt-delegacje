@@ -105,7 +105,7 @@ export const Settings = () => {
                     >
                         ☰
                     </button>
-    
+
                     <nav
                         id='main-nav'
                         className={`main-nav ${menuOpen ? 'open' : ''}`}
@@ -214,6 +214,7 @@ export const Settings = () => {
             </main>
         </div>
     );
+  
 };
 
 export default Settings;
