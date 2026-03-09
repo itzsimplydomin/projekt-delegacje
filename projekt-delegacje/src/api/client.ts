@@ -1,13 +1,31 @@
 import axios from 'axios';
-import type { Delegacja, DelegacjaCreate, LoginRequest, ChangePasswordRequest, ChangePasswordResponse} from './types';
+import type { Delegacja, DelegacjaCreate, LoginRequest, ChangePasswordRequest, ChangePasswordResponse } from './types';
 
-// Bazowy klient HTTP dla całej aplikacji
 export const api = axios.create({
-  baseURL: 'https://delegacjeartikon-ebfdgjgwesagfzha.polandcentral-01.azurewebsites.net', // adres backendu ASP.NET
+  baseURL: 'https://delegacjeartikon-ebfdgjgwesagfzha.polandcentral-01.azurewebsites.net',
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+// Pomocnicze funkcje do zarządzania tokenem
+export const getToken = (): string | null =>
+  localStorage.getItem('token') ?? sessionStorage.getItem('token');
+
+export const setToken = (token: string, remember: boolean): void => {
+  if (remember) {
+    localStorage.setItem('token', token);
+    sessionStorage.removeItem('token');
+  } else {
+    sessionStorage.setItem('token', token);
+    localStorage.removeItem('token');
+  }
+};
+
+export const removeToken = (): void => {
+  localStorage.removeItem('token');
+  sessionStorage.removeItem('token');
+};
 
 // interceptor dodający token do nagłówków żądań
 api.interceptors.request.use((config) => {
@@ -15,31 +33,25 @@ api.interceptors.request.use((config) => {
     return config;
   }
 
-  // Dodanie tokena z localStorage do nagłówków Authorization
-  const token = localStorage.getItem('token');
+  const token = getToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
-  // Zwracanie zmodyfikowanej konfiguracji żądania
   return config;
 });
 
+// funkcja logowania
+export const login = async (payload: LoginRequest, remember: boolean = false) => {
+  removeToken();
 
-// funkcja logowania dodanie tokena
-export const login = async (payload: LoginRequest) => {
-  localStorage.removeItem('token'); 
-
-  // Wywołanie endpointu logowania
   const { data } = await api.post<{ token: string }>(
     '/api/Auth/login',
     payload
   );
 
-  // Zapisanie tokena w localStorage
-  localStorage.setItem('token', data.token);
+  setToken(data.token, remember);
 
-  // Zwracanie odpowiedzi
   return {
     success: true,
     message: 'Zalogowano pomyślnie',
@@ -51,14 +63,11 @@ export const changePassword = async (
   payload: ChangePasswordRequest
 ): Promise<ChangePasswordResponse> => {
   try {
-
-    // Wywołanie endpointu zmiany hasła
     const { data } = await api.post<{ success: boolean }>(
       '/api/Auth/change-password',
       payload
     );
 
-    // Zwracanie odpowiedzi
     return {
       success: data.success,
       message: 'Hasło zostało pomyślnie zmienione',
@@ -70,7 +79,6 @@ export const changePassword = async (
     throw new Error('Nie udało się zmienić hasła');
   }
 };
-
 
 // pobranie listy delegacji
 export const getDelegacje = async (): Promise<Delegacja[]> => {
@@ -101,21 +109,18 @@ export const generatePdf = async (id: string) => {
   const response = await api.post(
     `/api/Delegacje/${id}/pdf`,
     null,
-    { responseType: 'blob' } 
+    { responseType: 'blob' }
   );
 
-  // Pobieranie pliku PDF
   const blob = new Blob([response.data], { type: 'application/pdf' });
   const url = window.URL.createObjectURL(blob);
 
-  // Tworzenie linku do pobrania
   const a = document.createElement('a');
   a.href = url;
   a.download = `delegacja-${id}.pdf`;
   document.body.appendChild(a);
   a.click();
 
-  // Czyszczenie
   a.remove();
   window.URL.revokeObjectURL(url);
 };
@@ -146,10 +151,9 @@ export const generateMonthlyPdf = async (params: {
 
 // Sprawdzanie czy użytkownik ma rolę Admin
 export const isAdmin = (): boolean => {
-  const token = localStorage.getItem('token');
+  const token = getToken();
   if (!token) return false;
-  
-  // Parowanie tokena JWT i sprawdzanie roli
+
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin';

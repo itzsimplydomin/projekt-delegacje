@@ -1,24 +1,23 @@
 import { type FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import '/src/styles/Login.css';
-import { login } from '../api/client';
+import { login, getToken } from '../api/client';
 
-// Komponent baneru logowania
 export const LoginBanner = () => {
-
-  // Nawigacja do innych stron
   const navigate = useNavigate();
 
-  // Stany komponentu
+  // Jeśli token już istnieje – przekieruj na dashboard bez renderowania loginu
+  if (getToken()) {
+    return <Navigate to="/delegacje" replace />;
+  }
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-
-  // Dodatkowe stany do obsługi formularza
+  const [remember, setRemember] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  // Obsługa wysłania formularza logowania
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -26,12 +25,11 @@ export const LoginBanner = () => {
     setMessage(null);
 
     try {
-      // wysyłamy do backendu to, co użytkownik wpisał w formularzu
-      const response = await login({ email, password });
+      const response = await login({ email, password }, remember);
 
       if (response.success) {
         setMessage(response.message ?? 'Zalogowano pomyślnie');
-        navigate('/delegacje'); // przekierowanie na stronę główną
+        navigate('/delegacje');
       } else {
         setError(response.message ?? 'Nieprawidłowe dane logowania');
       }
@@ -43,7 +41,6 @@ export const LoginBanner = () => {
     }
   };
 
-  // Renderowanie komponentu
   return (
     <section className="login-banner" aria-labelledby="login-banner-title">
       <div className="banner-copy">
@@ -99,7 +96,12 @@ export const LoginBanner = () => {
 
           <div className="login-meta">
             <label className="remember-label">
-              <input type="checkbox" name="remember" />
+              <input
+                type="checkbox"
+                name="remember"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+              />
               <span className="custom-checkbox" aria-hidden="true"></span>
               Zapamiętaj mnie
             </label>

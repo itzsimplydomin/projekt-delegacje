@@ -4,14 +4,13 @@ import '/src/styles/Settings.css';
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useChangePassword } from '../api/hooks';
+import { removeToken } from '../api/client';
 import logo from '/src/img/logoArtikon.png';
 
-// Strona ustawień użytkownika - zmiana hasła i wylogowanie
 export const Settings = () => {
     const navigate = useNavigate();
     const changePasswordMutation = useChangePassword();
 
-    // Stan komponentu
     const [menuOpen, setMenuOpen] = useState(false);
     const [formData, setFormData] = useState({
         currentPassword: '',
@@ -19,77 +18,49 @@ export const Settings = () => {
         confirmNewPassword: '',
     });
 
-    // Wiadomość akcji (sukces/błąd)
     const [message, setMessage] = useState<{
         type: 'success' | 'error';
         text: string;
     } | null>(null);
 
-    // Obsługa zmiany wartości w polach formularza
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Obsługa wylogowania
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/');
+        removeToken();      // najpierw usuń token
+        navigate('/');      // potem nawiguj - RequireAuth nie zablokuje, bo Login sprawdzi brak tokena
     };
 
-    // Obsługa wysłania formularza zmiany hasła
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage(null);
 
-        // Walidacja po stronie frontendu
         if (!formData.currentPassword || !formData.newPassword || !formData.confirmNewPassword) {
-            setMessage({
-                type: 'error',
-                text: 'Wszystkie pola są wymagane',
-            });
+            setMessage({ type: 'error', text: 'Wszystkie pola są wymagane' });
             return;
         }
 
         if (formData.newPassword !== formData.confirmNewPassword) {
-            setMessage({
-                type: 'error',
-                text: 'Nowe hasła nie są takie same',
-            });
+            setMessage({ type: 'error', text: 'Nowe hasła nie są takie same' });
             return;
         }
 
         if (formData.newPassword.length < 6) {
-            setMessage({
-                type: 'error',
-                text: 'Hasło musi mieć minimum 6 znaków',
-            });
+            setMessage({ type: 'error', text: 'Hasło musi mieć minimum 6 znaków' });
             return;
         }
 
         try {
             await changePasswordMutation.mutateAsync(formData);
-
-            setMessage({
-                type: 'success',
-                text: 'Hasło zostało pomyślnie zmienione',
-            });
-
-            // Wyczyść formularz
-            setFormData({
-                currentPassword: '',
-                newPassword: '',
-                confirmNewPassword: '',
-            });
+            setMessage({ type: 'success', text: 'Hasło zostało pomyślnie zmienione' });
+            setFormData({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
         } catch (error: any) {
-            setMessage({
-                type: 'error',
-                text: error.message || 'Nie udało się zmienić hasła',
-            });
+            setMessage({ type: 'error', text: error.message || 'Nie udało się zmienić hasła' });
         }
     };
 
-    // Renderowanie komponentu
     return (
         <div className="dashboard-wrapper settings-page">
             <header className="dark-header">
@@ -141,9 +112,7 @@ export const Settings = () => {
                             <div>
                                 <p className="eyebrow">Bezpieczeństwo</p>
                                 <h2>Zmiana hasła</h2>
-                                <p className="subtitle">
-                                    Hasło musi mieć minimum 6 znaków.
-                                </p>
+                                <p className="subtitle">Hasło musi mieć minimum 6 znaków.</p>
                             </div>
                         </div>
 
@@ -191,9 +160,7 @@ export const Settings = () => {
                                 type="submit"
                                 disabled={changePasswordMutation.isPending}
                             >
-                                {changePasswordMutation.isPending
-                                    ? 'Zmieniam hasło...'
-                                    : 'Zmień hasło'}
+                                {changePasswordMutation.isPending ? 'Zmieniam hasło...' : 'Zmień hasło'}
                             </button>
 
                             <button
@@ -214,7 +181,6 @@ export const Settings = () => {
             </main>
         </div>
     );
-  
 };
 
 export default Settings;
