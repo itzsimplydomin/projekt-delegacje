@@ -175,6 +175,7 @@
   padding: 0.55rem 0.75rem;
   color: var(--white);
   font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   min-height: var(--touch-target);
   -webkit-tap-highlight-color: transparent;
 }

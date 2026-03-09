@@ -1,5 +1,6 @@
 import '/src/styles/App.css';
 import '/src/styles/Dashboard.css';
+import '/src/styles/TimePicker.css';
 import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isWithinInterval, startOfMonth, startOfWeek } from 'date-fns';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDelegacje } from '../api/hooks';
@@ -9,6 +10,8 @@ import type { DelegacjaCreate } from '../api/types';
 import logo from '/src/img/logoArtikon.png';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from './Loader';
+import { TimePicker } from './TimePicker';
+
 
 // Główna strona dashboardu z kalendarzem delegacji i formularzem dodawania nowych
 export const Dashboard = () => {
@@ -252,8 +255,14 @@ export const Dashboard = () => {
                                             >
                                                 <span className="day-number">{format(day, 'd')}</span>
                                                 {hasDelegation && <span className="dot" aria-hidden />}
-                                                {isStart && <span className="pill">Start</span>}
-                                                {isEnd && <span className="pill">Koniec</span>}
+                                                {isStart && isEnd
+                                                    ? <span className="pill">1 dzień</span>
+                                                    : isStart
+                                                        ? <span className="pill">Start</span>
+                                                        : isEnd
+                                                            ? <span className="pill">Koniec</span>
+                                                            : null
+                                                }
                                             </button>
                                         );
                                     })}
@@ -324,26 +333,20 @@ export const Dashboard = () => {
                                         required
                                     />
                                 </label>
-                                <label>
-                                    Godzina rozpoczęcia
-                                    <input
-                                        type="time"
-                                        name="godzinaRozpoczecia"
-                                        value={formState.godzinaRozpoczecia}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </label>
-                                <label>
-                                    Godzina zakończenia
-                                    <input
-                                        type="time"
-                                        name="godzinaZakonczenia"
-                                        value={formState.godzinaZakonczenia}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </label>
+                                <TimePicker
+                                    name="godzinaRozpoczecia"
+                                    value={formState.godzinaRozpoczecia}
+                                    onChange={handleInputChange}
+                                    label="Godzina rozpoczęcia"
+                                    required
+                                />
+                                <TimePicker
+                                    name="godzinaZakonczenia"
+                                    value={formState.godzinaZakonczenia}
+                                    onChange={handleInputChange}
+                                    label="Godzina zakończenia"
+                                    required
+                                />
                                 <label className="full-width">
                                     Uwagi dla zespołu
                                     <textarea
