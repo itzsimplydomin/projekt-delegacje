@@ -4,11 +4,12 @@ import '/src/styles/Settings.css';
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useChangePassword } from '../api/hooks';
-import { removeToken } from '../api/client';
+import { useAuth } from '../auth/AuthContext';
 import logo from '/src/img/logoArtikon.png';
 
 export const Settings = () => {
     const navigate = useNavigate();
+    const { logout } = useAuth();
     const changePasswordMutation = useChangePassword();
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -26,11 +27,6 @@ export const Settings = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleLogout = () => {
-        removeToken();      // najpierw usuń token
-        navigate('/');      // potem nawiguj - RequireAuth nie zablokuje, bo Login sprawdzi brak tokena
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -56,8 +52,10 @@ export const Settings = () => {
             await changePasswordMutation.mutateAsync(formData);
             setMessage({ type: 'success', text: 'Hasło zostało pomyślnie zmienione' });
             setFormData({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
-        } catch (error: any) {
-            setMessage({ type: 'error', text: error.message || 'Nie udało się zmienić hasła' });
+        } catch (error: unknown) {
+            const msg =
+                error instanceof Error ? error.message : 'Nie udało się zmienić hasła';
+            setMessage({ type: 'error', text: msg });
         }
     };
 
@@ -78,7 +76,7 @@ export const Settings = () => {
                     </button>
 
                     <nav
-                        id='main-nav'
+                        id="main-nav"
                         className={`main-nav ${menuOpen ? 'open' : ''}`}
                         role="navigation"
                         aria-label="Menu główne"
@@ -98,7 +96,7 @@ export const Settings = () => {
 
             <main className="dashboard-main">
                 {message && (
-                    <div className={`action-message ${message.type}`}>
+                    <div className={`action-message ${message.type}`} role="alert">
                         <span className="action-message-icon">
                             {message.type === 'success' ? '✓' : '⚠'}
                         </span>
@@ -166,7 +164,7 @@ export const Settings = () => {
                             <button
                                 className="logout-btn"
                                 type="button"
-                                onClick={handleLogout}
+                                onClick={logout}
                             >
                                 Wyloguj się
                             </button>

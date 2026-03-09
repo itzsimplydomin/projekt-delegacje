@@ -1,41 +1,49 @@
 import { type FormEvent, useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate, useLocation } from 'react-router-dom';
 import '/src/styles/Login.css';
-import { login, getToken } from '../api/client';
+import { loginRequest } from '../api/client';
+import { useAuth } from '../auth/AuthContext';
 
 export const LoginBanner = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated, login } = useAuth();
 
-  // Jeśli token już istnieje – przekieruj na dashboard bez renderowania loginu
-  if (getToken()) {
-    return <Navigate to="/delegacje" replace />;
+  // Jeśli token już istnieje i jest ważny – przekieruj
+  if (isAuthenticated) {
+    const from = (location.state as { from?: Location })?.from?.pathname ?? '/delegacje';
+    return <Navigate to={from} replace />;
   }
 
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [remember, setRemember] = useState<boolean>(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
     setError(null);
-    setMessage(null);
 
     try {
-      const response = await login({ email, password }, remember);
+      const token = await loginRequest({ email, password });
+      login(token, remember);
 
-      if (response.success) {
-        setMessage(response.message ?? 'Zalogowano pomyślnie');
-        navigate('/delegacje');
-      } else {
-        setError(response.message ?? 'Nieprawidłowe dane logowania');
-      }
-    } catch (e) {
+      const from = (location.state as { from?: Location })?.from?.pathname ?? '/delegacje';
+      navigate(from, { replace: true });
+    } catch (e: unknown) {
       console.error(e);
-      setError('Błąd połączenia z serwerem.');
+      if (
+        typeof e === 'object' &&
+        e !== null &&
+        'response' in e &&
+        (e as { response?: { status?: number } }).response?.status === 401
+      ) {
+        setError('Nieprawidłowy email lub hasło.');
+      } else {
+        setError('Błąd połączenia z serwerem.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -82,8 +90,7 @@ export const LoginBanner = () => {
               />
             </div>
 
-            {error && <p className="login-error">{error}</p>}
-            {message && <p className="login-success">{message}</p>}
+            {error && <p className="login-error" role="alert">{error}</p>}
 
             <button
               className="login-submit"
@@ -102,7 +109,7 @@ export const LoginBanner = () => {
                 checked={remember}
                 onChange={(e) => setRemember(e.target.checked)}
               />
-              <span className="custom-checkbox" aria-hidden="true"></span>
+              <span className="custom-checkbox" aria-hidden="true" />
               Zapamiętaj mnie
             </label>
           </div>
