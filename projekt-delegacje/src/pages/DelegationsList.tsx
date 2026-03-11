@@ -15,7 +15,7 @@ import type { Delegacja, DelegacjaCreate } from '../api/types';
 import { useAuth } from '../auth/AuthContext';
 import Loader from './Loader';
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// Helperi do formatowania dat, obliczania diet i sprawdzania nakładania się delegacji z miesiącem
 
 const formatDateRange = (start?: string, end?: string) => {
     if (!start || !end) return 'Brak daty';
@@ -99,7 +99,7 @@ const overlapsMonth = (startIso?: string, endIso?: string, yyyyMm?: string): boo
     return new Date(startIso) <= monthEnd && new Date(endIso) >= monthStart;
 };
 
-// ── Komponent ─────────────────────────────────────────────────────────────────
+// Komponent strony z listą delegacji, obsługujący wyświetlanie, filtrowanie, edycję i generowanie PDF
 
 export const DelegationsList = () => {
     const navigate = useNavigate();
@@ -136,7 +136,7 @@ export const DelegationsList = () => {
         [filteredDelegacje],
     );
 
-    // ── Akcje ──────────────────────────────────────────────────────────────────
+    // Akcje: usuwanie, edycja, generowanie PDF, z obsługą komunikatów o sukcesie/błędzie
 
     const showMsg = (type: 'success' | 'error', text: string, autohide = true) => {
         setActionMessage({ type, text });
@@ -233,7 +233,7 @@ export const DelegationsList = () => {
         }
     };
 
-    // ── Loading / Error ────────────────────────────────────────────────────────
+    // loading i error state dla pobierania delegacji, z prostymi komunikatami i loaderem
 
     if (isLoading) {
         return (
@@ -265,7 +265,7 @@ export const DelegationsList = () => {
         );
     }
 
-    // ── Render ─────────────────────────────────────────────────────────────────
+    // Renderowanie strony z listą delegacji, filtrami, metrykami i akcjami dla każdej delegacji (edytuj, usuń, PDF) oraz generowanie PDF dla całego miesiąca
 
     return (
         <div className="dashboard-wrapper delegations-page">

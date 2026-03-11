@@ -1,11 +1,13 @@
 import '/src/styles/Loader.css';
 
+// Komponent Loader: prosty spinner z opcjonalnym komunikatem, może być pełnoekranowy lub inline
 interface LoaderProps {
     fullScreen?: boolean;
     message?: string;
     size?: number;
 }
 
+// Loader: wyświetla animowany spinner i opcjonalny komunikat, z różnymi stylami dla pełnoekranowego i inline
 export const Loader = ({ fullScreen = false, message = 'Ładowanie...', size = 48 }: LoaderProps) => {
     const wrapperClass = fullScreen ? 'loader-wrapper-full' : 'loader-wrapper-inline';
 

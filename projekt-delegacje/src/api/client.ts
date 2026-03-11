@@ -7,7 +7,7 @@ import type {
   ChangePasswordResponse,
 } from './types';
 
-// ── Klient axios ──────────────────────────────────────────────────────────────
+// Konfiguracja klienta Axios z bazowym URL i nagłówkiem JSON
 
 export const api = axios.create({
   baseURL:
@@ -17,7 +17,7 @@ export const api = axios.create({
   },
 });
 
-// ── Token helpers ─────────────────────────────────────────────────────────────
+// Token helpers 
 
 export const getToken = (): string | null =>
   localStorage.getItem('token') ?? sessionStorage.getItem('token');
@@ -37,7 +37,7 @@ export const removeToken = (): void => {
   sessionStorage.removeItem('token');
 };
 
-// ── Interceptor: dodaj token do każdego żądania ───────────────────────────────
+// Interceptor: dodaj token do każdego żądania 
 
 api.interceptors.request.use((config) => {
   if (config.url?.includes('/api/Auth/login')) return config;
@@ -50,7 +50,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// ── Interceptor: obsługa 401 ──────────────────────────────────────────────────
+//  Interceptor: obsługa 401 
 //
 // Gdy serwer zwróci 401 (token wygasł lub nieważny), czyścimy storage
 // i przekierowujemy na stronę logowania.
@@ -69,7 +69,7 @@ api.interceptors.response.use(
   },
 );
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
+// Auth 
 
 /**
  * Logowanie: wysyła żądanie i zwraca surowy token.
@@ -83,6 +83,7 @@ export const loginRequest = async (
 };
 
 /** @deprecated Użyj loginRequest + useAuth().login */
+
 export const login = async (
   payload: LoginRequest,
   remember = false,
@@ -115,7 +116,7 @@ export const changePassword = async (
   }
 };
 
-// ── Delegacje ─────────────────────────────────────────────────────────────────
+// Delegacje
 
 export const getDelegacje = async (): Promise<Delegacja[]> => {
   const { data } = await api.get<Delegacja[]>('/api/Delegacje');
@@ -172,7 +173,7 @@ export const generateMonthlyPdf = async (params: {
   return response.data as Blob;
 };
 
-// ── Deprecated helper (zastąpiony przez useAuth().isAdmin) ───────────────────
+// Deprecated helper 
 
 /** @deprecated Użyj useAuth().isAdmin */
 export const isAdmin = (): boolean => {

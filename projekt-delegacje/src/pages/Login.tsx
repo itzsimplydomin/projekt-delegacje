@@ -4,28 +4,30 @@ import '/src/styles/Login.css';
 import { loginRequest } from '../api/client';
 import { useAuth } from '../auth/AuthContext';
 
+// Komponent strony logowania: formularz, obsługa stanu, walidacja i komunikaty o błędach
 export const LoginBanner = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, login } = useAuth();
-
-  // Jeśli token już istnieje i jest ważny – przekieruj
-  if (isAuthenticated) {
-    const from = (location.state as { from?: Location })?.from?.pathname ?? '/delegacje';
-    return <Navigate to={from} replace />;
-  }
-
+  // Stany formularza: email, hasło, zapamiętaj mnie, status wysyłania i komunikat o błędzie
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Jeśli token już istnieje i jest ważny – przekieruj
+  if (isAuthenticated) {
+    return <Navigate to="/delegacje" replace />;
+  }
+
+  // Obsługa submit: wywołuje API, zarządza stanem i przekierowuje po sukcesie, lub pokazuje błąd
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
     setError(null);
 
+    // Prosta walidacja po stronie klienta
     try {
       const token = await loginRequest({ email, password });
       login(token, remember);

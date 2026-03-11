@@ -4,11 +4,13 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { RequireAuth } from '../auth/RequireAuth';
 import { Providers } from './providers';
 
+// Struktura aplikacji: główny router i lazy loading stron
 const LoginBanner = lazy(() => import('../pages/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const DelegationsList = lazy(() => import('../pages/DelegationsList'));
 const Settings = lazy(() => import('../pages/Settings'));
 
+// Root App component: definiuje routing i layout aplikacji
 export const App = () => {
   return (
     <Providers>

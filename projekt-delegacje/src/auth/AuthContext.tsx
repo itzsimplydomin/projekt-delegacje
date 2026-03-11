@@ -9,8 +9,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { getToken, removeToken, setToken } from '../api/client';
 
-// ── Typy ────────────────────────────────────────────────────────────────────
-
+// Typy i interfejsy
 export interface AuthUser {
     email: string;
     role: 'Admin' | 'User';
@@ -24,7 +23,7 @@ interface AuthContextValue {
     logout: () => void;
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// Helpery do dekodowania tokena i zarządzania sesją
 
 /**
  * Dekoduje payload JWT bez weryfikacji podpisu (weryfikacja po stronie backendu).
@@ -70,7 +69,7 @@ function getUserFromStorage(): AuthUser | null {
     return decodeToken(token);
 }
 
-// ── Context ──────────────────────────────────────────────────────────────────
+// Context 
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
@@ -116,7 +115,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// ── Hook ─────────────────────────────────────────────────────────────────────
+// Hook do korzystania z kontekstu autoryzacji
 
 export function useAuth(): AuthContextValue {
     const ctx = useContext(AuthContext);

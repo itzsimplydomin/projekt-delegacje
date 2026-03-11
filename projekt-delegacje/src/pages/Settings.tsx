@@ -7,6 +7,7 @@ import { useChangePassword } from '../api/hooks';
 import { useAuth } from '../auth/AuthContext';
 import logo from '/src/img/logoArtikon.png';
 
+// Strona ustawień: zmiana hasła, wylogowanie, informacje o wersji i licencji, z responsywnym menu i komunikatami o sukcesie/błędzie
 export const Settings = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
@@ -35,16 +36,19 @@ export const Settings = () => {
 
         if (!formData.currentPassword || !formData.newPassword || !formData.confirmNewPassword) {
             setMessage({ type: 'error', text: 'Wszystkie pola są wymagane' });
+            setTimeout(() => setMessage(null), 3000);
             return;
         }
 
         if (formData.newPassword !== formData.confirmNewPassword) {
             setMessage({ type: 'error', text: 'Nowe hasła nie są takie same' });
+            setTimeout(() => setMessage(null), 3000);
             return;
         }
 
         if (formData.newPassword.length < 6) {
             setMessage({ type: 'error', text: 'Hasło musi mieć minimum 6 znaków' });
+            setTimeout(() => setMessage(null), 3000);
             return;
         }
 
@@ -52,10 +56,13 @@ export const Settings = () => {
             await changePasswordMutation.mutateAsync(formData);
             setMessage({ type: 'success', text: 'Hasło zostało pomyślnie zmienione' });
             setFormData({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
+            setTimeout(() => setMessage(null), 3000);
+
         } catch (error: unknown) {
             const msg =
-                error instanceof Error ? error.message : 'Nie udało się zmienić hasła';
+            error instanceof Error ? error.message : 'Nie udało się zmienić hasła';
             setMessage({ type: 'error', text: msg });
+            setTimeout(() => setMessage(null), 3000);
         }
     };
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthProvider } from '../auth/AuthContext';
 import { removeToken } from '../api/client';
 
-// ── QueryClient ───────────────────────────────────────────────────────────────
+// QueryProvider: zarządza cache'em danych i obsługuje globalne błędy autoryzacji
 
 function QueryProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ function QueryProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// ── Główny Provider ───────────────────────────────────────────────────────────
+// Główny provider: łączy AuthProvider i QueryClientProvider
 
 interface ProvidersProps {
   children: ReactNode;
