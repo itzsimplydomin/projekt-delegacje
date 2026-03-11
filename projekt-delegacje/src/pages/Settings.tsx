@@ -60,7 +60,7 @@ export const Settings = () => {
 
         } catch (error: unknown) {
             const msg =
-            error instanceof Error ? error.message : 'Nie udało się zmienić hasła';
+                error instanceof Error ? error.message : 'Nie udało się zmienić hasła';
             setMessage({ type: 'error', text: msg });
             setTimeout(() => setMessage(null), 3000);
         }
@@ -102,14 +102,7 @@ export const Settings = () => {
             </header>
 
             <main className="dashboard-main">
-                {message && (
-                    <div className={`action-message ${message.type}`} role="alert">
-                        <span className="action-message-icon">
-                            {message.type === 'success' ? '✓' : '⚠'}
-                        </span>
-                        <span className="action-message-text">{message.text}</span>
-                    </div>
-                )}
+
 
                 <section className="settings-container">
                     <div className="settings-card">
@@ -122,6 +115,15 @@ export const Settings = () => {
                         </div>
 
                         <form onSubmit={handleSubmit} className="settings-form">
+
+                            {message && (
+                                <div className={`action-message ${message.type}`} role="alert">
+                                    <span className="action-message-icon">
+                                        {message.type === 'success' ? '✓' : '⚠'}
+                                    </span>
+                                    <span className="action-message-text">{message.text}</span>
+                                </div>
+                            )}
                             <div className="form-grid">
                                 <label className="full-width">
                                     Obecne hasło
@@ -177,7 +179,7 @@ export const Settings = () => {
                             </button>
 
                             <div className="settings-footer">
-                                <p className="app-version">Wersja aplikacji: 0.0.0</p>
+                                <p className="app-version">Wersja aplikacji: 1.0.0</p>
                                 <p className="app-license">©Artikon 2026 - Wszystkie prawa zastrzeżone</p>
                             </div>
                         </form>

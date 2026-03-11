@@ -12,18 +12,20 @@ export default defineConfig({
         name: "Delegacje Artikon",
         short_name: "Delegacje",
         description: "System zarządzania delegacjami",
+        orientation: "portrait",
+        lang: "pl",
         theme_color: "#002E7A",
         background_color: "#002E7A",
         display: "standalone",
         start_url: "/",
         icons: [
           {
-            src: "./img/web-app-manifest-192x192.png",
+            src: "/src/img/web-app-manifest-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "./img/web-app-manifest-512x512.png",
+            src: "/src/img/web-app-manifest-512x512.png",
             sizes: "512x512",
             type: "image/png",
           },

@@ -11,7 +11,7 @@ import type {
 
 export const api = axios.create({
   baseURL:
-    'https://delegacjeartikon-ebfdgjgwesagfzha.polandcentral-01.azurewebsites.net',
+    'https://delegacjewebapp-cebddsckcwcag6af.polandcentral-01.azurewebsites.net',
   headers: {
     'Content-Type': 'application/json',
   },

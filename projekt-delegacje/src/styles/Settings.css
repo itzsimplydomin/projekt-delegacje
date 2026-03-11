@@ -1,3 +1,9 @@
+.settings-page .dashboard-main {
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 /* Kontener centrujący kartę ustawień */
 .settings-container {
   max-width: 900px;
@@ -160,8 +166,8 @@
 .settings-page .action-message {
   position: static;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   border-radius: 12px;
   padding: 0.75rem 1rem;
   display: flex;
@@ -170,6 +176,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   animation: slideDown 0.3s ease-out;
+  box-sizing: border-box;
 }
 
 .settings-page .action-message.success {
