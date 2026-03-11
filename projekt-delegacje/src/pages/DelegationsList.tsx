@@ -50,41 +50,51 @@ const parseIso = (iso: string): { year: number; month: number; day: number; minu
     };
 };
 
-const calculateDiet = (startIso?: string, endIso?: string): number => {
+const DIET_FULL = 45;
+const DIET_HALF = DIET_FULL / 2;
+const MINUTES_IN_DAY = 24 * 60;
+
+type ParsedIso = {
+    year: number;
+    month: number;       // 1-12
+    day: number;         // 1-31
+    minutesOfDay: number; // 0-1439
+};
+
+
+const toDate = (p: ParsedIso): Date =>
+    new Date(p.year, p.month - 1, p.day, Math.floor(p.minutesOfDay / 60), p.minutesOfDay % 60, 0, 0);
+
+export const calculateDiet = (startIso?: string, endIso?: string): number => {
     if (!startIso || !endIso) return 0;
 
     const start = parseIso(startIso);
     const end = parseIso(endIso);
     if (!start || !end) return 0;
 
-    const toNum = (p: typeof start) => p.year * 10000 + p.month * 100 + p.day;
-    const startNum = toNum(start);
-    const endNum = toNum(end);
+    const startDate = toDate(start);
+    const endDate = toDate(end);
 
-    if (endNum < startNum || (endNum === startNum && end.minutesOfDay <= start.minutesOfDay)) return 0;
+    const diffMs = endDate.getTime() - startDate.getTime();
+    if (diffMs <= 0) return 0;
 
-    let total = 0;
-    let curYear = start.year, curMonth = start.month, curDay = start.day;
+    const totalMinutes = diffMs / (1000 * 60);
+    const fullDays = Math.floor(totalMinutes / MINUTES_IN_DAY);
+    const restMinutes = totalMinutes % MINUTES_IN_DAY;
 
-    while (true) {
-        const curNum = curYear * 10000 + curMonth * 100 + curDay;
-        const isFirstDay = curNum === startNum;
-        const isLastDay = curNum === endNum;
+    let total = fullDays * DIET_FULL;
 
-        const dayStartMin = isFirstDay ? start.minutesOfDay : 0;
-        const dayEndMin = isLastDay ? end.minutesOfDay : 24 * 60;
+    // Podróż nie dłuższa niż 1 doba
+    if (fullDays === 0) {
+        if (totalMinutes < 8 * 60) return 0;
+        if (totalMinutes <= 12 * 60) return DIET_HALF;
+        return DIET_FULL;
+    }
 
-        const hours = (dayEndMin - dayStartMin) / 60;
-        if (hours >= 12) total += 45;
-        else if (hours >= 8) total += 22.5;
-
-        if (isLastDay) break;
-
-        // Przejdź do następnego dnia (obsługa końca miesiąca/roku)
-        const next = new Date(curYear, curMonth - 1, curDay + 1);
-        curYear = next.getFullYear();
-        curMonth = next.getMonth() + 1;
-        curDay = next.getDate();
+    // Podróż dłuższa niż 1 doba - niepełna, rozpoczęta doba
+    if (restMinutes > 0) {
+        if (restMinutes <= 8 * 60) total += DIET_HALF;
+        else total += DIET_FULL;
     }
 
     return total;
