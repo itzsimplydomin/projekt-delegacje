@@ -107,6 +107,17 @@
   height: auto;
 }
 
+/* Napis "Wybór miesiąca" */
+.delegations-page .month-filter-label {
+  color: rgba(200, 216, 235, 0.7);
+  font-size: clamp(0.7rem, 1.2vw, 0.78rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* Filtr pracowników dla admina */
 .delegations-page .employee-filter {
   background: rgba(255, 255, 255, 0.08);

@@ -100,13 +100,15 @@ export const calculateDiet = (startIso?: string, endIso?: string): number => {
     return total;
 };
 
+// Sprawdza czy delegacja nakłada się na dany miesiąc (używane do filtrowania delegacji w widoku listy)
+
 const overlapsMonth = (startIso?: string, endIso?: string, yyyyMm?: string): boolean => {
     if (!startIso || !endIso || !yyyyMm) return true;
+    const end = parseIso(endIso);
+    if (!end) return true;
     const [y, m] = yyyyMm.split('-').map(Number);
     if (!y || !m) return true;
-    const monthStart = new Date(y, m - 1, 1);
-    const monthEnd = new Date(y, m, 0, 23, 59, 59, 999);
-    return new Date(startIso) <= monthEnd && new Date(endIso) >= monthStart;
+    return end.year === y && end.month === m;
 };
 
 // Komponent strony z listą delegacji, obsługujący wyświetlanie, filtrowanie, edycję i generowanie PDF
@@ -224,14 +226,16 @@ export const DelegationsList = () => {
         try {
             const payload: Partial<DelegacjaCreate> = {};
             if (editForm.miejsce !== undefined) payload.miejsce = editForm.miejsce;
+
+            // datetime-local zwraca już czas lokalny np. "2026-03-08T10:00"
+            // NIE odejmujemy offsetu 
             if (editForm.dataRozpoczecia) {
-                const d = new Date(editForm.dataRozpoczecia);
-                payload.dataRozpoczecia = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString();
+                payload.dataRozpoczecia = editForm.dataRozpoczecia.slice(0, 19);
             }
             if (editForm.dataZakonczenia) {
-                const d = new Date(editForm.dataZakonczenia);
-                payload.dataZakonczenia = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString();
+                payload.dataZakonczenia = editForm.dataZakonczenia.slice(0, 19);
             }
+
             if (editForm.uwagi !== undefined) payload.uwagi = editForm.uwagi;
 
             await updateMutation.mutateAsync({ id, payload });
@@ -314,6 +318,10 @@ export const DelegationsList = () => {
 
                     <div className="hero-filters-group">
                         <div className="month-filter">
+                            <label className="month-filter-label" htmlFor="month-filter-input">
+                                Wybór miesiąca
+                            </label>
+
                             <input
                                 className="month-filter-input"
                                 type="month"
@@ -396,16 +404,26 @@ export const DelegationsList = () => {
                                                 Data rozpoczęcia
                                                 <input
                                                     type="datetime-local"
-                                                    value={editForm.dataRozpoczecia ? new Date(editForm.dataRozpoczecia).toISOString().slice(0, 16) : ''}
-                                                    onChange={(e) => setEditForm({ ...editForm, dataRozpoczecia: new Date(e.target.value).toISOString() })}
+                                                    value={editForm.dataRozpoczecia
+                                                        ? editForm.dataRozpoczecia.slice(0, 16)
+                                                        : ''}
+                                                    onChange={(e) => setEditForm({
+                                                        ...editForm,
+                                                        dataRozpoczecia: e.target.value  // zostawiamy string z inputu bez konwersji
+                                                    })}
                                                 />
                                             </label>
                                             <label>
                                                 Data zakończenia
                                                 <input
                                                     type="datetime-local"
-                                                    value={editForm.dataZakonczenia ? new Date(editForm.dataZakonczenia).toISOString().slice(0, 16) : ''}
-                                                    onChange={(e) => setEditForm({ ...editForm, dataZakonczenia: new Date(e.target.value).toISOString() })}
+                                                    value={editForm.dataZakonczenia
+                                                        ? editForm.dataZakonczenia.slice(0, 16)
+                                                        : ''}
+                                                    onChange={(e) => setEditForm({
+                                                        ...editForm,
+                                                        dataZakonczenia: e.target.value  // j.w.
+                                                    })}
                                                 />
                                             </label>
                                             <label className="full-width">

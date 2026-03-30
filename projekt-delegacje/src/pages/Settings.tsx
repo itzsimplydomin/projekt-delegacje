@@ -179,8 +179,8 @@ export const Settings = () => {
                             </button>
 
                             <div className="settings-footer">
-                                <p className="app-version">Wersja aplikacji: 1.0.0</p>
-                                <p className="app-license">©Artikon 2026 - Wszystkie prawa zastrzeżone</p>
+                                <p className="app-version">Wersja aplikacji: 1.0.2</p>
+                                <p className="app-license">©artikon s.c. 2026 - Wszystkie prawa zastrzeżone</p>
                             </div>
                         </form>
                     </div>
