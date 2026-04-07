@@ -19,7 +19,6 @@ namespace DelegacjaAPI.Services
 
         public async Task<List<Delegacja>> GetAllDelegationsAsync()
         {
-            await _tableClient.CreateIfNotExistsAsync();
             var queryResults = _tableClient.QueryAsync<TableEntity>();
             var delegacje = new List<Delegacja>();
 

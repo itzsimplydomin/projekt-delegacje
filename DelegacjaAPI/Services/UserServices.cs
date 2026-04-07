@@ -13,7 +13,6 @@ namespace DelegacjaAPI.Services
         {
             string connectionString = config.GetConnectionString("AzureTableStorage");
             _tableClient = new TableClient(connectionString, "Uzytkownik");
-            _tableClient.CreateIfNotExistsAsync().Wait();
         }
         public async Task<Uzytkownik?> GetByEmailAsync(string email)
         {
@@ -48,10 +47,12 @@ namespace DelegacjaAPI.Services
 
         public async Task CreateAsync(Uzytkownik user)
         {
+            await _tableClient.CreateIfNotExistsAsync();
+
             user.RowKey = user.Email.ToLower().Trim();
             user.PartitionKey = "uzytkownik";
 
-            var entity = new TableEntity("uzytkownik", user.Email.ToLower().Trim())
+            var entity = new TableEntity("uzytkownik", user.RowKey)
             {
                 ["Imie"] = user.Imie,
                 ["Nazwisko"] = user.Nazwisko,
@@ -62,10 +63,9 @@ namespace DelegacjaAPI.Services
             };
 
             await _tableClient.AddEntityAsync(entity);
-
         }
 
-         public Uzytkownik MapToUzytkownik(TableEntity entity)
+        public Uzytkownik MapToUzytkownik(TableEntity entity)
         {
             return new Uzytkownik 
             {
@@ -116,6 +116,15 @@ namespace DelegacjaAPI.Services
             }
 
             return users;
+        }
+        public async Task DeleteAsync(string email)
+        {
+            var normalizedEmail = email.ToLower().Trim();
+
+            await _tableClient.DeleteEntityAsync(
+                "uzytkownik",
+                normalizedEmail
+            );
         }
 
 

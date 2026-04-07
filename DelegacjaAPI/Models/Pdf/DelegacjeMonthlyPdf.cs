@@ -3,7 +3,7 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using DelegacjaAPI.Models;
 
-namespace DelegacjaAPI.Pdf
+namespace DelegacjaAPI.Models.Pdf
 {
     public class DelegacjeMonthlyPdf : IDocument
     {
@@ -122,27 +122,32 @@ namespace DelegacjaAPI.Pdf
             if (end <= start)
                 return 0;
 
-            decimal total = 0;
-            var current = start.Date;
+            double totalMinutes = (end - start).TotalMinutes;
 
-            while (current <= end.Date)
+            int fullDays = (int)(totalMinutes / (24 * 60));
+            double restMinutes = totalMinutes % (24 * 60);
+
+            // Podróż krótsza niż 1 doba
+            if (fullDays == 0)
             {
-                DateTime dayStart = current == start.Date
-                    ? start
-                    : current;
+                if (totalMinutes < 8 * 60)
+                    return 0;
 
-                DateTime dayEnd = current == end.Date
-                    ? end
-                    : current.AddDays(1);
+                if (totalMinutes <= 12 * 60)
+                    return 22.5m;
 
-                var hours = (dayEnd - dayStart).TotalHours;
+                return 45m;
+            }
 
-                if (hours >= 12)
-                    total += 45m;
-                else if (hours >= 8)
+            // Podróż dłuższa niż 1 doba
+            decimal total = fullDays * 45m;
+
+            if (restMinutes > 0)
+            {
+                if (restMinutes <= 8 * 60)
                     total += 22.5m;
-
-                current = current.AddDays(1);
+                else
+                    total += 45m;
             }
 
             return total;

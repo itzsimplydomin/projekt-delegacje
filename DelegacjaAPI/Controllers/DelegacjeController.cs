@@ -7,7 +7,7 @@ using Azure;
 using DelegacjaAPI.Models.DTO.Delegacja;
 using Microsoft.AspNetCore.Authorization;
 using QuestPDF.Fluent;
-using DelegacjaAPI.Pdf;
+using DelegacjaAPI.Models.Pdf;
 
 namespace DelegacjaAPI.Controllers
 {
@@ -160,38 +160,54 @@ namespace DelegacjaAPI.Controllers
 
             return Ok(new { success = true });
         }
+
         [HttpPost("{id}/pdf")]
-        public async Task<IActionResult> GeneratePdf(string id,[FromServices] BlobStorageService blobService)
+        public async Task<IActionResult> GeneratePdf(
+            string id,
+            [FromServices] BlobStorageService blobService)
         {
+            var email = User.Identity!.Name!;
+            var isAdmin = User.IsInRole("Admin");
+
             var delegacja = await _tableService.GetByIdDelegationAsync(id);
+
             if (delegacja == null)
                 return NotFound();
+
+            // zabezpieczenie – user nie może pobrać cudzej delegacji
+            if (!isAdmin && delegacja.UserEmail != email)
+                return Forbid();
 
             var document = new DelegacjaPdf(delegacja);
 
             byte[] pdfBytes;
+
             using (var stream = new MemoryStream())
             {
                 document.GeneratePdf(stream);
                 pdfBytes = stream.ToArray();
             }
 
-            // zapis do Azure Blob
-            await blobService.UploadPdfAsync(pdfBytes, id);
+            var fileName = $"delegacja-{id}.pdf";
+
+            // zapis lokalnie i do Azure (tak jak monthly)
+            await blobService.SavePdfLocallyAsync(pdfBytes, fileName);
+            await blobService.UploadPdfAsync(pdfBytes, fileName);
 
             return File(
                 pdfBytes,
                 "application/pdf",
-                $"delegacja-{id}.pdf"
+                fileName
             );
         }
+
         [HttpPost("monthly-pdf")]
         [Authorize]
         public async Task<IActionResult> GenerateMonthlyPdf(
-    int year,
-    int month,
-    string? userEmail,
-    [FromServices] BlobStorageService blobService)
+            int year,
+            int month,
+            string? userEmail,
+            [FromServices] BlobStorageService blobService)
         {
             var isAdmin = User.IsInRole("Admin");
             var loggedEmail = User.Identity!.Name!;

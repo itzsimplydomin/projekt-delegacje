@@ -21,7 +21,6 @@ namespace DelegacjaAPI.Controllers
             _userService = userService;
             _tableService = tableService;
         }
-
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -43,6 +42,9 @@ namespace DelegacjaAPI.Controllers
 
                 var uzytkownik = new Uzytkownik
                 {
+                    PartitionKey = "user",
+                    RowKey = request.Email.ToLower(),
+
                     Email = request.Email,
                     Imie = request.Imie,
                     Nazwisko = request.Nazwisko,
@@ -70,14 +72,14 @@ namespace DelegacjaAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Wewnętrzny błąd");
+                return BadRequest(ex.ToString());
             }
         }
 
         [HttpGet("users")]
         public async Task<IActionResult> GetUsers()
         {
-            var users = (await _userService.GetAllAsync()).Where(u => u.Rola == "User");
+            var users = await _userService.GetAllAsync();
 
             var response = users.Select(u => new UserListResponse
             {
@@ -117,6 +119,39 @@ namespace DelegacjaAPI.Controllers
 
             return Ok(response);
         }
+        [HttpDelete("users/{email}")]
+        public async Task<IActionResult> DeleteUser(string email)
+        {
+            var normalizedEmail = email.ToLower().Trim();
+            var loggedEmail = User.Identity!.Name!.ToLower().Trim();
 
-}
+            var user = await _userService.GetByEmailAsync(normalizedEmail);
+            if (user == null)
+                return NotFound("Użytkownik nie istnieje");
+
+            //  nie możesz usunąć samego siebie
+            if (normalizedEmail == loggedEmail)
+                return BadRequest("Nie możesz usunąć samego siebie");
+
+            // nie można usunąć ostatniego admina
+            var allUsers = await _userService.GetAllAsync();
+            var adminCount = allUsers.Count(u => u.Rola == "Admin");
+
+            if (user.Rola == "Admin" && adminCount <= 1)
+                return BadRequest("Nie można usunąć ostatniego administratora");
+
+            // usuwanie delegacji
+            await _tableService.DeleteDelegacjeByUserAsync(normalizedEmail);
+
+            // usuwanie użytkownika
+            await _userService.DeleteAsync(normalizedEmail);
+
+            return Ok(new
+            {
+                success = true,
+                message = "Użytkownik i jego delegacje zostały usunięte"
+            });
+        }
+
+    }
 }

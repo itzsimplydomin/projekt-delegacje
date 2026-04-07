@@ -6,12 +6,15 @@ using QuestPDF.Infrastructure;
 
 QuestPDF.Settings.License = LicenseType.Community;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Controllers
 builder.Services.AddControllers();
+
+// Application Insights
 builder.Services.AddApplicationInsightsTelemetry();
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -41,14 +44,12 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
+// Services
 builder.Services.AddScoped<TableStorageServices>();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<BlobStorageService>();
 
-
-
-// konfiguracja CORS 
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -60,12 +61,19 @@ builder.Services.AddCors(options =>
     });
 });
 
+// JWT konfiguracja
+var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new Exception("JWT Key is not configured in Azure Application Settings");
+}
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
-    var jwt = builder.Configuration.GetSection("Jwt");
-
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -73,31 +81,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
 
-        ValidIssuer = jwt["Issuer"],
-        ValidAudience = jwt["Audience"],
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwt["Key"]!)
+            Encoding.UTF8.GetBytes(jwtKey)
         )
     };
 });
 
 builder.Services.AddAuthorization();
 
-
 var app = builder.Build();
 
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Delegacje API v1");
-    c.RoutePrefix = string.Empty; 
+    c.RoutePrefix = string.Empty;
 });
-
 
 app.UseHttpsRedirection();
 
-// u¿ycie polityki CORS
 app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
