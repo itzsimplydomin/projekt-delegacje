@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'; // Importowanie hooków z React Query
-import { getDelegacje, deleteDelegacja, updateDelegacja, changePassword, generateMonthlyPdf } from './client';
+import { getDelegacje, deleteDelegacja, updateDelegacja, changePassword, generateMonthlyPdf, getUsers, registerUser } from './client';
 import type { Delegacja, DelegacjaCreate, ChangePasswordRequest } from './types';
 import { api } from './client';
 
@@ -20,7 +20,7 @@ export const useDeleteDelegacja = () => {
 
   // Pobranie klienta zapytań React Query
   const queryClient = useQueryClient();
-  
+
   // Użycie hooka useMutation do usunięcia delegacji
   return useMutation({
     mutationFn: deleteDelegacja,
@@ -35,7 +35,7 @@ export const useUpdateDelegacja = () => {
 
   // Pobranie klienta zapytań React Query
   const queryClient = useQueryClient();
-  
+
   // Użycie hooka useMutation do edycji delegacji
   return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: Partial<DelegacjaCreate> }) =>
@@ -75,5 +75,17 @@ export const useChangePassword = () => {
 export const useGenerateMonthlyPdf = () => {
   return useMutation({
     mutationFn: generateMonthlyPdf,
+  });
+};
+
+// hook do pobierania użytkowników
+export const useUsers = () =>
+  useQuery({ queryKey: ['users'], queryFn: getUsers });
+
+export const useRegisterUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: registerUser,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] }),
   });
 };

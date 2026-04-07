@@ -189,3 +189,16 @@ export const isAdmin = (): boolean => {
     return false;
   }
 };
+
+// Admin
+export const getUsers = async () => {
+  const { data } = await api.get('/api/admin/users');
+  return data;
+};
+
+export const registerUser = async (payload: {
+  imie: string; nazwisko: string; email: string; password: string; rola: string;
+}) => {
+  const { data } = await api.post('/api/admin/register', payload);
+  return data;
+};

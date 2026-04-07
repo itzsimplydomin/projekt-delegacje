@@ -9,6 +9,7 @@ const LoginBanner = lazy(() => import('../pages/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const DelegationsList = lazy(() => import('../pages/DelegationsList'));
 const Settings = lazy(() => import('../pages/Settings'));
+const AdminPanel = lazy(() => import('../pages/AdminPanel'));
 
 // Root App component: definiuje routing i layout aplikacji
 export const App = () => {
@@ -21,6 +22,7 @@ export const App = () => {
             <Route path="/delegacje" element={<RequireAuth><Dashboard /></RequireAuth>} />
             <Route path="/delegacje/lista" element={<RequireAuth><DelegationsList /></RequireAuth>} />
             <Route path="/delegacje/ustawienia" element={<RequireAuth><Settings /></RequireAuth>} />
+            <Route path="/delegacje/admin" element={<RequireAuth><AdminPanel /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

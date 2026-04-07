@@ -293,6 +293,11 @@ export const DelegationsList = () => {
                         <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje'); }}>Kalendarz</button>
                         <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/lista'); }}>Delegacje</button>
                         <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/ustawienia'); }}>Ustawienia</button>
+                        {isAdmin && (
+                            <button className="nav-link nav-link--admin" onClick={() => { setMenuOpen(false); navigate('/delegacje/admin'); }}>
+                                Admin
+                            </button>
+                        )}
                     </nav>
                 </div>
             </header>

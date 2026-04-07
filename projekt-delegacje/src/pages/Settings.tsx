@@ -10,6 +10,7 @@ import logo from '/src/img/logoArtikon.png';
 // Strona ustawień: zmiana hasła, wylogowanie, informacje o wersji i licencji, z responsywnym menu i komunikatami o sukcesie/błędzie
 export const Settings = () => {
     const navigate = useNavigate();
+    const { isAdmin } = useAuth();
     const { logout } = useAuth();
     const changePasswordMutation = useChangePassword();
 
@@ -97,6 +98,11 @@ export const Settings = () => {
                         <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/ustawienia'); }}>
                             Ustawienia
                         </button>
+                        {isAdmin && (
+                            <button className="nav-link nav-link--admin" onClick={() => { setMenuOpen(false); navigate('/delegacje/admin'); }}>
+                                Admin
+                            </button>
+                        )}
                     </nav>
                 </div>
             </header>

@@ -11,6 +11,7 @@ import logo from '/src/img/logoArtikon.png';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from './Loader';
 import { TimePicker } from './TimePicker';
+import { useAuth } from '../auth/AuthContext';
 
 
 // Główna strona dashboardu z kalendarzem delegacji i formularzem dodawania nowych
@@ -18,6 +19,9 @@ export const Dashboard = () => {
 
     // Nawigacja do innych stron
     const navigate = useNavigate();
+
+    // Pobranie informacji o roli użytkownika (czy jest adminem)
+    const { isAdmin } = useAuth();
 
     // Pobieramy listę delegacji z hooka API (React Query wrapper)
     const { data: delegacje = [], isLoading, isError } = useDelegacje();
@@ -188,6 +192,12 @@ export const Dashboard = () => {
                         <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/ustawienia'); }}>
                             Ustawienia
                         </button>
+
+                        {isAdmin && (
+                            <button className="nav-link nav-link--admin" onClick={() => { setMenuOpen(false); navigate('/delegacje/admin'); }}>
+                                Admin
+                            </button>
+                        )}
                     </nav>
                 </div>
             </header>
