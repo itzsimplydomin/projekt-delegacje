@@ -80,7 +80,7 @@ export const Settings = () => {
                         aria-label="Przełącz menu"
                         onClick={() => setMenuOpen(!menuOpen)}
                     >
-                        ☰
+                        <span className="material-symbols-outlined">menu</span>
                     </button>
 
                     <nav
@@ -125,7 +125,7 @@ export const Settings = () => {
                             {message && (
                                 <div className={`action-message ${message.type}`} role="alert">
                                     <span className="action-message-icon">
-                                        {message.type === 'success' ? '✓' : '⚠'}
+                                        <span className="material-symbols-outlined">{message.type === 'success' ? 'check_circle' : 'warning'}</span>
                                     </span>
                                     <span className="action-message-text">{message.text}</span>
                                 </div>
@@ -185,7 +185,7 @@ export const Settings = () => {
                             </button>
 
                             <div className="settings-footer">
-                                <p className="app-version">Wersja aplikacji: 1.0.2</p>
+                                <p className="app-version">Wersja aplikacji: 1.0.3</p>
                                 <p className="app-license">©artikon s.c. 2026 - Wszystkie prawa zastrzeżone</p>
                             </div>
                         </form>

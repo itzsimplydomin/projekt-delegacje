@@ -174,8 +174,6 @@ export const generateMonthlyPdf = async (params: {
 };
 
 // Deprecated helper 
-
-/** @deprecated Użyj useAuth().isAdmin */
 export const isAdmin = (): boolean => {
   const token = getToken();
   if (!token) return false;
@@ -196,9 +194,15 @@ export const getUsers = async () => {
   return data;
 };
 
+// Rejestracja nowego użytkownika (tylko dla admina)
 export const registerUser = async (payload: {
   imie: string; nazwisko: string; email: string; password: string; rola: string;
 }) => {
   const { data } = await api.post('/api/admin/register', payload);
   return data;
+};
+
+// Usuwanie użytkownika (tylko dla admina)
+export const deleteUser = async (email: string): Promise<void> => {
+  await api.delete(`/api/admin/users/${encodeURIComponent(email)}`);
 };

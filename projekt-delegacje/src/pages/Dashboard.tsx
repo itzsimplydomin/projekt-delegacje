@@ -2,6 +2,7 @@ import '/src/styles/App.css';
 import '/src/styles/Dashboard.css';
 import '/src/styles/TimePicker.css';
 import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isWithinInterval, startOfMonth, startOfWeek } from 'date-fns';
+import { pl } from 'date-fns/locale';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDelegacje } from '../api/hooks';
 import { createDelegacja } from '../api/client';
@@ -173,7 +174,7 @@ export const Dashboard = () => {
                         aria-label="Przełącz menu"
                         onClick={() => setMenuOpen(!menuOpen)}
                     >
-                        ☰
+                        <span className="material-symbols-outlined">menu</span>
                     </button>
 
                     {/* Nawigacja główna - ukrywana na małych ekranach */}
@@ -218,15 +219,15 @@ export const Dashboard = () => {
                         <div className="calendar-header">
                             <div>
                                 <p className="eyebrow">Kalendarz delegacji</p>
-                                <h2>{format(currentMonth, 'LLLL yyyy')}</h2>
+                                <h2>{format(currentMonth, 'LLLL yyyy', { locale: pl })}</h2>
                                 <p className="subtitle">Dotknij zakres dat, aby dodać delegację. Dni z kropką zawierają wpisy.</p>
                             </div>
                             <div className="month-nav">
                                 <button onClick={() => setCurrentMonth((prev) => addMonths(prev, -1))} aria-label="Poprzedni miesiąc">
-                                    ◀
+                                    <span className="material-symbols-outlined">chevron_left</span>
                                 </button>
                                 <button onClick={() => setCurrentMonth((prev) => addMonths(prev, 1))} aria-label="Następny miesiąc">
-                                    ▶
+                                    <span className="material-symbols-outlined">chevron_right</span>
                                 </button>
                             </div>
                         </div>

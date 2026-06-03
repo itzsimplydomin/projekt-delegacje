@@ -11,7 +11,7 @@
   padding: clamp(1rem, 2vw, 1.5rem) clamp(1.25rem, 2.5vw, 2rem);
 }
 
-/* Tytuł — lewy górny */
+/* Tytuł - lewy górny */
 .delegations-page .hero-card > div:first-child {
   grid-area: title;
   display: flex;
@@ -27,6 +27,7 @@
   gap: clamp(0.6rem, 1.2vw, 1rem);
   align-items: stretch;
   width: 100%;
+  height: 80px;
   min-width: 0;
 }
 

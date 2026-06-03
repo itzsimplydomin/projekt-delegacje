@@ -128,18 +128,25 @@ export const DelegationsList = () => {
     const [editForm, setEditForm] = useState<Partial<DelegacjaCreate>>({});
     const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
     const [employeeFilter, setEmployeeFilter] = useState('');
-    const [monthFilter, setMonthFilter] = useState('');
+
+    // Domyślny miesiąc w filtrze ustawiamy na aktualny, żeby od razu pokazać delegacje z bieżącego miesiąca
+    const [monthFilter, setMonthFilter] = useState(() => {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    });
 
     const filteredDelegacje = useMemo(() =>
-        delegacje.filter((d) => {
-            const matchesMonth = overlapsMonth(d.dataRozpoczecia, d.dataZakonczenia, monthFilter);
-            if (!isAdmin) return matchesMonth;
-            if (employeeFilter) {
-                const term = employeeFilter.toLowerCase();
-                return matchesMonth && `${d.pracownikImie} ${d.pracownikNazwisko}`.toLowerCase().includes(term);
-            }
-            return matchesMonth;
-        }),
+        delegacje
+            .filter((d) => {
+                const matchesMonth = overlapsMonth(d.dataRozpoczecia, d.dataZakonczenia, monthFilter);
+                if (!isAdmin) return matchesMonth;
+                if (employeeFilter) {
+                    const term = employeeFilter.toLowerCase();
+                    return matchesMonth && `${d.pracownikImie} ${d.pracownikNazwisko}`.toLowerCase().includes(term);
+                }
+                return matchesMonth;
+            })
+            .sort((a, b) => (a.dataRozpoczecia ?? '').localeCompare(b.dataRozpoczecia ?? '')),
         [delegacje, monthFilter, employeeFilter, isAdmin],
     );
 
@@ -288,7 +295,7 @@ export const DelegationsList = () => {
                     <div className="logo">
                         <img src={logo} alt="Logo Artikon" loading="lazy" />
                     </div>
-                    <button className="menu-toggle" aria-label="Przełącz menu" onClick={() => setMenuOpen(!menuOpen)}>☰</button>
+                    <button className="menu-toggle" aria-label="Przełącz menu" onClick={() => setMenuOpen(!menuOpen)}><span className="material-symbols-outlined">menu</span></button>
                     <nav id="main-nav" className={`main-nav ${menuOpen ? 'open' : ''}`} role="navigation" aria-label="Menu główne">
                         <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje'); }}>Kalendarz</button>
                         <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/lista'); }}>Delegacje</button>
@@ -317,7 +324,6 @@ export const DelegationsList = () => {
                         <div className="hero-meta hero-meta-diet">
                             <p className="metric-label">Suma diet</p>
                             <p className="metric-value">{totalDiet.toFixed(2)} <span className="metric-currency">zł</span></p>
-                            <p className="metric-sublabel">45 zł/doba, 12h</p>
                         </div>
                     </div>
 
@@ -363,17 +369,17 @@ export const DelegationsList = () => {
                             title={!monthFilter ? 'Wybierz miesiąc, aby pobrać raport' : 'Pobierz raport PDF za wybrany miesiąc'}
                         >
                             {generateMonthlyPdfMutation.isPending ? (
-                                <>⏳ Generuję...</>
+                                <><span className="material-symbols-outlined">hourglass_empty</span> Generuję...</>
                             ) : (
                                 <>
-                                    📊 PDF miesiąca
+                                    <span className="material-symbols-outlined">picture_as_pdf</span> PDF miesiąca
                                     {monthFilter && (
                                         <span className="monthly-pdf-badge">
                                             {new Date(monthFilter + '-01').toLocaleDateString('pl-PL', { month: 'short', year: 'numeric' })}
                                         </span>
                                     )}
                                     {isAdmin && employeeFilter && (
-                                        <span className="monthly-pdf-badge monthly-pdf-badge--person">👤 {employeeFilter}</span>
+                                        <span className="monthly-pdf-badge monthly-pdf-badge--person"><span className="material-symbols-outlined">person</span> {employeeFilter}</span>
                                     )}
                                 </>
                             )}
@@ -384,7 +390,7 @@ export const DelegationsList = () => {
 
                 {actionMessage && (
                     <div className={`action-message ${actionMessage.type}`} role="alert">
-                        <span className="action-message-icon">{actionMessage.type === 'success' ? '✓' : '⚠'}</span>
+                        <span className="action-message-icon"><span className="material-symbols-outlined">{actionMessage.type === 'success' ? 'check_circle' : 'warning'}</span></span>
                         <span className="action-message-text">{actionMessage.text}</span>
                     </div>
                 )}
@@ -454,6 +460,10 @@ export const DelegationsList = () => {
                                                 <span className="card-label">Termin</span>
                                                 <p>{formatDateRange(delegacja.dataRozpoczecia, delegacja.dataZakonczenia)}</p>
                                             </div>
+                                            <div className="card-row">
+                                                <span className="card-label">Dieta</span>
+                                                <p>{calculateDiet(delegacja.dataRozpoczecia, delegacja.dataZakonczenia).toFixed(2)} zł</p>
+                                            </div>
                                             {delegacja.uwagi && (
                                                 <div className="card-row">
                                                     <span className="card-label">Uwagi</span>
@@ -462,9 +472,9 @@ export const DelegationsList = () => {
                                             )}
                                         </div>
                                         <div className="card-actions">
-                                            <button className="action-btn edit-btn" onClick={() => handleEdit(delegacja)} aria-label={`Edytuj delegację: ${delegacja.miejsce}`}>✏️ Edytuj</button>
-                                            <button className="action-btn pdf-btn" onClick={() => handleGeneratePdf(delegacja.id)} aria-label={`Generuj PDF dla delegacji: ${delegacja.miejsce}`}>📄 PDF</button>
-                                            <button className="action-btn delete-btn" onClick={() => handleDelete(delegacja.id)} aria-label={`Usuń delegację: ${delegacja.miejsce}`}>🗑️ Usuń</button>
+                                            <button className="action-btn edit-btn" onClick={() => handleEdit(delegacja)} aria-label={`Edytuj delegację: ${delegacja.miejsce}`}><span className="material-symbols-outlined">edit</span> Edytuj</button>
+                                            <button className="action-btn pdf-btn" onClick={() => handleGeneratePdf(delegacja.id)} aria-label={`Generuj PDF dla delegacji: ${delegacja.miejsce}`}><span className="material-symbols-outlined">picture_as_pdf</span> PDF</button>
+                                            <button className="action-btn delete-btn" onClick={() => handleDelete(delegacja.id)} aria-label={`Usuń delegację: ${delegacja.miejsce}`}><span className="material-symbols-outlined">delete</span> Usuń</button>
                                         </div>
                                     </>
                                 )}
