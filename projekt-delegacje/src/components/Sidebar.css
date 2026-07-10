@@ -1,0 +1,300 @@
+/* ============================================
+   SIDEBAR — zmienne i layout
+   ============================================ */
+
+:root {
+  --sidebar-width: 240px;
+  --mobile-header-height: 60px;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: var(--sidebar-width);
+  background: linear-gradient(180deg, var(--navy-darkest) 0%, var(--navy-darker) 60%, var(--navy) 100%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(200, 216, 235, 0.1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   MOBILNY HEADER (hamburger + logo)
+   ============================================ */
+
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--mobile-header-height);
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy-darker) 50%, var(--navy-darkest) 100%);
+  z-index: 998;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.mobile-header-logo {
+  height: 30px;
+  width: auto;
+}
+
+.mobile-hamburger {
+  background: none;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  transition: background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  font-size: 1.5rem;
+}
+
+.mobile-hamburger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Overlay – ciemne tło za sidebarem na mobilnym */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* ============================================
+   RESPONSIVE — mobilny vs desktop
+   ============================================ */
+
+@media (max-width: 1023px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 8px 0 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar-overlay.open {
+    display: block;
+  }
+
+  .mobile-header {
+    display: flex;
+  }
+}
+
+/* ============================================
+   LOGO
+   ============================================ */
+
+.sidebar-logo {
+  padding: 1.5rem 1rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.sidebar-logo img {
+  height: 36px;
+  width: auto;
+}
+
+/* ============================================
+   USER INFO
+   ============================================ */
+
+.sidebar-user {
+  margin: 0 0.75rem 0.25rem;
+  padding: 0.7rem 0.75rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(200, 216, 235, 0.12);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.sidebar-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--ocean-blue), var(--pale-blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--navy-darkest);
+  flex-shrink: 0;
+  letter-spacing: 0.01em;
+}
+
+.sidebar-user-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.sidebar-user-email {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.sidebar-user-role {
+  margin: 0.15rem 0 0;
+  font-size: 0.67rem;
+  color: rgba(200, 216, 235, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ============================================
+   DIVIDER
+   ============================================ */
+
+.sidebar-divider {
+  border: none;
+  border-top: 1px solid rgba(200, 216, 235, 0.1);
+  margin: 0.65rem 1rem;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   NAWIGACJA
+   ============================================ */
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0 0.65rem;
+  flex-shrink: 0;
+}
+
+.sidebar-section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(200, 216, 235, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0.75rem 0.2rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.58rem 0.75rem;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(200, 216, 235, 0.72);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background 0.15s ease, color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 40px;
+  font-family: inherit;
+  line-height: 1;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+}
+
+.sidebar-link.active {
+  background: rgba(255, 255, 255, 0.13);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.sidebar-link .icon {
+  flex-shrink: 0;
+}
+
+/* ============================================
+   SPACER I DOLNA SEKCJA
+   ============================================ */
+
+.sidebar-spacer {
+  flex: 1;
+  min-height: 0.5rem;
+}
+
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.65rem;
+  border-top: 1px solid rgba(200, 216, 235, 0.1);
+  flex-shrink: 0;
+}
+
+.sidebar-link.sidebar-logout {
+  color: rgba(252, 165, 165, 0.78);
+}
+
+.sidebar-link.sidebar-logout:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+}
+
+/* ============================================
+   TRYB JASNY (LIGHT MODE)
+   Sidebar pozostaje ciemny – to element brandingowy
+   ============================================ */
+
+[data-theme="light"] .sidebar {
+  background: linear-gradient(180deg, #0d1e40 0%, #142857 50%, #1a3370 100%);
+  border-right-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .mobile-header {
+  background: linear-gradient(90deg, #142857 0%, #0d1e40 100%);
+}
+
+[data-theme="light"] .sidebar-user {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="light"] .sidebar-overlay.open {
+  background: rgba(0, 0, 46, 0.45);
+}

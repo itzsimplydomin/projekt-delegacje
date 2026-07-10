@@ -490,3 +490,128 @@
         font-size: 0.7rem;
     }
 }
+
+/* ============================================
+   TRYB JASNY (LIGHT MODE)
+   ============================================ */
+
+[data-theme="light"] .admin-page .hero-meta {
+    background: rgba(0, 46, 122, 0.07);
+    border-color: rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .admin-tabs {
+    background: rgba(0, 46, 122, 0.05);
+    border-color: rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .admin-tab {
+    color: rgba(0, 46, 122, 0.68);
+}
+
+[data-theme="light"] .admin-tab:hover {
+    color: #0a1a3a;
+    background: rgba(0, 46, 122, 0.09);
+}
+
+[data-theme="light"] .admin-tab.active {
+    background: linear-gradient(135deg, rgba(0, 46, 122, 0.14), rgba(106, 155, 216, 0.16));
+    border-color: rgba(0, 46, 122, 0.32);
+    color: #0a1a3a;
+    box-shadow: 0 4px 16px rgba(0, 46, 122, 0.12);
+}
+
+[data-theme="light"] .admin-section {
+    background: #ffffff;
+    border-color: rgba(0, 46, 122, 0.16);
+    box-shadow: 0 8px 32px rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .admin-user-card {
+    background: rgba(0, 46, 122, 0.05);
+    border-color: rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .admin-user-card:hover {
+    background: rgba(0, 46, 122, 0.09);
+    border-color: rgba(0, 46, 122, 0.26);
+}
+
+[data-theme="light"] .admin-user-name {
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .admin-user-email {
+    color: rgba(0, 46, 122, 0.68);
+}
+
+[data-theme="light"] .admin-form-card .settings-header {
+    border-bottom-color: rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .admin-form-card .settings-header h2 {
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .admin-form-grid label {
+    color: rgba(0, 46, 122, 0.82);
+}
+
+[data-theme="light"] .admin-form-grid input {
+    background: rgba(0, 46, 122, 0.05);
+    border-color: rgba(0, 46, 122, 0.28);
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .admin-form-grid input::placeholder {
+    color: rgba(0, 46, 122, 0.45);
+}
+
+[data-theme="light"] .admin-form-grid input:focus {
+    border-color: var(--ocean-blue);
+    box-shadow: 0 0 0 3px rgba(106, 155, 216, 0.25);
+}
+
+[data-theme="light"] .admin-role-option {
+    background: rgba(0, 46, 122, 0.05);
+    border-color: rgba(0, 46, 122, 0.22);
+    color: rgba(0, 46, 122, 0.72);
+}
+
+[data-theme="light"] .admin-role-option:hover {
+    background: rgba(0, 46, 122, 0.1);
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .admin-role-option.active {
+    background: linear-gradient(135deg, rgba(0, 46, 122, 0.15), rgba(106, 155, 216, 0.18));
+    border-color: rgba(0, 46, 122, 0.4);
+    color: #0a1a3a;
+    box-shadow: 0 4px 16px rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .admin-empty {
+    color: rgba(0, 46, 122, 0.62);
+}
+
+[data-theme="light"] .admin-page .action-message {
+    background: rgba(255, 255, 255, 0.97);
+    border-color: rgba(0, 46, 122, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .admin-page .action-message-text {
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .admin-delete-btn {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #c00000;
+}
+
+[data-theme="light"] .admin-delete-btn:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.16);
+    border-color: rgba(239, 68, 68, 0.55);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}

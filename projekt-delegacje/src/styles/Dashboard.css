@@ -144,21 +144,38 @@ body {
   min-height: 100vh;
   color: var(--white);
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: var(--sidebar-width);
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) 0;
 }
 
-/* Treść dashboardu - flex column z paddingiem dla nagłówka */
+/* Na mobilnym sidebar jest schowany – wrapper zajmuje całą szerokość */
+@media (max-width: 1023px) {
+  .dashboard-wrapper {
+    left: 0;
+  }
+}
+
+/* Treść dashboardu - flex column z paddingiem */
 .dashboard-main {
-  padding: calc(clamp(60px, 12vw, 80px) + clamp(0.75rem, 2vw, 1.25rem)) clamp(0.75rem, 3vw, 1rem) clamp(3rem, 3vw, 3rem);
+  padding: clamp(1.25rem, 2.5vw, 2rem) clamp(0.75rem, 3vw, 1rem) clamp(3rem, 3vw, 3rem);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: clamp(1rem, 2vw, 1.5rem);
-  min-height: calc(100vh - clamp(60px, 12vw, 80px));
+  min-height: 100vh;
+}
+
+/* Na mobilnym – padding-top dla mobilnego headera */
+@media (max-width: 1023px) {
+  .dashboard-main {
+    padding-top: calc(var(--mobile-header-height) + 1rem);
+  }
 }
 
 /* Karta hero - powitanie użytkownika z metryką */
@@ -982,7 +999,7 @@ body {
   }
 
   .dashboard-main {
-    padding-top: calc(clamp(60px, 12vw, 80px) + 1rem);
+    padding-top: calc(var(--mobile-header-height) + 1rem);
     padding-bottom: clamp(4rem, 8vw, 6rem);
     gap: 1.25rem;
   }
@@ -1039,7 +1056,7 @@ body {
   }
 
   .dashboard-main {
-    padding: calc(clamp(60px, 12vw, 70px) + 0.75rem) clamp(0.6rem, 2vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+    padding: calc(var(--mobile-header-height) + 0.75rem) clamp(0.6rem, 2vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
     padding-bottom: clamp(5rem, 10vw, 7rem);
     gap: 1rem;
   }
@@ -1263,4 +1280,230 @@ body {
 .delegations-grid {
   scrollbar-width: thin;
   scrollbar-color: var(--sb-thumb) var(--sb-track);
+}
+
+/* ============================================
+   PRZYCISK ZMIANY MOTYWU
+   ============================================ */
+
+.theme-toggle {
+  margin-left: auto;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(200, 216, 235, 0.3);
+  border-radius: 50%;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease, transform 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  font-size: 1.15rem;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: rotate(20deg);
+}
+
+.theme-toggle:active {
+  transform: scale(0.9);
+}
+
+/* ============================================
+   TRYB JASNY (LIGHT MODE)
+   ============================================ */
+
+[data-theme="light"] {
+  --sb-track: rgba(0, 46, 122, 0.07);
+  --sb-thumb: rgba(0, 46, 122, 0.28);
+  --sb-thumb-hover: rgba(0, 46, 122, 0.45);
+}
+
+[data-theme="light"] body {
+  background: #e8f0ff;
+}
+
+[data-theme="light"] .dashboard-wrapper {
+  background: #eef4ff;
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .theme-toggle {
+  background: rgba(0, 46, 122, 0.1);
+  border-color: rgba(0, 46, 122, 0.3);
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .theme-toggle:hover {
+  background: rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .hero-card {
+  background: #ffffff;
+  border-color: rgba(0, 46, 122, 0.16);
+  box-shadow: 0 8px 32px rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .hero-card h1 {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .subtitle,
+[data-theme="light"] .eyebrow,
+[data-theme="light"] .metric-label {
+  color: rgba(0, 46, 122, 0.72);
+}
+
+[data-theme="light"] .hero-meta {
+  background: rgba(0, 46, 122, 0.07);
+  border-color: rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .calendar-shell {
+  background: #ffffff;
+  border-color: rgba(0, 46, 122, 0.16);
+  box-shadow: 0 8px 32px rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .calendar-header h2 {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .calendar-weekdays {
+  color: rgba(0, 46, 122, 0.68);
+}
+
+[data-theme="light"] .month-nav button {
+  background: rgba(0, 46, 122, 0.08);
+  border-color: rgba(0, 46, 122, 0.28);
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .month-nav button:hover {
+  background: rgba(0, 46, 122, 0.13);
+  border-color: rgba(0, 46, 122, 0.4);
+}
+
+[data-theme="light"] .month-nav button:active {
+  background: rgba(0, 46, 122, 0.16);
+  border-color: rgba(0, 46, 122, 0.48);
+  box-shadow: 0 4px 12px rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .calendar-day {
+  background: rgba(0, 46, 122, 0.05);
+  border-color: rgba(0, 46, 122, 0.16);
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .calendar-day:hover {
+  background: rgba(0, 46, 122, 0.09);
+  border-color: rgba(0, 46, 122, 0.28);
+}
+
+[data-theme="light"] .calendar-day:active {
+  background: rgba(0, 46, 122, 0.13);
+  border-color: rgba(0, 46, 122, 0.38);
+  box-shadow: 0 8px 30px rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .calendar-day.muted {
+  color: rgba(0, 46, 122, 0.32);
+}
+
+[data-theme="light"] .calendar-day.selected {
+  background: linear-gradient(135deg, rgba(0, 46, 122, 0.14), rgba(106, 155, 216, 0.2));
+  border-color: rgba(0, 46, 122, 0.45);
+  box-shadow: 0 8px 40px rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .calendar-day.range-edge {
+  outline-color: rgba(0, 46, 122, 0.55);
+}
+
+[data-theme="light"] .calendar-day .pill {
+  background: rgba(0, 46, 122, 0.08);
+  border-color: rgba(0, 46, 122, 0.22);
+}
+
+[data-theme="light"] .selection-card,
+[data-theme="light"] .delegation-form {
+  background: #ffffff;
+  border-color: rgba(0, 46, 122, 0.16);
+  box-shadow: 0 8px 32px rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .selection-card h3,
+[data-theme="light"] .delegation-form h3 {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .selection-meta li {
+  background: rgba(0, 46, 122, 0.06);
+  border-color: rgba(0, 46, 122, 0.16);
+}
+
+[data-theme="light"] .selection-meta span {
+  color: rgba(0, 46, 122, 0.72);
+}
+
+[data-theme="light"] .selection-meta strong {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegation-form label {
+  color: rgba(0, 46, 122, 0.82);
+}
+
+[data-theme="light"] .delegation-form input,
+[data-theme="light"] .delegation-form textarea {
+  background: rgba(0, 46, 122, 0.05);
+  border-color: rgba(0, 46, 122, 0.28);
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegation-form input::placeholder,
+[data-theme="light"] .delegation-form textarea::placeholder {
+  color: rgba(0, 46, 122, 0.45);
+}
+
+[data-theme="light"] .delegation-form input:focus,
+[data-theme="light"] .delegation-form textarea:focus {
+  border-color: var(--ocean-blue);
+  box-shadow: 0 0 0 3px rgba(106, 155, 216, 0.25);
+}
+
+[data-theme="light"] .delegation-form input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: none;
+  opacity: 0.65;
+}
+
+[data-theme="light"] .hours-section {
+  border-top-color: rgba(0, 46, 122, 0.16);
+}
+
+[data-theme="light"] .status-chip {
+  background: rgba(0, 46, 122, 0.07);
+  border-color: rgba(0, 46, 122, 0.26);
+  color: rgba(0, 46, 122, 0.82);
+}
+
+[data-theme="light"] .primary {
+  background: linear-gradient(135deg, #1a4fa0, #002e7a);
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 46, 122, 0.35);
+}
+
+[data-theme="light"] .primary:hover,
+[data-theme="light"] .primary:active {
+  box-shadow: 0 16px 40px rgba(0, 46, 122, 0.48);
+}
+
+[data-theme="light"] .form-message {
+  color: #059669;
 }

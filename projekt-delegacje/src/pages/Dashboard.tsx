@@ -3,31 +3,24 @@ import '/src/styles/Dashboard.css';
 import '/src/styles/TimePicker.css';
 import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isWithinInterval, startOfMonth, startOfWeek } from 'date-fns';
 import { pl } from 'date-fns/locale';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDelegacje } from '../api/hooks';
 import { createDelegacja } from '../api/client';
 import { useMemo, useState } from 'react';
 import type { DelegacjaCreate } from '../api/types';
-import logo from '/src/img/logoArtikon.png';
-import { useNavigate } from 'react-router-dom';
 import { Loader } from './Loader';
 import { TimePicker } from './TimePicker';
-import { useAuth } from '../auth/AuthContext';
+import { Sidebar } from '../components/Sidebar';
 
 
 // Główna strona dashboardu z kalendarzem delegacji i formularzem dodawania nowych
 export const Dashboard = () => {
 
     // Nawigacja do innych stron
-    const navigate = useNavigate();
-
-    // Pobranie informacji o roli użytkownika (czy jest adminem)
-    const { isAdmin } = useAuth();
-
     // Pobieramy listę delegacji z hooka API (React Query wrapper)
     const { data: delegacje = [], isLoading, isError } = useDelegacje();
     const queryClient = useQueryClient();
-    const [menuOpen, setMenuOpen] = useState(false);
     const [currentMonth, setCurrentMonth] = useState(new Date());
 
     // Wybrany zakres dat (start i koniec) dla tworzonej delegacji
@@ -160,48 +153,10 @@ export const Dashboard = () => {
         return <p>Nie udało się załadować strony.</p>;
     }
 
-    // Główne renderowanie komponentu - header, kalendarz i panel tworzenia delegacji
+    // Główne renderowanie komponentu - sidebar, kalendarz i panel tworzenia delegacji
     return (
         <div className="dashboard-wrapper dashboard-page">
-            <header className="dark-header">
-                <div className="nav-center">
-                    <div className="logo">
-                        <img src={logo} alt="Logo Artikon" loading="lazy" />
-                    </div>
-
-                    <button
-                        className="menu-toggle"
-                        aria-label="Przełącz menu"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                    >
-                        <span className="material-symbols-outlined">menu</span>
-                    </button>
-
-                    {/* Nawigacja główna - ukrywana na małych ekranach */}
-                    <nav
-                        id='main-nav'
-                        className={`main-nav ${menuOpen ? 'open' : ''}`}
-                        role="navigation"
-                        aria-label="Menu główne"
-                    >
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje'); }}>
-                            Kalendarz
-                        </button>
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/lista'); }}>
-                            Delegacje
-                        </button>
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/ustawienia'); }}>
-                            Ustawienia
-                        </button>
-
-                        {isAdmin && (
-                            <button className="nav-link nav-link--admin" onClick={() => { setMenuOpen(false); navigate('/delegacje/admin'); }}>
-                                Admin
-                            </button>
-                        )}
-                    </nav>
-                </div>
-            </header>
+            <Sidebar />
 
             <main className="dashboard-main">
                 <section className="hero-card">
@@ -224,10 +179,10 @@ export const Dashboard = () => {
                             </div>
                             <div className="month-nav">
                                 <button onClick={() => setCurrentMonth((prev) => addMonths(prev, -1))} aria-label="Poprzedni miesiąc">
-                                    <span className="material-symbols-outlined">chevron_left</span>
+                                    <ChevronLeft className="icon" size={20} />
                                 </button>
                                 <button onClick={() => setCurrentMonth((prev) => addMonths(prev, 1))} aria-label="Następny miesiąc">
-                                    <span className="material-symbols-outlined">chevron_right</span>
+                                    <ChevronRight className="icon" size={20} />
                                 </button>
                             </div>
                         </div>

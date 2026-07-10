@@ -1,20 +1,16 @@
 import '/src/styles/App.css';
 import '/src/styles/Dashboard.css';
 import '/src/styles/Settings.css';
-import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { CheckCircle2, AlertTriangle } from 'lucide-react';
 import { useChangePassword } from '../api/hooks';
 import { useAuth } from '../auth/AuthContext';
-import logo from '/src/img/logoArtikon.png';
+import { Sidebar } from '../components/Sidebar';
 
 // Strona ustawień: zmiana hasła, wylogowanie, informacje o wersji i licencji, z responsywnym menu i komunikatami o sukcesie/błędzie
 export const Settings = () => {
-    const navigate = useNavigate();
-    const { isAdmin } = useAuth();
     const { logout } = useAuth();
     const changePasswordMutation = useChangePassword();
-
-    const [menuOpen, setMenuOpen] = useState(false);
     const [formData, setFormData] = useState({
         currentPassword: '',
         newPassword: '',
@@ -31,7 +27,7 @@ export const Settings = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage(null);
 
@@ -69,43 +65,7 @@ export const Settings = () => {
 
     return (
         <div className="dashboard-wrapper settings-page">
-            <header className="dark-header">
-                <div className="nav-center">
-                    <div className="logo">
-                        <img src={logo} alt="Logo Artikon" loading="lazy" />
-                    </div>
-
-                    <button
-                        className="menu-toggle"
-                        aria-label="Przełącz menu"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                    >
-                        <span className="material-symbols-outlined">menu</span>
-                    </button>
-
-                    <nav
-                        id="main-nav"
-                        className={`main-nav ${menuOpen ? 'open' : ''}`}
-                        role="navigation"
-                        aria-label="Menu główne"
-                    >
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje'); }}>
-                            Kalendarz
-                        </button>
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/lista'); }}>
-                            Delegacje
-                        </button>
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/ustawienia'); }}>
-                            Ustawienia
-                        </button>
-                        {isAdmin && (
-                            <button className="nav-link nav-link--admin" onClick={() => { setMenuOpen(false); navigate('/delegacje/admin'); }}>
-                                Admin
-                            </button>
-                        )}
-                    </nav>
-                </div>
-            </header>
+            <Sidebar />
 
             <main className="dashboard-main">
 
@@ -125,7 +85,7 @@ export const Settings = () => {
                             {message && (
                                 <div className={`action-message ${message.type}`} role="alert">
                                     <span className="action-message-icon">
-                                        <span className="material-symbols-outlined">{message.type === 'success' ? 'check_circle' : 'warning'}</span>
+                                        {message.type === 'success' ? <CheckCircle2 className="icon" size={16} /> : <AlertTriangle className="icon" size={16} />}
                                     </span>
                                     <span className="action-message-text">{message.text}</span>
                                 </div>
@@ -185,7 +145,7 @@ export const Settings = () => {
                             </button>
 
                             <div className="settings-footer">
-                                <p className="app-version">Wersja aplikacji: 1.0.3</p>
+                                <p className="app-version">Wersja aplikacji: 1.0.4</p>
                                 <p className="app-license">©artikon s.c. 2026 - Wszystkie prawa zastrzeżone</p>
                             </div>
                         </form>

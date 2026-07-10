@@ -1,6 +1,7 @@
 import '/src/styles/App.css';
 import '/src/styles/Dashboard.css';
 import '/src/styles/DelegationsList.css';
+import { Hourglass, FileText, User, CheckCircle2, AlertTriangle, Pencil, Trash2 } from 'lucide-react';
 import {
     useDelegacje,
     useDeleteDelegacja,
@@ -10,9 +11,9 @@ import {
 } from '../api/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useMemo, useState } from 'react';
-import logo from '/src/img/logoArtikon.png';
 import type { Delegacja, DelegacjaCreate } from '../api/types';
 import { useAuth } from '../auth/AuthContext';
+import { Sidebar } from '../components/Sidebar';
 import Loader from './Loader';
 
 // Helperi do formatowania dat, obliczania diet i sprawdzania nakładania się delegacji z miesiącem
@@ -123,7 +124,6 @@ export const DelegationsList = () => {
     const generatePdfMutation = useGeneratePdf();
     const generateMonthlyPdfMutation = useGenerateMonthlyPdf();
 
-    const [menuOpen, setMenuOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editForm, setEditForm] = useState<Partial<DelegacjaCreate>>({});
     const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -258,12 +258,8 @@ export const DelegationsList = () => {
 
     if (isLoading) {
         return (
-            <div className="dashboard-wrapper">
-                <header className="dark-header">
-                    <div className="nav-center">
-                        <div className="logo"><img src={logo} alt="Logo Artikon" loading="lazy" /></div>
-                    </div>
-                </header>
+            <div className="dashboard-wrapper delegations-page">
+                <Sidebar />
                 <Loader fullScreen message="Pobieranie listy delegacji..." />
             </div>
         );
@@ -271,12 +267,8 @@ export const DelegationsList = () => {
 
     if (isError) {
         return (
-            <div className="dashboard-wrapper">
-                <header className="dark-header">
-                    <div className="nav-center">
-                        <div className="logo"><img src={logo} alt="Logo Artikon" loading="lazy" /></div>
-                    </div>
-                </header>
+            <div className="dashboard-wrapper delegations-page">
+                <Sidebar />
                 <div className="dashboard-main">
                     <p className="delegations-status delegations-status-error">
                         Nie udało się pobrać delegacji. Spróbuj ponownie później.
@@ -290,24 +282,7 @@ export const DelegationsList = () => {
 
     return (
         <div className="dashboard-wrapper delegations-page">
-            <header className="dark-header">
-                <div className="nav-center">
-                    <div className="logo">
-                        <img src={logo} alt="Logo Artikon" loading="lazy" />
-                    </div>
-                    <button className="menu-toggle" aria-label="Przełącz menu" onClick={() => setMenuOpen(!menuOpen)}><span className="material-symbols-outlined">menu</span></button>
-                    <nav id="main-nav" className={`main-nav ${menuOpen ? 'open' : ''}`} role="navigation" aria-label="Menu główne">
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje'); }}>Kalendarz</button>
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/lista'); }}>Delegacje</button>
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/ustawienia'); }}>Ustawienia</button>
-                        {isAdmin && (
-                            <button className="nav-link nav-link--admin" onClick={() => { setMenuOpen(false); navigate('/delegacje/admin'); }}>
-                                Admin
-                            </button>
-                        )}
-                    </nav>
-                </div>
-            </header>
+            <Sidebar />
 
             <main className="dashboard-main">
                 <section className="hero-card">
@@ -369,17 +344,17 @@ export const DelegationsList = () => {
                             title={!monthFilter ? 'Wybierz miesiąc, aby pobrać raport' : 'Pobierz raport PDF za wybrany miesiąc'}
                         >
                             {generateMonthlyPdfMutation.isPending ? (
-                                <><span className="material-symbols-outlined">hourglass_empty</span> Generuję...</>
+                                <><Hourglass className="icon" size={18} /> Generuję...</>
                             ) : (
                                 <>
-                                    <span className="material-symbols-outlined">picture_as_pdf</span> PDF miesiąca
+                                    <FileText className="icon" size={18} /> PDF miesiąca
                                     {monthFilter && (
                                         <span className="monthly-pdf-badge">
                                             {new Date(monthFilter + '-01').toLocaleDateString('pl-PL', { month: 'short', year: 'numeric' })}
                                         </span>
                                     )}
                                     {isAdmin && employeeFilter && (
-                                        <span className="monthly-pdf-badge monthly-pdf-badge--person"><span className="material-symbols-outlined">person</span> {employeeFilter}</span>
+                                        <span className="monthly-pdf-badge monthly-pdf-badge--person"><User className="icon" size={14} /> {employeeFilter}</span>
                                     )}
                                 </>
                             )}
@@ -390,7 +365,7 @@ export const DelegationsList = () => {
 
                 {actionMessage && (
                     <div className={`action-message ${actionMessage.type}`} role="alert">
-                        <span className="action-message-icon"><span className="material-symbols-outlined">{actionMessage.type === 'success' ? 'check_circle' : 'warning'}</span></span>
+                        <span className="action-message-icon">{actionMessage.type === 'success' ? <CheckCircle2 className="icon" size={16} /> : <AlertTriangle className="icon" size={16} />}</span>
                         <span className="action-message-text">{actionMessage.text}</span>
                     </div>
                 )}
@@ -472,9 +447,9 @@ export const DelegationsList = () => {
                                             )}
                                         </div>
                                         <div className="card-actions">
-                                            <button className="action-btn edit-btn" onClick={() => handleEdit(delegacja)} aria-label={`Edytuj delegację: ${delegacja.miejsce}`}><span className="material-symbols-outlined">edit</span> Edytuj</button>
-                                            <button className="action-btn pdf-btn" onClick={() => handleGeneratePdf(delegacja.id)} aria-label={`Generuj PDF dla delegacji: ${delegacja.miejsce}`}><span className="material-symbols-outlined">picture_as_pdf</span> PDF</button>
-                                            <button className="action-btn delete-btn" onClick={() => handleDelete(delegacja.id)} aria-label={`Usuń delegację: ${delegacja.miejsce}`}><span className="material-symbols-outlined">delete</span> Usuń</button>
+                                            <button className="action-btn edit-btn" onClick={() => handleEdit(delegacja)} aria-label={`Edytuj delegację: ${delegacja.miejsce}`}><Pencil className="icon" size={16} /> Edytuj</button>
+                                            <button className="action-btn pdf-btn" onClick={() => handleGeneratePdf(delegacja.id)} aria-label={`Generuj PDF dla delegacji: ${delegacja.miejsce}`}><FileText className="icon" size={16} /> PDF</button>
+                                            <button className="action-btn delete-btn" onClick={() => handleDelete(delegacja.id)} aria-label={`Usuń delegację: ${delegacja.miejsce}`}><Trash2 className="icon" size={16} /> Usuń</button>
                                         </div>
                                     </>
                                 )}

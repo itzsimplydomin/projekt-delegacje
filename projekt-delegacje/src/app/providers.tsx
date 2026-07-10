@@ -3,6 +3,7 @@ import { type ReactNode, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthProvider } from '../auth/AuthContext';
 import { removeToken } from '../api/client';
+import { ThemeProvider } from './ThemeContext';
 
 // QueryProvider: zarządza cache'em danych i obsługuje globalne błędy autoryzacji
 
@@ -57,8 +58,10 @@ interface ProvidersProps {
 
 export const Providers = ({ children }: ProvidersProps) => {
   return (
-    <AuthProvider>
-      <QueryProvider>{children}</QueryProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <QueryProvider>{children}</QueryProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 };

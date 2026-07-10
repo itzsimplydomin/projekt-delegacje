@@ -896,3 +896,184 @@
     padding: 0.55rem 0.7rem;
   }
 }
+
+/* ============================================
+   TRYB JASNY (LIGHT MODE)
+   ============================================ */
+
+[data-theme="light"] .delegations-page .hero-meta,
+[data-theme="light"] .delegations-page .month-filter,
+[data-theme="light"] .delegations-page .employee-filter {
+  background: rgba(0, 46, 122, 0.06);
+  border-color: rgba(0, 46, 122, 0.18);
+  box-shadow: none;
+}
+
+[data-theme="light"] .delegations-page .month-filter-label,
+[data-theme="light"] .delegations-page .metric-label,
+[data-theme="light"] .delegations-page .metric-sublabel {
+  color: rgba(0, 46, 122, 0.68);
+}
+
+[data-theme="light"] .delegations-page .metric-value {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegations-page .month-filter-input,
+[data-theme="light"] .delegations-page .employee-filter-input {
+  background: rgba(0, 46, 122, 0.05);
+  border-color: rgba(0, 46, 122, 0.28);
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegations-page .month-filter-input::placeholder,
+[data-theme="light"] .delegations-page .employee-filter-input::placeholder {
+  color: rgba(0, 46, 122, 0.45);
+}
+
+[data-theme="light"] .delegations-page .month-filter-input:focus,
+[data-theme="light"] .delegations-page .employee-filter-input:focus {
+  border-color: var(--ocean-blue);
+  box-shadow: 0 0 0 3px rgba(106, 155, 216, 0.25);
+}
+
+[data-theme="light"] .delegations-page .month-filter-input::-webkit-calendar-picker-indicator {
+  filter: none;
+  opacity: 0.65;
+}
+
+[data-theme="light"] .delegations-page .month-filter-clear,
+[data-theme="light"] .delegations-page .employee-filter-clear {
+  background: rgba(0, 46, 122, 0.06);
+  border-color: rgba(0, 46, 122, 0.26);
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegations-page .month-filter-clear:hover,
+[data-theme="light"] .delegations-page .employee-filter-clear:hover {
+  background: rgba(0, 46, 122, 0.12);
+  border-color: rgba(0, 46, 122, 0.45);
+}
+
+[data-theme="light"] .delegations-page .action-message {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(0, 46, 122, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .delegations-page .action-message-text {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegations-page .empty-state {
+  background: #ffffff;
+  border-color: rgba(0, 46, 122, 0.16);
+  box-shadow: 0 8px 32px rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .delegations-page .empty-state p {
+  color: rgba(0, 46, 122, 0.72);
+}
+
+[data-theme="light"] .delegations-page .delegations-card {
+  background: #ffffff;
+  border-color: rgba(0, 46, 122, 0.16);
+  box-shadow: 0 4px 20px rgba(0, 46, 122, 0.12);
+}
+
+[data-theme="light"] .delegations-page .delegations-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .delegations-page .card-title {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegations-page .card-meta,
+[data-theme="light"] .delegations-page .card-label {
+  color: rgba(0, 46, 122, 0.68);
+}
+
+[data-theme="light"] .delegations-page .card-row p {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegations-page .card-header {
+  border-bottom-color: rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .delegations-page .card-actions {
+  border-top-color: rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .delegations-page .action-btn {
+  background: rgba(0, 46, 122, 0.06);
+  border-color: rgba(0, 46, 122, 0.24);
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegations-page .action-btn:hover {
+  background: rgba(0, 46, 122, 0.1);
+  border-color: rgba(0, 46, 122, 0.38);
+}
+
+[data-theme="light"] .delegations-page .secondary {
+  background: rgba(0, 46, 122, 0.06);
+  color: #0a1a3a;
+  border-color: rgba(0, 46, 122, 0.26);
+}
+
+[data-theme="light"] .delegations-page .secondary:hover {
+  background: rgba(0, 46, 122, 0.11);
+  border-color: rgba(0, 46, 122, 0.4);
+}
+
+[data-theme="light"] .delegations-page .monthly-pdf-btn {
+  background: linear-gradient(135deg, rgba(0, 46, 122, 0.12), rgba(106, 155, 216, 0.18));
+  border-color: rgba(0, 46, 122, 0.3);
+  color: #0a1a3a;
+  box-shadow: 0 4px 16px rgba(0, 46, 122, 0.15);
+}
+
+[data-theme="light"] .delegations-page .monthly-pdf-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(0, 46, 122, 0.2), rgba(106, 155, 216, 0.28));
+  border-color: rgba(0, 46, 122, 0.45);
+  box-shadow: 0 8px 28px rgba(0, 46, 122, 0.25);
+}
+
+[data-theme="light"] .delegations-page .monthly-pdf-badge {
+  background: rgba(0, 46, 122, 0.08);
+  border-color: rgba(0, 46, 122, 0.22);
+}
+
+[data-theme="light"] .delegations-page .monthly-pdf-hint {
+  color: rgba(0, 46, 122, 0.55);
+}
+
+[data-theme="light"] .delegations-page .edit-mode label {
+  color: rgba(0, 46, 122, 0.82);
+}
+
+[data-theme="light"] .delegations-page .edit-mode input,
+[data-theme="light"] .delegations-page .edit-mode textarea {
+  background: rgba(0, 46, 122, 0.05);
+  border-color: rgba(0, 46, 122, 0.28);
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .delegations-page .edit-mode input::placeholder,
+[data-theme="light"] .delegations-page .edit-mode textarea::placeholder {
+  color: rgba(0, 46, 122, 0.45);
+}
+
+[data-theme="light"] .delegations-page .edit-mode input:focus,
+[data-theme="light"] .delegations-page .edit-mode textarea:focus {
+  border-color: var(--ocean-blue);
+  box-shadow: 0 0 0 3px rgba(106, 155, 216, 0.25);
+}
+
+[data-theme="light"] .delegations-page .delegations-status {
+  background: #ffffff;
+  border-color: rgba(0, 46, 122, 0.16);
+  color: rgba(0, 46, 122, 0.72);
+}

@@ -239,3 +239,76 @@
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
+/* ============================================
+   TRYB JASNY (LIGHT MODE)
+   ============================================ */
+
+[data-theme="light"] .tp-label {
+    color: rgba(0, 46, 122, 0.82);
+}
+
+[data-theme="light"] .tp-trigger {
+    background: rgba(0, 46, 122, 0.05);
+    border-color: rgba(0, 46, 122, 0.28);
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .tp-trigger:hover,
+[data-theme="light"] .tp-trigger.open {
+    border-color: var(--ocean-blue, #6a9bd8);
+    box-shadow: 0 0 0 3px rgba(106, 155, 216, 0.25);
+    background: rgba(0, 46, 122, 0.08);
+}
+
+[data-theme="light"] .tp-clock-icon {
+    color: rgba(0, 46, 122, 0.52);
+}
+
+[data-theme="light"] .tp-trigger.open .tp-clock-icon {
+    color: var(--ocean-blue, #6a9bd8);
+}
+
+[data-theme="light"] .tp-chevron {
+    color: rgba(0, 46, 122, 0.52);
+}
+
+[data-theme="light"] .tp-dropdown {
+    background: #ffffff;
+    border-color: rgba(0, 46, 122, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 46, 122, 0.2), 0 0 0 1px rgba(0, 46, 122, 0.05) inset;
+    backdrop-filter: none;
+}
+
+[data-theme="light"] .tp-col-label {
+    color: rgba(0, 46, 122, 0.58);
+}
+
+[data-theme="light"] .tp-option {
+    color: rgba(0, 46, 122, 0.75);
+}
+
+[data-theme="light"] .tp-option:hover {
+    background: rgba(0, 46, 122, 0.07);
+    color: #0a1a3a;
+    border-color: rgba(0, 46, 122, 0.18);
+}
+
+[data-theme="light"] .tp-option.active {
+    background: linear-gradient(135deg, rgba(0, 46, 122, 0.15), rgba(106, 155, 216, 0.2));
+    border-color: rgba(0, 46, 122, 0.38);
+    color: #0a1a3a;
+    box-shadow: 0 2px 8px rgba(0, 46, 122, 0.15);
+}
+
+[data-theme="light"] .tp-divider {
+    color: rgba(0, 46, 122, 0.38);
+}
+
+[data-theme="light"] .tp-scroll {
+    scrollbar-color: rgba(0, 46, 122, 0.2) transparent;
+}
+
+[data-theme="light"] .tp-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 46, 122, 0.2);
+}

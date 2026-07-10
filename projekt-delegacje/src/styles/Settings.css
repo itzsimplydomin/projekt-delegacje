@@ -595,3 +595,75 @@
     gap: 0.5rem;
   }
 }
+
+/* ============================================
+   TRYB JASNY (LIGHT MODE)
+   ============================================ */
+
+[data-theme="light"] .settings-card {
+  background: #ffffff;
+  border-color: rgba(0, 46, 122, 0.16);
+  box-shadow: 0 8px 32px rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .settings-header h2 {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .settings-header {
+  border-bottom-color: rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .settings-form label {
+  color: rgba(0, 46, 122, 0.82);
+}
+
+[data-theme="light"] .settings-form input {
+  background: rgba(0, 46, 122, 0.05);
+  border-color: rgba(0, 46, 122, 0.28);
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .settings-form input::placeholder {
+  color: rgba(0, 46, 122, 0.45);
+}
+
+[data-theme="light"] .settings-form input:focus {
+  border-color: var(--ocean-blue);
+  box-shadow: 0 0 0 3px rgba(106, 155, 216, 0.25);
+}
+
+[data-theme="light"] .settings-footer {
+  border-top-color: rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .app-version {
+  color: rgba(0, 46, 122, 0.62);
+}
+
+[data-theme="light"] .app-license {
+  color: rgba(0, 46, 122, 0.52);
+}
+
+[data-theme="light"] .settings-page .action-message-text {
+  color: #0a1a3a;
+}
+
+[data-theme="light"] .logout-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #c00000;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+[data-theme="light"] .logout-btn:hover,
+[data-theme="light"] .logout-btn:active {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.62);
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.2);
+}
+
+[data-theme="light"] .settings-page .action-message {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(0, 46, 122, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 46, 122, 0.15);
+}

@@ -2,11 +2,11 @@ import '/src/styles/App.css';
 import '/src/styles/Dashboard.css';
 import '/src/styles/AdminPanel.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { CheckCircle2, AlertTriangle, Users, Plus, ShieldCheck, User, Trash2 } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { useUsers, useRegisterUser, useDeleteUser } from '../api/hooks';
 import { Navigate } from 'react-router-dom';
-import logo from '/src/img/logoArtikon.png';
+import { Sidebar } from '../components/Sidebar';
 import Loader from './Loader';
 
 // Typy i interfejsy
@@ -26,9 +26,7 @@ const EMPTY_FORM = { imie: '', nazwisko: '', email: '', password: '', rola: 'Use
 export const AdminPanel = () => {
 
     // Hooki i stany komponentu
-    const navigate = useNavigate();
     const { isAdmin, user: currentUser } = useAuth();
-    const [menuOpen, setMenuOpen] = useState(false);
     const [tab, setTab] = useState<Tab>('users');
     const [form, setForm] = useState(EMPTY_FORM);
     const [msg, setMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -81,20 +79,7 @@ export const AdminPanel = () => {
     // Renderowanie komponentu
     return (
         <div className="dashboard-wrapper admin-page">
-            <header className="dark-header">
-                <div className="nav-center">
-                    <div className="logo">
-                        <img src={logo} alt="Logo Artikon" loading="lazy" />
-                    </div>
-                    <button className="menu-toggle" aria-label="Przełącz menu" onClick={() => setMenuOpen(!menuOpen)}><span className="material-symbols-outlined">menu</span></button>
-                    <nav id="main-nav" className={`main-nav ${menuOpen ? 'open' : ''}`} role="navigation" aria-label="Menu główne">
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje'); }}>Kalendarz</button>
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/lista'); }}>Delegacje</button>
-                        <button className="nav-link" onClick={() => { setMenuOpen(false); navigate('/delegacje/ustawienia'); }}>Ustawienia</button>
-                        <button className="nav-link nav-link--admin" onClick={() => { setMenuOpen(false); navigate('/delegacje/admin'); }}>Admin</button>
-                    </nav>
-                </div>
-            </header>
+            <Sidebar />
 
             <main className="dashboard-main">
                 <section className="hero-card admin-hero">
@@ -117,7 +102,7 @@ export const AdminPanel = () => {
 
                 {msg && (
                     <div className={`action-message ${msg.type}`} role="alert">
-                        <span className="action-message-icon"><span className="material-symbols-outlined">{msg.type === 'success' ? 'check_circle' : 'warning'}</span></span>
+                        <span className="action-message-icon">{msg.type === 'success' ? <CheckCircle2 className="icon" size={16} /> : <AlertTriangle className="icon" size={16} />}</span>
                         <span className="action-message-text">{msg.text}</span>
                     </div>
                 )}
@@ -127,13 +112,13 @@ export const AdminPanel = () => {
                         className={`admin-tab ${tab === 'users' ? 'active' : ''}`}
                         onClick={() => setTab('users')}
                     >
-                        <span className="material-symbols-outlined">group</span> Lista użytkowników
+                        <Users className="icon" size={18} /> Lista użytkowników
                     </button>
                     <button
                         className={`admin-tab ${tab === 'create' ? 'active' : ''}`}
                         onClick={() => setTab('create')}
                     >
-                        <span className="material-symbols-outlined">add</span> Utwórz konto
+                        <Plus className="icon" size={18} /> Utwórz konto
                     </button>
                 </div>
 
@@ -161,7 +146,7 @@ export const AdminPanel = () => {
                                                 <p className="admin-user-email">{u.email}</p>
                                             </div>
                                             <span className={`admin-role-badge ${u.rola === 'Admin' ? 'admin' : 'user'}`}>
-                                                {u.rola === 'Admin' ? <><span className="material-symbols-outlined">admin_panel_settings</span> Admin</> : <><span className="material-symbols-outlined">person</span> Pracownik</>}
+                                                {u.rola === 'Admin' ? <><ShieldCheck className="icon" size={16} /> Admin</> : <><User className="icon" size={16} /> Pracownik</>}
                                             </span>
                                             <button
                                                 className="admin-delete-btn"
@@ -176,7 +161,7 @@ export const AdminPanel = () => {
                                                 }
                                                 aria-label={`Usuń użytkownika ${u.imie} ${u.nazwisko}`}
                                             >
-                                                <span className="material-symbols-outlined">delete</span>
+                                                <Trash2 className="icon" size={16} />
                                             </button>
                                         </div>
                                     );
@@ -244,14 +229,14 @@ export const AdminPanel = () => {
                                                 className={`admin-role-option ${form.rola === 'User' ? 'active' : ''}`}
                                                 onClick={() => setForm({ ...form, rola: 'User' })}
                                             >
-                                                <span className="material-symbols-outlined">person</span> Pracownik
+                                                <User className="icon" size={16} /> Pracownik
                                             </button>
                                             <button
                                                 type="button"
                                                 className={`admin-role-option ${form.rola === 'Admin' ? 'active' : ''}`}
                                                 onClick={() => setForm({ ...form, rola: 'Admin' })}
                                             >
-                                                <span className="material-symbols-outlined">admin_panel_settings</span> Administrator
+                                                <ShieldCheck className="icon" size={16} /> Administrator
                                             </button>
                                         </div>
                                     </label>

@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from 'react';
 import { useNavigate, Navigate, useLocation } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import '/src/styles/Login.css';
 import { loginRequest } from '../api/client';
 import { useAuth } from '../auth/AuthContext';
@@ -12,6 +13,7 @@ export const LoginBanner = () => {
   // Stany formularza: email, hasło, zapamiętaj mnie, status wysyłania i komunikat o błędzie
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -81,15 +83,26 @@ export const LoginBanner = () => {
 
             <div className="form-field">
               <label htmlFor="password">Hasło</label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="password-input-wrapper">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? 'Ukryj hasło' : 'Pokaż hasło'}
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             {error && <p className="login-error" role="alert">{error}</p>}
