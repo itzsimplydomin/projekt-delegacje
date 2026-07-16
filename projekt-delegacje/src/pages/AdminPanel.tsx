@@ -2,9 +2,9 @@ import '/src/styles/App.css';
 import '/src/styles/Dashboard.css';
 import '/src/styles/AdminPanel.css';
 import { useState } from 'react';
-import { CheckCircle2, AlertTriangle, Users, Plus, ShieldCheck, User, Trash2 } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Users, Plus, ShieldCheck, User, Trash2, KeyRound, X } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
-import { useUsers, useRegisterUser, useDeleteUser } from '../api/hooks';
+import { useUsers, useRegisterUser, useDeleteUser, useResetUserPassword } from '../api/hooks';
 import { Navigate } from 'react-router-dom';
 import { Sidebar } from '../components/Sidebar';
 import Loader from './Loader';
@@ -33,6 +33,12 @@ export const AdminPanel = () => {
     const { data: users = [], isLoading } = useUsers();
     const registerMutation = useRegisterUser();
     const deleteMutation = useDeleteUser();
+    const resetPasswordMutation = useResetUserPassword();
+
+    // Stan modala resetowania hasła
+    const [resetTarget, setResetTarget] = useState<UserRow | null>(null);
+    const [resetForm, setResetForm] = useState({ newPassword: '', confirmPassword: '' });
+    const [resetError, setResetError] = useState<string | null>(null);
 
     // Jeśli użytkownik nie jest administratorem, przekieruj go do strony delegacji
     if (!isAdmin) return <Navigate to="/delegacje" replace />;
@@ -73,6 +79,48 @@ export const AdminPanel = () => {
                     ? err.message
                     : 'Nie udało się usunąć użytkownika';
             showMsg('error', errMsg);
+        }
+    };
+
+    // Funkcje obsługujące modal resetowania hasła
+    const openResetModal = (u: UserRow) => {
+        setResetTarget(u);
+        setResetForm({ newPassword: '', confirmPassword: '' });
+        setResetError(null);
+    };
+
+    const closeResetModal = () => {
+        if (resetPasswordMutation.isPending) return;
+        setResetTarget(null);
+        setResetForm({ newPassword: '', confirmPassword: '' });
+        setResetError(null);
+    };
+
+    const handleResetPasswordSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!resetTarget) return;
+        setResetError(null);
+
+        if (!resetForm.newPassword || !resetForm.confirmPassword) {
+            setResetError('Wszystkie pola są wymagane');
+            return;
+        }
+        if (resetForm.newPassword !== resetForm.confirmPassword) {
+            setResetError('Hasła nie są takie same');
+            return;
+        }
+
+        try {
+            await resetPasswordMutation.mutateAsync({
+                email: resetTarget.email,
+                newPassword: resetForm.newPassword,
+            });
+            showMsg('success', `Hasło użytkownika ${resetTarget.imie} ${resetTarget.nazwisko} zostało zresetowane`);
+            setResetTarget(null);
+            setResetForm({ newPassword: '', confirmPassword: '' });
+        } catch (err: unknown) {
+            const errMsg = err instanceof Error ? err.message : 'Nie udało się zresetować hasła';
+            setResetError(errMsg);
         }
     };
 
@@ -148,21 +196,31 @@ export const AdminPanel = () => {
                                             <span className={`admin-role-badge ${u.rola === 'Admin' ? 'admin' : 'user'}`}>
                                                 {u.rola === 'Admin' ? <><ShieldCheck className="icon" size={16} /> Admin</> : <><User className="icon" size={16} /> Pracownik</>}
                                             </span>
-                                            <button
-                                                className="admin-delete-btn"
-                                                onClick={() => handleDeleteUser(u)}
-                                                disabled={!canDelete || deleteMutation.isPending}
-                                                title={
-                                                    isSelf
-                                                        ? 'Nie możesz usunąć własnego konta'
-                                                        : isLastAdmin
-                                                            ? 'Nie można usunąć ostatniego administratora'
-                                                            : `Usuń użytkownika ${u.imie} ${u.nazwisko}`
-                                                }
-                                                aria-label={`Usuń użytkownika ${u.imie} ${u.nazwisko}`}
-                                            >
-                                                <Trash2 className="icon" size={16} />
-                                            </button>
+                                            <div className="admin-user-actions">
+                                                <button
+                                                    className="admin-reset-btn"
+                                                    onClick={() => openResetModal(u)}
+                                                    title={`Zmień hasło użytkownika ${u.imie} ${u.nazwisko}`}
+                                                    aria-label={`Zmień hasło użytkownika ${u.imie} ${u.nazwisko}`}
+                                                >
+                                                    <KeyRound className="icon" size={16} />
+                                                </button>
+                                                <button
+                                                    className="admin-delete-btn"
+                                                    onClick={() => handleDeleteUser(u)}
+                                                    disabled={!canDelete || deleteMutation.isPending}
+                                                    title={
+                                                        isSelf
+                                                            ? 'Nie możesz usunąć własnego konta'
+                                                            : isLastAdmin
+                                                                ? 'Nie można usunąć ostatniego administratora'
+                                                                : `Usuń użytkownika ${u.imie} ${u.nazwisko}`
+                                                    }
+                                                    aria-label={`Usuń użytkownika ${u.imie} ${u.nazwisko}`}
+                                                >
+                                                    <Trash2 className="icon" size={16} />
+                                                </button>
+                                            </div>
                                         </div>
                                     );
                                 })}
@@ -254,6 +312,80 @@ export const AdminPanel = () => {
                     </section>
                 )}
             </main>
+
+            {resetTarget && (
+                <div className="modal-overlay" onClick={closeResetModal}>
+                    <div className="modal-card" onClick={e => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <div>
+                                <p className="eyebrow">Bezpieczeństwo</p>
+                                <h2>Zmień hasło</h2>
+                                <p className="subtitle">
+                                    Ustaw nowe hasło dla {resetTarget.imie} {resetTarget.nazwisko} ({resetTarget.email})
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                className="modal-close-btn"
+                                onClick={closeResetModal}
+                                aria-label="Zamknij"
+                            >
+                                <X className="icon" size={18} />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleResetPasswordSubmit} className="settings-form">
+                            {resetError && (
+                                <div className="action-message error" role="alert">
+                                    <span className="action-message-icon"><AlertTriangle className="icon" size={16} /></span>
+                                    <span className="action-message-text">{resetError}</span>
+                                </div>
+                            )}
+                            <div className="form-grid">
+                                <label className="full-width">
+                                    Nowe hasło
+                                    <input
+                                        type="password"
+                                        value={resetForm.newPassword}
+                                        onChange={e => setResetForm({ ...resetForm, newPassword: e.target.value })}
+                                        placeholder="Minimum 8 znaków"
+                                        autoFocus
+                                        required
+                                    />
+                                </label>
+                                <label className="full-width">
+                                    Potwierdź nowe hasło
+                                    <input
+                                        type="password"
+                                        value={resetForm.confirmPassword}
+                                        onChange={e => setResetForm({ ...resetForm, confirmPassword: e.target.value })}
+                                        placeholder="Powtórz nowe hasło"
+                                        required
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="modal-actions">
+                                <button
+                                    type="button"
+                                    className="secondary"
+                                    onClick={closeResetModal}
+                                    disabled={resetPasswordMutation.isPending}
+                                >
+                                    Anuluj
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="primary"
+                                    disabled={resetPasswordMutation.isPending}
+                                >
+                                    {resetPasswordMutation.isPending ? 'Zmieniam hasło...' : 'Zmień hasło'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

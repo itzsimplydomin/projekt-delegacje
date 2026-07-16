@@ -206,3 +206,25 @@ export const registerUser = async (payload: {
 export const deleteUser = async (email: string): Promise<void> => {
   await api.delete(`/api/admin/users/${encodeURIComponent(email)}`);
 };
+
+// Resetowanie hasła użytkownika (tylko dla admina)
+export const resetUserPassword = async (
+  email: string,
+  newPassword: string,
+): Promise<void> => {
+  try {
+    await api.post(`/api/admin/users/${encodeURIComponent(email)}/reset-password`, {
+      newPassword,
+    });
+  } catch (error: unknown) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'response' in error &&
+      (error as { response?: { data?: unknown } }).response?.data
+    ) {
+      throw new Error(String((error as { response: { data: unknown } }).response.data));
+    }
+    throw new Error('Nie udało się zresetować hasła');
+  }
+};

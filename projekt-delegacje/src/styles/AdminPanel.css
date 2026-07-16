@@ -159,6 +159,46 @@
     color: #fde68a;
 }
 
+/* Kontener przycisków akcji na karcie użytkownika */
+.admin-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Przycisk zmiany hasła użytkownika */
+.admin-reset-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid rgba(106, 155, 216, 0.4);
+    background: rgba(106, 155, 216, 0.12);
+    color: var(--pale-blue);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    line-height: 1;
+    padding: 0;
+}
+
+.admin-reset-btn:hover {
+    background: rgba(106, 155, 216, 0.28);
+    border-color: rgba(106, 155, 216, 0.65);
+    box-shadow: 0 4px 12px rgba(106, 155, 216, 0.3);
+    transform: scale(1.05);
+}
+
+.admin-reset-btn:active {
+    transform: scale(0.97);
+}
+
 /* Przycisk usuwania użytkownika */
 .admin-delete-btn {
     flex-shrink: 0;
@@ -449,10 +489,14 @@
         font-size: 0.75rem;
     }
 
-    .admin-delete-btn {
+    .admin-user-actions {
         grid-area: delete;
         justify-self: end;
         align-self: center;
+    }
+
+    .admin-reset-btn,
+    .admin-delete-btn {
         width: 38px;
         height: 38px;
     }
@@ -489,6 +533,165 @@
     .admin-user-email {
         font-size: 0.7rem;
     }
+}
+
+/* Modal zmiany hasła */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 10, 26, 0.65);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 10000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-card {
+    width: 100%;
+    max-width: 440px;
+    background: linear-gradient(135deg, rgba(10, 26, 58, 0.97), rgba(0, 46, 122, 0.92));
+    border: 1px solid rgba(200, 216, 235, 0.3);
+    border-radius: clamp(16px, 4vw, 20px);
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+    animation: slideDown 0.25s ease-out;
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: clamp(1rem, 2vw, 1.25rem);
+    padding-bottom: clamp(0.75rem, 1.5vw, 1rem);
+    border-bottom: 1px solid rgba(200, 216, 235, 0.2);
+}
+
+.modal-header h2 {
+    margin: clamp(0.3rem, 1vw, 0.5rem) 0;
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    color: var(--white);
+}
+
+.modal-close-btn {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid rgba(200, 216, 235, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(200, 216, 235, 0.85);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--white);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.6rem;
+    width: 100%;
+}
+
+.modal-actions .secondary {
+    padding: clamp(0.6rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+    border-radius: clamp(8px, 2vw, 12px);
+    border: 1px solid rgba(200, 216, 235, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(200, 216, 235, 0.85);
+    font-weight: 600;
+    font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: var(--touch-target);
+    flex: 1;
+}
+
+.modal-actions .secondary:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--white);
+}
+
+.modal-actions .secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.modal-actions .primary {
+    flex: 1;
+}
+
+.modal-card .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 2vw, 1.2rem);
+    width: 100%;
+}
+
+.modal-card label {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.3rem, 0.8vw, 0.4rem);
+    color: rgba(200, 216, 235, 0.85);
+    font-weight: 600;
+    font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+}
+
+.modal-card input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(200, 216, 235, 0.35);
+    border-radius: clamp(10px, 2.5vw, 12px);
+    padding: clamp(0.7rem, 1.8vw, 0.85rem) clamp(0.8rem, 2vw, 1rem);
+    color: white;
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: var(--touch-target);
+    width: 100%;
+}
+
+.modal-card input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.modal-card input:focus {
+    outline: none;
+    border-color: var(--pale-blue);
+    box-shadow: 0 0 0 3px rgba(200, 216, 235, 0.2);
+}
+
+.modal-card input:-webkit-autofill,
+.modal-card input:-webkit-autofill:hover,
+.modal-card input:-webkit-autofill:focus,
+.modal-card input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.18) inset !important;
+    -webkit-text-fill-color: var(--white) !important;
+    box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.18) inset !important;
+    background-color: transparent !important;
+    transition: background-color 5000s ease-in-out 0s;
+    border: 1px solid rgba(200, 216, 235, 0.35) !important;
 }
 
 /* ============================================
@@ -614,4 +817,71 @@
     background: rgba(239, 68, 68, 0.16);
     border-color: rgba(239, 68, 68, 0.55);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+[data-theme="light"] .admin-reset-btn {
+    background: rgba(0, 46, 122, 0.08);
+    border-color: rgba(0, 46, 122, 0.3);
+    color: var(--ocean-blue);
+}
+
+[data-theme="light"] .admin-reset-btn:hover {
+    background: rgba(0, 46, 122, 0.16);
+    border-color: rgba(0, 46, 122, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 46, 122, 0.2);
+}
+
+[data-theme="light"] .modal-card {
+    background: #ffffff;
+    border-color: rgba(0, 46, 122, 0.18);
+    box-shadow: 0 24px 70px rgba(0, 46, 122, 0.25);
+}
+
+[data-theme="light"] .modal-header {
+    border-bottom-color: rgba(0, 46, 122, 0.14);
+}
+
+[data-theme="light"] .modal-header h2 {
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .modal-close-btn {
+    background: rgba(0, 46, 122, 0.05);
+    border-color: rgba(0, 46, 122, 0.2);
+    color: rgba(0, 46, 122, 0.75);
+}
+
+[data-theme="light"] .modal-close-btn:hover {
+    background: rgba(0, 46, 122, 0.12);
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .modal-actions .secondary {
+    background: rgba(0, 46, 122, 0.05);
+    border-color: rgba(0, 46, 122, 0.22);
+    color: rgba(0, 46, 122, 0.75);
+}
+
+[data-theme="light"] .modal-actions .secondary:hover:not(:disabled) {
+    background: rgba(0, 46, 122, 0.1);
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .modal-card label {
+    color: rgba(0, 46, 122, 0.82);
+}
+
+[data-theme="light"] .modal-card input {
+    background: rgba(0, 46, 122, 0.05);
+    border-color: rgba(0, 46, 122, 0.28);
+    color: #0a1a3a;
+}
+
+[data-theme="light"] .modal-card input::placeholder {
+    color: rgba(0, 46, 122, 0.45);
+}
+
+[data-theme="light"] .modal-card input:focus {
+    border-color: var(--ocean-blue);
+    box-shadow: 0 0 0 3px rgba(106, 155, 216, 0.25);
 }
