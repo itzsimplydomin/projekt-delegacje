@@ -16,6 +16,7 @@ function QueryProvider({ children }: { children: ReactNode }) {
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false,
+            staleTime: 30_000,
             retry: (failureCount, error: unknown) => {
               // Nie ponawiaj przy błędach autoryzacji
               if (

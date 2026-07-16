@@ -82,18 +82,6 @@ export const loginRequest = async (
   return data.token;
 };
 
-/** @deprecated Użyj loginRequest + useAuth().login */
-
-export const login = async (
-  payload: LoginRequest,
-  remember = false,
-): Promise<{ success: boolean; message: string }> => {
-  removeToken();
-  const token = await loginRequest(payload);
-  setToken(token, remember);
-  return { success: true, message: 'Zalogowano pomyślnie' };
-};
-
 export const changePassword = async (
   payload: ChangePasswordRequest,
 ): Promise<ChangePasswordResponse> => {
@@ -138,22 +126,6 @@ export const updateDelegacja = async (
   await api.put(`/api/Delegacje/${id}`, payload);
 };
 
-export const generatePdf = async (id: string): Promise<void> => {
-  const response = await api.post(`/api/Delegacje/${id}/pdf`, null, {
-    responseType: 'blob',
-  });
-
-  const blob = new Blob([response.data], { type: 'application/pdf' });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `delegacja-${id}.pdf`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  window.URL.revokeObjectURL(url);
-};
-
 export const generateMonthlyPdf = async (params: {
   year: number;
   month: number;
@@ -171,21 +143,6 @@ export const generateMonthlyPdf = async (params: {
     { responseType: 'blob' },
   );
   return response.data as Blob;
-};
-
-// Deprecated helper 
-export const isAdmin = (): boolean => {
-  const token = getToken();
-  if (!token) return false;
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return (
-      payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ===
-      'Admin'
-    );
-  } catch {
-    return false;
-  }
 };
 
 // Admin

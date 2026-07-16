@@ -3,9 +3,11 @@ import { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { RequireAuth } from '../auth/RequireAuth';
 import { Providers } from './providers';
+import LoginBanner from '../pages/Login';
 
 // Struktura aplikacji: główny router i lazy loading stron
-const LoginBanner = lazy(() => import('../pages/Login'));
+// Login nie jest lazy - to strona lądowania, ładuje się natychmiast niezależnie,
+// a lazy fallback powodował layout shift (CLS) przy zamianie na właściwy layout
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const DelegationsList = lazy(() => import('../pages/DelegationsList'));
 const Settings = lazy(() => import('../pages/Settings'));

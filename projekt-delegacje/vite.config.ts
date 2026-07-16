@@ -4,6 +4,38 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    sourcemap: false,
+    minify: "esbuild",
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+          if (
+            id.includes("node_modules/react/") ||
+            id.includes("node_modules/react-dom/") ||
+            id.includes("node_modules/scheduler/")
+          ) {
+            return "vendor-react";
+          }
+          if (
+            id.includes("node_modules/react-router-dom/") ||
+            id.includes("node_modules/react-router/")
+          ) {
+            return "vendor-router";
+          }
+          if (id.includes("node_modules/@tanstack/react-query/")) {
+            return "vendor-query";
+          }
+          if (id.includes("node_modules/axios/")) {
+            return "vendor-axios";
+          }
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({

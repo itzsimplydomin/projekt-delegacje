@@ -33,7 +33,7 @@ export function Sidebar() {
         <>
             {/* Mobilny header z hamburgerem */}
             <div className="mobile-header">
-                <img src={logo} alt="Logo Artikon" className="mobile-header-logo" />
+                <img src={logo} alt="Logo Artikon" className="mobile-header-logo" width={178} height={59} decoding="async" />
                 <button
                     className="mobile-hamburger"
                     onClick={() => setIsOpen(true)}
@@ -55,7 +55,7 @@ export function Sidebar() {
 
                 {/* Logo i nazwa */}
                 <div className="sidebar-logo">
-                    <img src={logo} alt="Logo Artikon" />
+                    <img src={logo} alt="Logo Artikon" width={178} height={59} decoding="async" />
                 </div>
 
                 {/* Informacje o użytkowniku */}
