@@ -192,6 +192,19 @@ namespace DelegacjaAPI.Services
 
             return total;
         }
+        public async Task DeleteDelegacjeByUserAsync(string email)
+        {
+            var all = await GetAllDelegationsAsync();
+
+            var userDelegacje = all
+                .Where(d => d.UserEmail == email)
+                .ToList();
+
+            foreach (var d in userDelegacje)
+            {
+                await _tableClient.DeleteEntityAsync("delegacja", d.RowKey);
+            }
+        }
 
     }
 }

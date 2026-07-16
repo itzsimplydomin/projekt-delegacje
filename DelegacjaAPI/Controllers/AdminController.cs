@@ -119,6 +119,32 @@ namespace DelegacjaAPI.Controllers
 
             return Ok(response);
         }
+        [HttpPost("users/{email}/reset-password")]
+        public async Task<IActionResult> ResetPassword(string email, [FromBody] ResetPasswordRequest request)
+        {
+            var normalizedEmail = email.ToLower().Trim();
+
+            var user = await _userService.GetByEmailAsync(normalizedEmail);
+            if (user == null)
+                return NotFound("Użytkownik nie istnieje");
+
+            if (string.IsNullOrWhiteSpace(request.NewPassword))
+                return BadRequest("Nowe hasło jest wymagane");
+
+            if (!PasswordValidator.IsValid(request.NewPassword, out var error))
+                return BadRequest(error);
+
+            var newSalt = PasswordHasher.GenerateSalt();
+            var newHash = PasswordHasher.HashPassword(request.NewPassword, newSalt);
+
+            await _userService.UpdatePasswordAsync(normalizedEmail, newHash, newSalt);
+
+            return Ok(new
+            {
+                success = true,
+                message = $"Hasło użytkownika {user.Email} zostało zresetowane"
+            });
+        }
         [HttpDelete("users/{email}")]
         public async Task<IActionResult> DeleteUser(string email)
         {
