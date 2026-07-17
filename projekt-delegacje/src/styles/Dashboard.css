@@ -35,10 +35,7 @@ body {
   left: 0;
   width: 100%;
   height: clamp(60px, 12vw, 80px);
-  background: linear-gradient(90deg,
-      var(--navy) 0%,
-      var(--navy-darker) 50%,
-      var(--navy-darkest) 100%);
+  background: var(--navy-darker);
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) 0 env(safe-area-inset-left, 0);
@@ -180,9 +177,7 @@ body {
 
 /* Karta hero - powitanie użytkownika z metryką */
 .hero-card {
-  background: linear-gradient(135deg,
-      rgba(10, 26, 58, 0.7),
-      rgba(0, 46, 122, 0.5));
+  background: rgba(10, 26, 58, 0.75);
   border: 1px solid rgba(200, 216, 235, 0.25);
   border-radius: clamp(16px, 4vw, 20px);
   padding: clamp(1rem, 3vw, 1.5rem);
@@ -192,7 +187,6 @@ body {
   text-align: center;
   gap: clamp(1rem, 2vw, 1.5rem);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(18px);
 }
 
 /* Tytuł i zawartość hero card */
@@ -287,14 +281,11 @@ body {
 
 /* Wrapper dla kalendarza */
 .calendar-shell {
-  background: linear-gradient(135deg,
-      rgba(10, 26, 58, 0.7),
-      rgba(0, 46, 122, 0.5));
+  background: rgba(10, 26, 58, 0.75);
   border: 1px solid rgba(200, 216, 235, 0.25);
   border-radius: clamp(16px, 4vw, 20px);
   padding: clamp(1rem, 2.5vw, 1.5rem);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(18px);
   max-width: 100%;
   overflow: visible;
 }
@@ -380,7 +371,6 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease,
     background 0.2s ease;
   font-size: clamp(0.75rem, 1.5vw, 0.9rem);
-  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -457,14 +447,11 @@ body {
 /* Karty: wybór daty i formularz delegacji */
 .selection-card,
 .delegation-form {
-  background: linear-gradient(135deg,
-      rgba(10, 26, 58, 0.7),
-      rgba(0, 46, 122, 0.5));
+  background: rgba(10, 26, 58, 0.75);
   border: 1px solid rgba(200, 216, 235, 0.25);
   border-radius: clamp(12px, 3vw, 16px);
   padding: clamp(1rem, 2.5vw, 1.2rem) clamp(1rem, 2.5vw, 1.3rem);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(18px);
 }
 
 .selection-card h3,
@@ -488,7 +475,6 @@ body {
   border-radius: clamp(8px, 2vw, 12px);
   padding: clamp(0.6rem, 1.5vw, 0.8rem);
   border: 1px solid rgba(200, 216, 235, 0.25);
-  backdrop-filter: blur(10px);
 }
 
 .selection-meta span {
@@ -806,11 +792,7 @@ body {
     top: 100%;
     left: 0;
     right: 0;
-    background: linear-gradient(90deg,
-        var(--navy) 0%,
-        var(--navy-darker) 50%,
-        var(--navy-darkest) 100%);
-    backdrop-filter: blur(10px);
+    background: var(--navy-darker);
     transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
@@ -921,11 +903,7 @@ body {
     top: 100%;
     left: 0;
     right: 0;
-    background: linear-gradient(90deg,
-        var(--navy) 0%,
-        var(--navy-darker) 50%,
-        var(--navy-darkest) 100%);
-    backdrop-filter: blur(10px);
+    background: var(--navy-darker);
     transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
