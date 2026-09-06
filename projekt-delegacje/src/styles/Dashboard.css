@@ -423,6 +423,21 @@ body {
   outline-offset: -2px;
 }
 
+/* Wyróżnienie bieżącej daty w kalendarzu */
+.calendar-day.today {
+  border-color: #34d399;
+}
+
+.calendar-day.today .day-number {
+  color: #34d399;
+}
+
+.calendar-day .today-pill {
+  background: rgba(52, 211, 153, 0.16);
+  border-color: rgba(52, 211, 153, 0.5);
+  color: #34d399;
+}
+
 .calendar-day.has-delegation::after {
   content: "";
   position: absolute;
@@ -536,6 +551,7 @@ body {
 }
 
 .delegation-form input,
+.delegation-form select,
 .delegation-form textarea {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(200, 216, 235, 0.35);
@@ -553,17 +569,6 @@ body {
   resize: none;
 }
 
-/* Input do czasu - dostosowanie wskaźnika w webkit */
-.delegation-form input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.delegation-form input[type="time"]::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
-
 .delegation-form input:-webkit-autofill,
 .delegation-form input:-webkit-autofill:hover,
 .delegation-form input:-webkit-autofill:focus,
@@ -577,6 +582,7 @@ body {
 }
 
 .delegation-form input:focus,
+.delegation-form select:focus,
 .delegation-form textarea:focus {
   outline: none;
   border-color: var(--pale-blue);
@@ -586,6 +592,25 @@ body {
 .delegation-form input::placeholder,
 .delegation-form textarea::placeholder {
   color: rgba(255, 255, 255, 0.5);
+}
+
+.delegation-form select option {
+  color: var(--navy-darkest);
+  background: var(--white);
+}
+
+/* Kontener pary selectów godzina/minuta */
+.time-select {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.3rem, 1vw, 0.5rem);
+  color: rgba(200, 216, 235, 0.6);
+}
+
+.time-select select {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
 }
 
 .full-width {
@@ -1409,6 +1434,20 @@ body {
   border-color: rgba(0, 46, 122, 0.22);
 }
 
+[data-theme="light"] .calendar-day.today {
+  border-color: #059669;
+}
+
+[data-theme="light"] .calendar-day.today .day-number {
+  color: #059669;
+}
+
+[data-theme="light"] .calendar-day .today-pill {
+  background: rgba(5, 150, 105, 0.12);
+  border-color: rgba(5, 150, 105, 0.4);
+  color: #059669;
+}
+
 [data-theme="light"] .selection-card,
 [data-theme="light"] .delegation-form {
   background: #ffffff;
@@ -1439,6 +1478,7 @@ body {
 }
 
 [data-theme="light"] .delegation-form input,
+[data-theme="light"] .delegation-form select,
 [data-theme="light"] .delegation-form textarea {
   background: rgba(0, 46, 122, 0.05);
   border-color: rgba(0, 46, 122, 0.28);
@@ -1451,14 +1491,14 @@ body {
 }
 
 [data-theme="light"] .delegation-form input:focus,
+[data-theme="light"] .delegation-form select:focus,
 [data-theme="light"] .delegation-form textarea:focus {
   border-color: var(--ocean-blue);
   box-shadow: 0 0 0 3px rgba(106, 155, 216, 0.25);
 }
 
-[data-theme="light"] .delegation-form input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: none;
-  opacity: 0.65;
+[data-theme="light"] .time-select {
+  color: rgba(0, 46, 122, 0.55);
 }
 
 [data-theme="light"] .hours-section {

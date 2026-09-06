@@ -1,6 +1,5 @@
 import '/src/styles/App.css';
 import '/src/styles/Dashboard.css';
-import '/src/styles/TimePicker.css';
 import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isWithinInterval, startOfMonth, startOfWeek } from 'date-fns';
 import { pl } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -10,7 +9,6 @@ import { createDelegacja } from '../api/client';
 import { useMemo, useState } from 'react';
 import type { DelegacjaCreate } from '../api/types';
 import { Loader } from './Loader';
-import { TimePicker } from './TimePicker';
 import { Sidebar } from '../components/Sidebar';
 
 
@@ -145,6 +143,20 @@ export const Dashboard = () => {
         setFormState((prev) => ({ ...prev, [name]: value }));
     };
 
+    // Godziny 00-23 i minuty ograniczone do pełnych kwadransów (wymóg selektora godzin)
+    const hourOptions = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));
+    const minuteOptions = ['00', '15', '30', '45'];
+
+    // Obsługa zmiany godziny/minuty w selektorach czasu (godzina rozpoczęcia/zakończenia)
+    const handleTimePartChange = (
+        field: 'godzinaRozpoczecia' | 'godzinaZakonczenia',
+        part: 'h' | 'm',
+    ) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const [h, m] = formState[field].split(':');
+        const next = part === 'h' ? `${event.target.value}:${m}` : `${h}:${event.target.value}`;
+        setFormState((prev) => ({ ...prev, [field]: next }));
+    };
+
     if (isLoading) {
         return <Loader fullScreen message="Ładowanie kalendarza delegacji..." />;
     }
@@ -208,16 +220,18 @@ export const Dashboard = () => {
                                         );
                                         const isOutsideMonth = !isSameMonth(day, currentMonth);
                                         const hasDelegation = matches.length > 0;
+                                        const isToday = isSameDay(day, new Date());
 
                                         return (
                                             <button
                                                 key={day.toISOString()}
                                                 type="button"
                                                 className={`calendar-day ${isOutsideMonth ? 'muted' : ''} ${isInside ? 'selected' : ''} ${isStart || isEnd ? 'range-edge' : ''
-                                                    } ${hasDelegation ? 'has-delegation' : ''}`}
+                                                    } ${hasDelegation ? 'has-delegation' : ''} ${isToday ? 'today' : ''}`}
                                                 onClick={() => handleDaySelection(day)}
                                                 aria-pressed={isInside}
-                                                aria-label={`Dzień ${format(day, 'dd MMMM yyyy')}${hasDelegation ? ', posiada delegację' : ''}`}
+                                                aria-current={isToday ? 'date' : undefined}
+                                                aria-label={`Dzień ${format(day, 'dd MMMM yyyy')}${isToday ? ', dzisiaj' : ''}${hasDelegation ? ', posiada delegację' : ''}`}
                                             >
                                                 <span className="day-number">{format(day, 'd')}</span>
                                                 {hasDelegation && <span className="dot" aria-hidden />}
@@ -227,7 +241,9 @@ export const Dashboard = () => {
                                                         ? <span className="pill">Start</span>
                                                         : isEnd
                                                             ? <span className="pill">Koniec</span>
-                                                            : null
+                                                            : isToday
+                                                                ? <span className="pill today-pill">Dziś</span>
+                                                                : null
                                                 }
                                             </button>
                                         );
@@ -299,20 +315,46 @@ export const Dashboard = () => {
                                         required
                                     />
                                 </label>
-                                <TimePicker
-                                    name="godzinaRozpoczecia"
-                                    value={formState.godzinaRozpoczecia}
-                                    onChange={handleInputChange}
-                                    label="Godzina rozpoczęcia"
-                                    required
-                                />
-                                <TimePicker
-                                    name="godzinaZakonczenia"
-                                    value={formState.godzinaZakonczenia}
-                                    onChange={handleInputChange}
-                                    label="Godzina zakończenia"
-                                    required
-                                />
+                                <label>
+                                    Godzina rozpoczęcia
+                                    <div className="time-select">
+                                        <select
+                                            aria-label="Godzina rozpoczęcia - godzina"
+                                            value={formState.godzinaRozpoczecia.split(':')[0]}
+                                            onChange={handleTimePartChange('godzinaRozpoczecia', 'h')}
+                                        >
+                                            {hourOptions.map((h) => <option key={h} value={h}>{h}</option>)}
+                                        </select>
+                                        <span aria-hidden>:</span>
+                                        <select
+                                            aria-label="Godzina rozpoczęcia - minuta"
+                                            value={formState.godzinaRozpoczecia.split(':')[1]}
+                                            onChange={handleTimePartChange('godzinaRozpoczecia', 'm')}
+                                        >
+                                            {minuteOptions.map((m) => <option key={m} value={m}>{m}</option>)}
+                                        </select>
+                                    </div>
+                                </label>
+                                <label>
+                                    Godzina zakończenia
+                                    <div className="time-select">
+                                        <select
+                                            aria-label="Godzina zakończenia - godzina"
+                                            value={formState.godzinaZakonczenia.split(':')[0]}
+                                            onChange={handleTimePartChange('godzinaZakonczenia', 'h')}
+                                        >
+                                            {hourOptions.map((h) => <option key={h} value={h}>{h}</option>)}
+                                        </select>
+                                        <span aria-hidden>:</span>
+                                        <select
+                                            aria-label="Godzina zakończenia - minuta"
+                                            value={formState.godzinaZakonczenia.split(':')[1]}
+                                            onChange={handleTimePartChange('godzinaZakonczenia', 'm')}
+                                        >
+                                            {minuteOptions.map((m) => <option key={m} value={m}>{m}</option>)}
+                                        </select>
+                                    </div>
+                                </label>
                                 <label className="full-width">
                                     Uwagi dla zespołu
                                     <textarea

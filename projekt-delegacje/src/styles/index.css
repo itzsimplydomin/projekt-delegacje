@@ -24,14 +24,35 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: 100%;
+  /* Blokada zoomowania (double-tap/pinch) i wymuszenie stałego rozmiaru tekstu - zachowanie jak w aplikacji natywnej */
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overscroll-behavior: none;
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100%;
+  min-height: 100dvh;
   background: var(--navy);
   display: flex;
   align-items: center;
   justify-content: center;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 #root {

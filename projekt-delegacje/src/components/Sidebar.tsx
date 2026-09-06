@@ -106,6 +106,8 @@ export function Sidebar() {
                         <LogOut className="icon" size={18} />
                         Wyloguj się
                     </button>
+
+                    <p className="sidebar-version">Wersja {__APP_VERSION__}</p>
                 </div>
             </aside>
         </>

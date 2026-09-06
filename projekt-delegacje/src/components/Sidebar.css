@@ -274,6 +274,14 @@
   color: #fca5a5;
 }
 
+.sidebar-version {
+  margin: 0.4rem 0 0;
+  padding: 0 0.75rem;
+  font-size: 0.7rem;
+  color: rgba(200, 216, 235, 0.4);
+  text-align: center;
+}
+
 /* ============================================
    TRYB JASNY (LIGHT MODE)
    Sidebar pozostaje ciemny – to element brandingowy
